@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Mindset — Walkthrough</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand"><span class="mark">&sect;</span> Motion Mindset</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mindset.html">Walkthrough</a>
+    <a href="motion.html">Write &amp; Analyze</a>
+  </nav>
+</header>
+
+<main class="shell narrow">
+
+  <div id="wizard-view">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-label">
+      <span id="progress-text">Question 1 of 10</span>
+      <span id="progress-section"></span>
+    </div>
+
+    <div class="card">
+      <div class="question-section" id="q-section"></div>
+      <h2 class="question-text" id="q-text"></h2>
+      <p class="question-help" id="q-help"></p>
+      <textarea class="answer" id="q-answer" placeholder="Type your honest answer here — there's no wrong one."></textarea>
+
+      <div class="wizard-nav">
+        <button class="btn btn-ghost" id="btn-back">&larr; Back</button>
+        <div class="right">
+          <button class="btn btn-ghost" id="btn-skip">Skip</button>
+          <button class="btn btn-primary" id="btn-next">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="summary-view" style="display:none;">
+    <div class="eyebrow">Your reflection</div>
+    <h1 style="color:var(--navy); font-size:1.8rem;">Here's your thinking, in your own words</h1>
+    <p class="lede" style="font-size:1rem;">
+      Read back through this before you draft a single sentence of the motion. Everything you
+      write should serve the purpose and outcome you described below.
+    </p>
+
+    <div class="card" id="summary-list"></div>
+
+    <div class="cta-row">
+      <a href="#" class="btn btn-ghost" id="btn-edit">&larr; Edit answers</a>
+      <a href="motion.html" class="btn btn-primary">Proceed to write your motion &rarr;</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const QUESTIONS = [
+    {
+      section: "Purpose & Strategy",
+      text: "Why are you filing this motion?",
+      help: "Not \"because I was told to\" — what is the underlying legal or strategic reason it needs to be filed now?"
+    },
+    {
+      section: "Purpose & Strategy",
+      text: "What are you trying to accomplish by filing this motion?",
+      help: "Name the concrete outcome. What does winning actually get your client?"
+    },
+    {
+      section: "Purpose & Strategy",
+      text: "Does this motion make sense in relation to your case? How does it fit your overall case theory?",
+      help: "If a colleague asked how this motion advances the case, what would you say?"
+    },
+    {
+      section: "The Judge's Perspective",
+      text: "How do you think the judge will react when reading this motion?",
+      help: "Could it come across as unnecessary, repetitive, or irritating given the judge's docket and prior rulings?"
+    },
+    {
+      section: "The Judge's Perspective",
+      text: "What legal standard will the judge apply in deciding this motion — and have you squarely addressed it?",
+      help: "If you can't name the standard, the judge will notice before you do."
+    },
+    {
+      section: "The Opponent's Perspective",
+      text: "What do you think your opponent will say in response to this motion?",
+      help: "Steelman their best argument. If you can't, you're not ready to file."
+    },
+    {
+      section: "The Opponent's Perspective",
+      text: "Could filing this motion hand your opponent useful information or a tactical advantage?",
+      help: "Consider what it reveals about your strategy, your evidence, or your weaknesses."
+    },
+    {
+      section: "Consequences & Relationships",
+      text: "If the judge denies this motion, what happens next in the case?",
+      help: "Do you have a plan for that outcome, or does a denial leave you stuck?"
+    },
+    {
+      section: "Consequences & Relationships",
+      text: "After filing this motion, do you think the judge will view you more favorably than your opponent — or less?",
+      help: "Credibility with the court is cumulative. Consider how this filing adds to or spends it."
+    },
+    {
+      section: "Consequences & Relationships",
+      text: "Is there anything about the timing, tone, or necessity of this motion you're still unsure about?",
+      help: "Naming your own doubt now is far cheaper than a judge naming it for you later."
+    }
+  ];
+
+  const STORAGE_KEY = "motionMindsetAnswers";
+  let answers = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (answers.length !== QUESTIONS.length) {
+    answers = new Array(QUESTIONS.length).fill("");
+  }
+
+  let current = 0;
+
+  const els = {
+    progressFill: document.getElementById("progress-fill"),
+    progressText: document.getElementById("progress-text"),
+    progressSection: document.getElementById("progress-section"),
+    qSection: document.getElementById("q-section"),
+    qText: document.getElementById("q-text"),
+    qHelp: document.getElementById("q-help"),
+    qAnswer: document.getElementById("q-answer"),
+    btnBack: document.getElementById("btn-back"),
+    btnNext: document.getElementById("btn-next"),
+    btnSkip: document.getElementById("btn-skip"),
+    wizardView: document.getElementById("wizard-view"),
+    summaryView: document.getElementById("summary-view"),
+    summaryList: document.getElementById("summary-list"),
+    btnEdit: document.getElementById("btn-edit"),
+  };
+
+  function saveAnswers() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+    localStorage.setItem("motionMindsetQuestions", JSON.stringify(QUESTIONS.map(q => q.text)));
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[current];
+    els.qSection.textContent = q.section;
+    els.qText.textContent = q.text;
+    els.qHelp.textContent = q.help;
+    els.qAnswer.value = answers[current] || "";
+    els.progressText.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+    els.progressSection.textContent = q.section;
+    els.progressFill.style.width = `${((current) / QUESTIONS.length) * 100}%`;
+    els.btnBack.disabled = current === 0;
+    els.btnNext.textContent = current === QUESTIONS.length - 1 ? "Finish →" : "Next →";
+    els.qAnswer.focus();
+  }
+
+  function commitAnswer() {
+    answers[current] = els.qAnswer.value.trim();
+    saveAnswers();
+  }
+
+  function showSummary() {
+    els.wizardView.style.display = "none";
+    els.summaryView.style.display = "block";
+    els.progressFill.style.width = "100%";
+    els.summaryList.innerHTML = QUESTIONS.map((q, i) => `
+      <div class="qa-item">
+        <div class="q">${i + 1}. ${q.text}</div>
+        <div class="a ${answers[i] ? "" : "empty"}">${answers[i] ? escapeHtml(answers[i]) : "No answer provided."}</div>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  els.btnNext.addEventListener("click", () => {
+    commitAnswer();
+    if (current < QUESTIONS.length - 1) {
+      current += 1;
+      renderQuestion();
+    } else {
+      showSummary();
+    }
+  });
+
+  els.btnSkip.addEventListener("click", () => {
+    if (current < QUESTIONS.length - 1) {
+      current += 1;
+      renderQuestion();
+    } else {
+      showSummary();
+    }
+  });
+
+  els.btnBack.addEventListener("click", () => {
+    commitAnswer();
+    if (current > 0) {
+      current -= 1;
+      renderQuestion();
+    }
+  });
+
+  els.btnEdit.addEventListener("click", (e) => {
+    e.preventDefault();
+    current = 0;
+    els.summaryView.style.display = "none";
+    els.wizardView.style.display = "block";
+    renderQuestion();
+  });
+
+  renderQuestion();
+</script>
+
+</body>
+</html>
