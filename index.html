@@ -12,21 +12,30 @@
   <div class="brand"><span class="mark">&sect;</span> Motion Mindset</div>
   <nav>
     <a href="index.html">Home</a>
-    <a href="mindset.html">Walkthrough</a>
-    <a href="motion.html">Write &amp; Analyze</a>
+    <a href="mindset.html">Mindset</a>
+    <a href="motion.html">Legal Analysis</a>
   </nav>
 </header>
 
 <main class="shell">
   <div class="hero">
-    <div class="eyebrow">For new attorneys &amp; law students</div>
-    <h1>Before you write the motion, understand why you're filing it.</h1>
+    <div class="eyebrow">For new attorneys &amp; law students &middot; currently scoped to Rule 12(b)(6)</div>
+    <h1>Before you file the motion, understand why you're filing it.</h1>
     <p class="lede">
       Most young attorneys draft a motion because a partner told them to — not because
       they've worked through what the motion is actually supposed to accomplish. This tool
-      walks you through that thinking first, then helps you analyze your draft sentence by
-      sentence and estimates how a judge is likely to rule.
+      walks you through that thinking first, then helps you map the complaint against the
+      Rule 12(b)(6) pleading standard, element by element.
     </p>
+  </div>
+
+  <div class="research-note">
+    <strong>Why no "likelihood of winning" score?</strong> Most legal-judgment-prediction research
+    doesn't demonstrate genuine prediction — it tests models on information taken from the final
+    ruling itself, which the attorney never had when the decision to file actually had to be made
+    (Medvedeva &amp; McBride). So this tool only uses information that exists <em>before</em> a ruling —
+    the complaint's allegations, the claim type, and the Rule 12(b)(6)/<em>Twombly‑Iqbal</em> standard —
+    and reports pleading <strong>completeness</strong>, not a predicted outcome.
   </div>
 
   <div class="card">
@@ -36,32 +45,39 @@
         <div class="num">1</div>
         <div>
           <strong>Walk through your mindset</strong>
-          <span>Answer a short series of strategic questions — your purpose, the judge's likely reaction, your opponent's response, and what happens if you lose.</span>
+          <span>Answer a short series of Socratic and client-counseling questions — your purpose, the judge's likely reaction, your opponent's response, and what you'd need to discuss with your client. This is also how you submit your own reasoning, separate from the complaint text.</span>
         </div>
       </div>
       <div class="step">
         <div class="num">2</div>
         <div>
           <strong>Review your reflection</strong>
-          <span>See all of your answers together. This is the thinking that should drive how you write the motion — not the other way around.</span>
+          <span>See all of your answers together. This is the thinking that should drive how you evaluate the motion — not the other way around.</span>
         </div>
       </div>
       <div class="step">
         <div class="num">3</div>
         <div>
-          <strong>Draft and analyze your motion</strong>
-          <span>Paste your draft. Get sentence-by-sentence reasoning and an estimated likelihood the motion is granted, grounded in what you said you were trying to accomplish.</span>
+          <strong>Run the Rule 12(b)(6) decision tree</strong>
+          <span>Paste the complaint's allegations. Work through whether each element (duty, breach, causation, cognizable harm) and the <em>Twombly‑Iqbal</em> plausibility standard are adequately pled, and get follow-up questions wherever you're unsure.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <strong>Feedback after you decide <span class="badge-soon">Coming soon</span></strong>
+          <span>Once a ruling is issued, compare your reasoning against the court's actual analysis — reserved for after the fact, so the ruling never leaks into the initial analysis.</span>
         </div>
       </div>
     </div>
 
     <div class="cta-row">
       <a href="mindset.html" class="btn btn-primary">Start the mindset walkthrough</a>
-      <a href="motion.html" class="btn btn-ghost">Skip to motion analysis</a>
+      <a href="motion.html" class="btn btn-ghost">Skip to legal analysis</a>
     </div>
     <p class="note" style="margin-top:16px;">
-      Sentence-by-sentence AI analysis is currently a demo preview. It's built to show how the
-      real LLM-backed analysis will work once connected.
+      Only the Torts decision tree is built out so far. Contracts and Property are stubbed in —
+      see the Legal Analysis page for details.
     </p>
   </div>
 </main>
