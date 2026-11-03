@@ -3,318 +3,467 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motion Mindset — Rule 12(b)(6) Legal Analysis</title>
+<title>Motion Mindset — Motion Drafting Studio</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="brand"><span class="mark">&sect;</span> Motion Mindset</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="mindset.html">Mindset</a>
-    <a href="motion.html">Legal Analysis</a>
-  </nav>
+  <a href="index.html" class="brand"><span class="mark">&sect;</span> Motion Mindset</a>
+  <div class="header-right">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guidance.html">Conversational Guidance</a>
+      <a href="motion.html" class="active">Motion Drafting</a>
+    </nav>
+    <div class="llm-pill" id="llm-status-pill">
+      <span class="dot"></span>
+      <span id="llm-status-text">Checking Qwen 3.8…</span>
+    </div>
+  </div>
 </header>
 
-<main class="shell">
-  <div class="eyebrow">Step 3 &middot; Rule 12(b)(6)</div>
-  <h1 style="color:var(--navy); font-size:1.8rem; margin-bottom:8px;">Does the complaint state a claim?</h1>
-  <p class="lede" style="font-size:1rem;">
-    Paste the complaint's allegations below and work through the pleading elements one at a time.
-    This reports how <strong>completely</strong> the complaint addresses each element — it does not
-    predict how a judge will rule. See why below.
-  </p>
+<main class="studio-shell">
 
-  <div class="workspace">
+  <!-- Left Column: Guided Session Recap, Case File, and Legal Framework -->
+  <aside class="studio-col">
+    <div class="studio-card">
+      <div class="eyebrow" style="margin-bottom:4px;">Your Guided Foundation</div>
+      <h3 style="margin-bottom:8px;">Conversational Session Recap</h3>
+      <div id="session-recap-body">
+        <p class="note">Loading your conversational session…</p>
+      </div>
+    </div>
 
-    <details class="card mindset-recap" id="recap-card">
-      <summary>Your mindset answers (click to review)</summary>
-      <div id="recap-list" style="margin-top:14px;"></div>
-    </details>
-
-    <details class="card">
-      <summary>What information this analysis uses — and why</summary>
-      <p class="note" style="margin-top:12px;">
-        Every factor here was first run through a two-step test: was it available to the attorney
-        <em>before</em> the decision to file had to be made (temporal legitimacy), and if so, is it
-        appropriate to use given what this tool is trying to teach (pedagogical legitimacy)?
+    <div class="studio-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+        <h3 style="margin:0;">Case File / Complaint</h3>
+        <button type="button" class="btn btn-gold btn-sm" id="btn-load-sample-studio">Load Sample Case</button>
+      </div>
+      <p class="note" style="margin-top:0;">
+        Synced with your Conversational Guidance session (or paste complaint text here directly).
       </p>
-      <div class="info-grid">
-        <div class="info-col include">
-          <h4>Used in this analysis</h4>
-          <ul>
-            <li>Allegations in the complaint</li>
-            <li>Claim type you select (Torts, Contracts, Property)</li>
-            <li>Rule 12(b)(6) pleading standard</li>
-            <li><em>Twombly v. Iqbal</em> plausibility standard</li>
-            <li class="not-wired">Court/district</li>
-            <li class="not-wired">Other controlling precedent as of filing</li>
-            <li class="not-wired">Procedural posture / docket history</li>
-          </ul>
-          <p class="col-note">Available before filing, and directly relevant to the pleading standard.</p>
-        </div>
-        <div class="info-col review">
-          <h4>Deliberately set aside</h4>
-          <ul>
-            <li>Assigned judge &amp; their grant/denial history</li>
-            <li>Timing of the motion</li>
-            <li>Party or attorney/firm characteristics</li>
-          </ul>
-          <p class="col-note">Technically available before filing, but using judge-specific tendencies here would shift the focus from legal merit to predicting an individual judge — a separate question this tool isn't trying to answer.</p>
-        </div>
-        <div class="info-col exclude">
-          <h4>Never used to generate this analysis</h4>
-          <ul>
-            <li>The eventual ruling or final opinion</li>
-            <li>Facts or language first appearing in the court's decision</li>
-            <li>Anything occurring after the filing decision (later docket entries, evidence, appeals)</li>
-          </ul>
-          <p class="col-note">Using outcome-derived facts to "predict" the outcome isn't genuine prediction — it's restating the answer in advance. The ruling is reserved for feedback after you've already decided.</p>
-        </div>
-      </div>
+      <textarea
+        id="studio-case-text"
+        class="case-textarea"
+        style="min-height:210px;"
+        placeholder="Paste the complaint allegations and case notes..."
+      ></textarea>
+    </div>
+
+    <details class="studio-card">
+      <summary style="cursor:pointer; font-weight:700; color:var(--navy);">Rubric &amp; Legal Standards Reference</summary>
+      <div id="legal-reference-list" style="margin-top:12px;"></div>
     </details>
+  </aside>
 
-    <div class="card">
-      <label style="display:block; font-weight:600; color:var(--navy); margin-bottom:10px;">
-        What kind of claim is this?
-      </label>
-      <div class="claim-type-grid" id="claim-type-grid">
-        <button type="button" class="claim-type-option" data-claim="torts">
-          Torts
-          <span class="sub">Duty, breach, causation, cognizable harm</span>
-        </button>
-        <button type="button" class="claim-type-option" data-claim="contracts">
-          Contracts
-          <span class="sub">Decision tree coming soon</span>
-        </button>
-        <button type="button" class="claim-type-option" data-claim="property">
-          Property
-          <span class="sub">Decision tree coming soon</span>
-        </button>
-      </div>
-
-      <div id="stub-message" class="stub-card" style="display:none; margin-top:16px;"></div>
-
-      <div id="complaint-section" style="display:none; margin-top:20px;">
-        <label for="complaint-text" style="display:block; font-weight:600; color:var(--navy); margin-bottom:10px;">
-          Complaint text — the pleading you're moving to dismiss
-        </label>
-        <textarea id="complaint-text" class="motion-input" style="min-height:200px;" placeholder="Paste the relevant allegations from the complaint..."></textarea>
-      </div>
-    </div>
-
-    <div class="card" id="tree-card" style="display:none;">
-      <h3 style="margin-top:0; color:var(--navy);">Torts — Rule 12(b)(6) decision tree</h3>
-      <p class="note">For each element, mark your own read of the complaint and, optionally, note which allegation supports it. Answering honestly matters more than answering "yes" — that's the point of the exercise.</p>
-
-      <div id="element-list"></div>
-
-      <div class="cta-row">
-        <button class="btn btn-primary" id="btn-analyze">See completeness &amp; follow-ups</button>
-      </div>
-    </div>
-
-    <div class="card" id="results-card" style="display:none;">
-      <div class="placeholder-banner">
-        <strong>What this is:</strong> a self-assessment scaffold based on how you answered each
-        element above — not an AI-generated legal judgment and not an outcome prediction. The
-        real LLM-backed version will check your reasoning against the complaint text itself and
-        verified precedent.
-      </div>
-
-      <h3 style="margin-top:0; color:var(--navy);">Pleading completeness</h3>
-      <div class="completeness-row">
-        <div class="completeness-track"><div class="completeness-fill" id="completeness-fill"></div></div>
-        <div class="completeness-label" id="completeness-label">0 / 5</div>
-      </div>
-      <p class="note" id="completeness-explain" style="margin-top:8px;"></p>
-
-      <div class="followup-list" id="followup-list"></div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-top:0; color:var(--navy);">Feedback after you decide <span class="badge-soon">Coming soon</span></h3>
-      <p class="note">
-        Once a ruling is issued on this motion, this section will let you compare your element-by-element
-        reasoning above against the court's actual analysis, and flag anything you overlooked. It's
-        intentionally unavailable now — showing you the ruling before you've decided would defeat the
-        purpose of practicing the judgment call.
+  <!-- Right Column: Motion / Strategy Editor & AI Partner Evaluation -->
+  <section class="studio-col">
+    <div class="studio-card">
+      <div class="eyebrow" style="margin-bottom:4px;">Drafting Studio</div>
+      <h2 style="margin-bottom:6px;">Draft your motion or client strategy memo</h2>
+      <p class="note" style="margin-top:0; margin-bottom:16px;">
+        Choose the work product that best serves your client's ranked goals, budget, and timing —
+        whether a full Rule 12(b)(6) motion, a targeted partial motion, or an alternative counseling memo.
       </p>
+
+      <div class="draft-type-row" id="draft-type-row">
+        <button type="button" class="draft-type-btn selected" data-type="Rule 12(b)(6) Motion to Dismiss Memorandum">
+          Rule 12(b)(6) Motion to Dismiss
+          <span>Full memorandum challenging pleading sufficiency</span>
+        </button>
+        <button type="button" class="draft-type-btn" data-type="Targeted Partial Motion to Dismiss (Damages / Specific Counts)">
+          Partial Motion to Dismiss
+          <span>Target defective claims or barred damages</span>
+        </button>
+        <button type="button" class="draft-type-btn" data-type="Client Counseling & Alternative Litigation Strategy Memo">
+          Client Strategy &amp; Counseling Memo
+          <span>Recommend Answer / settlement / hybrid path</span>
+        </button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-insert-outline">Insert Section Outline</button>
+        <span class="note" id="autosave-status">Autosaved locally</span>
+      </div>
+
+      <textarea
+        id="motion-draft-input"
+        class="motion-editor"
+        placeholder="Draft your memorandum or client counseling analysis here..."
+      ></textarea>
+
+      <div class="cta-row" style="margin-top:18px;">
+        <button type="button" class="btn btn-primary" id="btn-review-draft">Review Draft with Qwen Partner &rarr;</button>
+        <button type="button" class="btn btn-ghost" id="btn-download-md">Download Draft (.md)</button>
+      </div>
     </div>
 
-  </div>
+    <div class="studio-card" id="review-results-card" style="display:none;">
+      <div class="eyebrow" style="margin-bottom:4px;">Rubric-Aligned Partner Review</div>
+      <h3 style="margin-bottom:14px;">Feedback on Your Draft</h3>
+      <div id="review-results-body"></div>
+    </div>
+  </section>
+
 </main>
 
 <script>
-  const STORAGE_KEY = "motionMindsetAnswers";
-  const Q_KEY = "motionMindsetQuestions";
+  const SESSION_STORAGE_KEY = "motionGuidanceSessionId";
+  const SNAPSHOT_STORAGE_KEY = "motionGuidanceSessionSnapshot";
+  const DRAFT_STORAGE_KEY = "motionStudioDraftText";
+  const DRAFT_TYPE_KEY = "motionStudioDraftType";
+
+  function getSavedSnapshot() {
+    try {
+      const raw = localStorage.getItem(SNAPSHOT_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  let appConfig = null;
+  let sessionState = null;
+  let selectedDraftType = localStorage.getItem(DRAFT_TYPE_KEY) || "Rule 12(b)(6) Motion to Dismiss Memorandum";
+
+  const OUTLINES = {
+    "Rule 12(b)(6) Motion to Dismiss Memorandum": `IN THE UNITED STATES DISTRICT COURT
+FOR THE NORTHERN DISTRICT OF ILLINOIS
+
+DEFENDANT'S MEMORANDUM OF LAW IN SUPPORT OF MOTION TO DISMISS UNDER FED. R. CIV. P. 12(b)(6)
+
+I. INTRODUCTION
+[State concisely what relief Defendant seeks and why the Complaint fails on its face.]
+
+II. RELEVANT ALLEGATIONS & INCORPORATED CONTRACT TERMS
+[Summarize only well-pleaded allegations from the Four Corners of the Complaint and any central contract incorporated by reference—do NOT rely on extrinsic disputes of fact.]
+
+III. LEGAL STANDARD (7TH CIRCUIT RULE 12(b)(6) FRAMEWORK)
+[Set out Twombly / Iqbal: (1) disregard legal conclusions and formulaic recitations; (2) assess whether remaining factual allegations state a plausible claim.]
+
+IV. ARGUMENT
+A. Governing Elements of Breach of Contract Under Illinois Law
+[Address existence of valid contract, plaintiff's performance, defendant's breach, and resultant cognizable injury.]
+
+B. Application to Plaintiff's Pleading
+[Analyze specific pleading defects vs. factual disputes.]
+
+V. CONCLUSION & RELIEF REQUESTED
+`,
+    "Targeted Partial Motion to Dismiss (Damages / Specific Counts)": `DEFENDANT'S MEMORANDUM IN SUPPORT OF PARTIAL MOTION TO DISMISS
+
+I. STRATEGIC & PROCEDURAL INTRODUCTION
+[Explain the targeted scope of this motion—e.g., dismissing barred consequential damages or fee requests under an incorporated contract limitation clause.]
+
+II. INCORPORATION BY REFERENCE IN THE SEVENTH CIRCUIT
+[Explain why the Court may consider the referenced written contract on a Rule 12(b)(6) motion without converting to summary judgment.]
+
+III. ARGUMENT
+A. Contractual Limitation of Liability Bars Consequential / Lost-Profit Damages
+B. Attorney's Fees Prayer Lacks Contractual or Statutory Basis
+
+IV. CONCLUSION
+`,
+    "Client Counseling & Alternative Litigation Strategy Memo": `CONFIDENTIAL ATTORNEY-CLIENT PRIVILEGED STRATEGY MEMORANDUM
+
+TO: Authorized Client Decision-Maker
+FROM: Litigation Counsel
+RE: Responsive Pleading Assessment, Litigation Budget, and Recommended Action Plan
+
+I. EXECUTIVE RECOMMENDATION
+[State clear recommendation—e.g., Answer + early settlement proposal vs. full/partial Rule 12(b)(6) motion—and why it serves the client's ranked priorities.]
+
+II. ALIGNMENT WITH CLIENT PRIORITIES, TIMELINE & BUDGET
+[Connect strategy directly to the client's top 3 goals, deadlines, cost constraints, and commercial relationship considerations.]
+
+III. PLEADING & MERITS ASSESSMENT (ILLINOIS CONTRACT LAW & NDIL RULE 12(b)(6))
+[Distinguish what appears on the face of the Complaint (pleading) from extrinsic factual defenses/adverse documents (proof).]
+
+IV. PROS & CONS OF MOVING TO DISMISS VS. ANSWERING / NEGOTIATING
+[Compare cost, delay, risk of routine leave to amend, and leverage.]
+
+V. OPEN VERIFICATION ITEMS & NEXT APPROVAL STEPS
+[List facts/documents to verify before acting and confirm formal corporate approval requirements.]
+`
+  };
+
+  const els = {
+    llmPill: document.getElementById("llm-status-pill"),
+    llmText: document.getElementById("llm-status-text"),
+    recapBody: document.getElementById("session-recap-body"),
+    caseText: document.getElementById("studio-case-text"),
+    btnLoadSample: document.getElementById("btn-load-sample-studio"),
+    legalRefList: document.getElementById("legal-reference-list"),
+    draftTypeRow: document.getElementById("draft-type-row"),
+    btnInsertOutline: document.getElementById("btn-insert-outline"),
+    autosaveStatus: document.getElementById("autosave-status"),
+    draftInput: document.getElementById("motion-draft-input"),
+    btnReview: document.getElementById("btn-review-draft"),
+    btnDownload: document.getElementById("btn-download-md"),
+    resultsCard: document.getElementById("review-results-card"),
+    resultsBody: document.getElementById("review-results-body"),
+  };
 
   function escapeHtml(str) {
     const div = document.createElement("div");
-    div.textContent = str;
+    div.textContent = str == null ? "" : String(str);
     return div.innerHTML;
   }
 
-  function renderRecap() {
-    const answers = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    const questions = JSON.parse(localStorage.getItem(Q_KEY) || "[]");
-    const list = document.getElementById("recap-list");
+  async function initStudio() {
+    els.draftInput.value = localStorage.getItem(DRAFT_STORAGE_KEY) || "";
+    updateDraftTypeSelection();
 
-    if (!questions.length || answers.every(a => !a)) {
-      list.innerHTML = `<p class="empty-state">No mindset answers yet. <a href="mindset.html">Complete the walkthrough</a> first for a grounded analysis.</p>`;
-      return;
+    try {
+      const res = await fetch("/api/config");
+      if (res.ok) {
+        appConfig = await res.json();
+        const llm = appConfig.llm || {};
+        els.llmPill.className = llm.connected ? "llm-pill online" : "llm-pill offline";
+        els.llmText.textContent = llm.connected
+          ? `${llm.model || "Qwen 3.8"} · Ready`
+          : `${llm.model || "Qwen 3.8"} · Offline`;
+        renderLegalReferences(appConfig.curriculum);
+      }
+    } catch (_) {
+      els.llmPill.className = "llm-pill offline";
+      els.llmText.textContent = "Server Offline";
     }
 
-    list.innerHTML = questions.map((q, i) => `
-      <div class="qa-item">
-        <div class="q">${i + 1}. ${escapeHtml(q)}</div>
-        <div class="a ${answers[i] ? "" : "empty"}">${answers[i] ? escapeHtml(answers[i]) : "No answer provided."}</div>
-      </div>
-    `).join("");
-  }
-
-  // --- Torts decision tree -------------------------------------------
-  // Pulled directly from the Rule 12(b)(6) framework: duty, breach,
-  // causation, and cognizable harm, then the Twombly/Iqbal plausibility
-  // standard applied to the elements together.
-  const TORTS_ELEMENTS = [
-    {
-      key: "duty",
-      label: "Element 1 of 5",
-      question: "Does the complaint allege facts relevant to the existence of a duty?",
-      followup: "What specific allegation establishes the duty — and if none does, is there a duty theory the complaint is missing entirely?"
-    },
-    {
-      key: "breach",
-      label: "Element 2 of 5",
-      question: "Does the complaint allege conduct that could constitute a breach?",
-      followup: "Is the alleged conduct described with enough specificity, or does it read as a conclusion ('defendant acted negligently') without supporting facts?"
-    },
-    {
-      key: "causation",
-      label: "Element 3 of 5",
-      question: "Does the complaint allege a causal connection between the conduct and the injury?",
-      followup: "Could the injury plausibly have happened without the alleged conduct? If so, the causal link may need more factual support."
-    },
-    {
-      key: "harm",
-      label: "Element 4 of 5",
-      question: "Does the complaint allege a legally cognizable harm?",
-      followup: "Is the harm the kind courts recognize as compensable, or is it more of a grievance than a legal injury?"
-    },
-    {
-      key: "plausibility",
-      label: "Element 5 of 5 — Twombly / Iqbal",
-      question: "Taken together, do the allegations plausibly support relief?",
-      note: "Under <em>Twombly v. Iqbal</em>, a complaint must state a claim that is “plausible on its face” — more than merely “conceivable” or “speculative.” There must be more than a sheer possibility that the defendant acted unlawfully.",
-      followup: "If each element is only weakly supported on its own, the combination may still fall short of plausibility even though no single element fails outright."
-    }
-  ];
-
-  const state = { claim: null, answers: {} };
-
-  function selectClaim(claim) {
-    state.claim = claim;
-    document.querySelectorAll(".claim-type-option").forEach(btn => {
-      btn.classList.toggle("selected", btn.dataset.claim === claim);
-    });
-
-    const stub = document.getElementById("stub-message");
-    const complaintSection = document.getElementById("complaint-section");
-    const treeCard = document.getElementById("tree-card");
-    const resultsCard = document.getElementById("results-card");
-
-    resultsCard.style.display = "none";
-
-    if (claim === "torts") {
-      stub.style.display = "none";
-      complaintSection.style.display = "block";
-      treeCard.style.display = "block";
-      renderElements();
-    } else {
-      complaintSection.style.display = "none";
-      treeCard.style.display = "none";
-      stub.style.display = "block";
-      const name = claim === "contracts" ? "Contracts" : "Property";
-      stub.innerHTML = `<strong>${name} decision tree not yet defined.</strong> The law team mapped
-        Torts first (duty, breach, causation, cognizable harm). ${name} elements haven't been
-        worked out the same way yet — check back once that mapping is done rather than relying on
-        a guessed set of elements here.`;
-    }
-  }
-
-  function renderElements() {
-    const list = document.getElementById("element-list");
-    list.innerHTML = TORTS_ELEMENTS.map(el => `
-      <div class="element-card" data-key="${el.key}">
-        <div class="element-label">${el.label}</div>
-        <p class="element-question">${el.question}</p>
-        ${el.note ? `<div class="plausibility-note">${el.note}</div>` : ""}
-        <div class="yn-group" role="group">
-          <button type="button" class="yn-btn" data-val="yes">Yes, clearly</button>
-          <button type="button" class="yn-btn" data-val="unsure">Unsure</button>
-          <button type="button" class="yn-btn" data-val="no">No / missing</button>
-        </div>
-        <textarea class="support" placeholder="Optional: which allegation or paragraph supports this?"></textarea>
-      </div>
-    `).join("");
-
-    list.querySelectorAll(".element-card").forEach(card => {
-      const key = card.dataset.key;
-      card.querySelectorAll(".yn-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          card.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-          state.answers[key] = btn.dataset.val;
+    const savedSnapshot = getSavedSnapshot();
+    if (savedSnapshot && savedSnapshot.session_id) {
+      try {
+        const hRes = await fetch("/api/session/hydrate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_snapshot: savedSnapshot }),
         });
+        if (hRes.ok) {
+          sessionState = await hRes.json();
+          if (sessionState.case && sessionState.case.student_case_text) {
+            els.caseText.value = sessionState.case.student_case_text;
+          }
+          renderSessionRecap(sessionState);
+          return;
+        }
+      } catch (_) {}
+    }
+
+    const sessionId = localStorage.getItem(SESSION_STORAGE_KEY);
+    if (sessionId) {
+      try {
+        const sRes = await fetch(`/api/session/${encodeURIComponent(sessionId)}`);
+        if (sRes.ok) {
+          sessionState = await sRes.json();
+          if (sessionState.case && sessionState.case.student_case_text) {
+            els.caseText.value = sessionState.case.student_case_text;
+          }
+          renderSessionRecap(sessionState);
+          return;
+        }
+      } catch (_) {}
+    }
+
+    els.recapBody.innerHTML = `
+      <p class="note" style="margin:0;">
+        No active conversational session found yet.
+        <a href="guidance.html" style="color:var(--navy); font-weight:700;">Complete Conversational Guidance</a>
+        first so your client's priorities and rubric insights carry into your draft!
+      </p>
+    `;
+  }
+
+  function renderLegalReferences(curriculum) {
+    if (!curriculum || !curriculum.skills) return;
+    els.legalRefList.innerHTML = curriculum.skills.map(s => `
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700; font-size:0.85rem; color:var(--navy);">${escapeHtml(s.skill)}</div>
+        <div class="note" style="font-size:0.78rem;">
+          Strong (${curriculum.max_score}): ${escapeHtml((s.levels[s.levels.length - 1] || {}).description || "")}
+        </div>
+        ${s.notes ? `<div class="rubric-legal-note">${escapeHtml(s.notes)}</div>` : ""}
+      </div>
+    `).join("");
+  }
+
+  function renderSessionRecap(sess) {
+    const questions = [];
+    (sess.curriculum.phases || []).forEach(p => {
+      (p.questions || []).forEach(q => {
+        const st = (sess.question_progress || {})[q.id];
+        if (st && st.attempts && st.attempts.length) {
+          const latest = st.attempts[st.attempts.length - 1];
+          questions.push({
+            phase: p.name,
+            category: q.category,
+            answer: latest.answer,
+            score: st.current_score,
+            max: sess.curriculum.max_score || 3,
+          });
+        }
       });
     });
-  }
 
-  function analyze() {
-    const answered = TORTS_ELEMENTS.every(el => state.answers[el.key]);
-    if (!answered) {
-      alert("Mark Yes, Unsure, or No for every element before checking completeness.");
+    if (!questions.length) {
+      els.recapBody.innerHTML = `
+        <p class="note" style="margin:0 0 10px;">
+          Session started (${sess.completed_questions}/${sess.total_questions} completed), no answers recorded yet.
+        </p>
+        <a href="guidance.html" class="btn btn-ghost btn-sm">Return to Conversational Guidance &rarr;</a>
+      `;
       return;
     }
 
-    const yesCount = TORTS_ELEMENTS.filter(el => state.answers[el.key] === "yes").length;
-    const total = TORTS_ELEMENTS.length;
-    const pct = Math.round((yesCount / total) * 100);
-
-    document.getElementById("completeness-fill").style.width = `${pct}%`;
-    document.getElementById("completeness-label").textContent = `${yesCount} / ${total}`;
-
-    const explain = document.getElementById("completeness-explain");
-    if (yesCount === total) {
-      explain.textContent = "You marked every element as clearly supported. That doesn't guarantee the motion's outcome — it means your own read of the complaint doesn't leave an obvious opening on the face of the pleading.";
-    } else {
-      explain.textContent = `You marked ${total - yesCount} element${total - yesCount === 1 ? "" : "s"} as unsure or missing. Those are exactly the elements worth digging into before you decide whether — or how — to file.`;
-    }
-
-    const followups = TORTS_ELEMENTS.filter(el => state.answers[el.key] !== "yes");
-    const followupList = document.getElementById("followup-list");
-    if (followups.length === 0) {
-      followupList.innerHTML = "";
-    } else {
-      followupList.innerHTML = `<p class="note" style="margin-bottom:4px;">Questions worth discussing with your supervising attorney or client:</p>` +
-        followups.map(el => `<div class="followup-item">${el.followup}</div>`).join("");
-    }
-
-    const resultsCard = document.getElementById("results-card");
-    resultsCard.style.display = "block";
-    resultsCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    els.recapBody.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span class="score-pill pass">${sess.completed_questions}/${sess.total_questions} Topics Covered</span>
+        <a href="guidance.html" class="note" style="font-weight:600; color:var(--navy);">Back to Chat &rarr;</a>
+      </div>
+      <div class="recap-qa-list">
+        ${questions.map(item => `
+          <div class="recap-qa-item">
+            <div class="rq">${escapeHtml(item.phase)} &middot; ${escapeHtml(item.category)} (${item.score}/${item.max})</div>
+            <div class="ra">${escapeHtml(item.answer)}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
   }
 
-  document.getElementById("claim-type-grid").addEventListener("click", (e) => {
-    const btn = e.target.closest(".claim-type-option");
-    if (btn) selectClaim(btn.dataset.claim);
+  function updateDraftTypeSelection() {
+    els.draftTypeRow.querySelectorAll(".draft-type-btn").forEach(btn => {
+      btn.classList.toggle("selected", btn.dataset.type === selectedDraftType);
+    });
+  }
+
+  els.draftTypeRow.addEventListener("click", (e) => {
+    const btn = e.target.closest(".draft-type-btn");
+    if (!btn) return;
+    selectedDraftType = btn.dataset.type;
+    localStorage.setItem(DRAFT_TYPE_KEY, selectedDraftType);
+    updateDraftTypeSelection();
   });
 
-  document.getElementById("btn-analyze").addEventListener("click", analyze);
+  els.draftInput.addEventListener("input", () => {
+    localStorage.setItem(DRAFT_STORAGE_KEY, els.draftInput.value);
+    els.autosaveStatus.textContent = "Saved just now";
+  });
 
-  renderRecap();
+  els.btnInsertOutline.addEventListener("click", () => {
+    const tpl = OUTLINES[selectedDraftType] || "";
+    if (els.draftInput.value.trim() && !confirm("Append the section outline to your current draft?")) {
+      return;
+    }
+    els.draftInput.value = els.draftInput.value.trim()
+      ? `${els.draftInput.value.trim()}\n\n${tpl}`
+      : tpl;
+    localStorage.setItem(DRAFT_STORAGE_KEY, els.draftInput.value);
+    els.draftInput.focus();
+  });
+
+  els.btnLoadSample.addEventListener("click", () => {
+    const sample = (appConfig && appConfig.sample_cases && appConfig.sample_cases[0]) || null;
+    if (sample) {
+      els.caseText.value = sample.student_case_text;
+    }
+  });
+
+  els.btnDownload.addEventListener("click", () => {
+    const content = `# ${selectedDraftType}\n\n${els.draftInput.value || ""}\n`;
+    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "motion_mindset_draft.md";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  els.btnReview.addEventListener("click", async () => {
+    const draft = els.draftInput.value.trim();
+    if (!draft) {
+      alert("Write or paste your draft first before requesting Partner Review.");
+      return;
+    }
+
+    els.btnReview.disabled = true;
+    els.btnReview.textContent = "Qwen 3.8 Partner Reviewing Draft…";
+    els.resultsCard.style.display = "block";
+    els.resultsBody.innerHTML = `
+      <div class="typing-indicator">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+        <span style="margin-left:4px;">Evaluating against Rubric, Complaint &amp; Client Priorities…</span>
+      </div>
+    `;
+
+    try {
+      const sessionId = localStorage.getItem(SESSION_STORAGE_KEY);
+      const res = await fetch("/api/motion/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          draft_type: selectedDraftType,
+          draft_text: draft,
+          session_id: sessionId || null,
+          custom_case_text: els.caseText.value || "",
+          session_snapshot: getSavedSnapshot(),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Review failed");
+
+      const ratingsHtml = (data.skill_ratings || []).map(r => {
+        const cls = r.score >= 2 ? "pass" : (r.score >= 1 ? "revise" : "low");
+        return `
+          <div class="rubric-skill-card">
+            <div class="rubric-skill-top">
+              <span class="rubric-skill-name">${escapeHtml(r.skill)}</span>
+              <span class="score-pill ${cls}">${r.score}/${r.max_score}</span>
+            </div>
+            <div class="note" style="margin-top:4px; font-size:0.81rem;">${escapeHtml(r.comment)}</div>
+          </div>
+        `;
+      }).join("");
+
+      const revsHtml = (data.priority_revisions || []).map(item => `<li>${escapeHtml(item)}</li>`).join("");
+
+      els.resultsBody.innerHTML = `
+        <div class="review-section-box">
+          <h4>Overall Partner Assessment</h4>
+          <div>${escapeHtml(data.overall_summary || "")}</div>
+        </div>
+        <div class="review-section-box">
+          <h4>Rule 12(b)(6) Pleading vs. Proof Check</h4>
+          <div>${escapeHtml(data.pleading_vs_proof_check || "")}</div>
+        </div>
+        <div class="review-section-box">
+          <h4>Client Goals, Budget &amp; Authority Alignment</h4>
+          <div>${escapeHtml(data.client_alignment_check || "")}</div>
+        </div>
+        ${revsHtml ? `
+          <div style="margin-bottom:16px;">
+            <strong style="color:var(--navy); font-size:0.9rem;">Priority Revisions Before Filing / Sending:</strong>
+            <ol class="revision-list">${revsHtml}</ol>
+          </div>
+        ` : ""}
+        ${ratingsHtml ? `
+          <div>
+            <strong style="color:var(--navy); font-size:0.9rem; display:block; margin-bottom:8px;">Rubric Skill Ratings:</strong>
+            ${ratingsHtml}
+          </div>
+        ` : ""}
+      `;
+      els.resultsCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (err) {
+      els.resultsBody.innerHTML = `<div class="hint-callout">Review error: ${escapeHtml(err.message)}</div>`;
+    } finally {
+      els.btnReview.disabled = false;
+      els.btnReview.innerHTML = "Review Draft with Qwen Partner &rarr;";
+    }
+  });
+
+  initStudio();
 </script>
 
 </body>

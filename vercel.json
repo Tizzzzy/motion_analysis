@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index?__api_path=:path*"
+    }
+  ],
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "includeFiles": "{*.csv,backend/**,server.py}",
+      "excludeFiles": "{motion_scrape/**,data/**,bin/**,vllm_server.py,Qwen_example.py}"
+    }
+  }
+}
+

@@ -3,84 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motion Mindset — Home</title>
+<title>Motion Mindset — Conversational Motion Guidance</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="brand"><span class="mark">&sect;</span> Motion Mindset</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="mindset.html">Mindset</a>
-    <a href="motion.html">Legal Analysis</a>
-  </nav>
+  <a href="index.html" class="brand"><span class="mark">&sect;</span> Motion Mindset</a>
+  <div class="header-right">
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="guidance.html">Conversational Guidance</a>
+      <a href="motion.html">Motion Drafting</a>
+    </nav>
+    <div class="llm-pill" id="llm-status-pill" title="Qwen 3.8-27B vLLM status">
+      <span class="dot"></span>
+      <span id="llm-status-text">Checking Qwen 3.8…</span>
+    </div>
+  </div>
 </header>
 
 <main class="shell">
   <div class="hero">
-    <div class="eyebrow">For new attorneys &amp; law students &middot; currently scoped to Rule 12(b)(6)</div>
-    <h1>Before you file the motion, understand why you're filing it.</h1>
+    <div class="eyebrow">For law students &amp; young attorneys &middot; Client-centered motion practice</div>
+    <h1>Write better motions through conversational guidance.</h1>
     <p class="lede">
-      Most young attorneys draft a motion because a partner told them to — not because
-      they've worked through what the motion is actually supposed to accomplish. This tool
-      walks you through that thinking first, then helps you map the complaint against the
-      Rule 12(b)(6) pleading standard, element by element.
+      Great motions start long before you type a caption. This workspace coaches you through
+      pre-meeting preparation, a live simulated client interview, and post-meeting Rule 12(b)(6)
+      &amp; Illinois contract analysis — evaluating every step against the course rubric before
+      you draft.
     </p>
   </div>
 
   <div class="research-note">
-    <strong>Why no "likelihood of winning" score?</strong> Most legal-judgment-prediction research
-    doesn't demonstrate genuine prediction — it tests models on information taken from the final
-    ruling itself, which the attorney never had when the decision to file actually had to be made
-    (Medvedeva &amp; McBride). So this tool only uses information that exists <em>before</em> a ruling —
-    the complaint's allegations, the claim type, and the Rule 12(b)(6)/<em>Twombly‑Iqbal</em> standard —
-    and reports pleading <strong>completeness</strong>, not a predicted outcome.
+    <strong>Why conversational guidance instead of a "win likelihood" score?</strong>
+    Legal-judgment-prediction tools often rely on outcome-derived signals unavailable when the
+    filing decision actually had to be made (Medvedeva &amp; McBride). Instead of guessing how a
+    judge will rule, our Qwen 3.8 mentor evaluates <strong>authority recognition, client-interest
+    prioritization, pleading-versus-proof discipline, and strategic judgment</strong> using only
+    legitimate pre-filing information.
   </div>
 
   <div class="card">
-    <h2 style="margin-top:0; color: var(--navy);">How this works</h2>
-    <div class="step-list">
-      <div class="step">
-        <div class="num">1</div>
-        <div>
-          <strong>Walk through your mindset</strong>
-          <span>Answer a short series of Socratic and client-counseling questions — your purpose, the judge's likely reaction, your opponent's response, and what you'd need to discuss with your client. This is also how you submit your own reasoning, separate from the complaint text.</span>
-        </div>
+    <h2 style="margin-top:0; color:var(--navy);">How the simulation works</h2>
+    <p class="note" style="margin-top:4px;">
+      Questions and evaluation criteria load dynamically from the Question Bank and Evaluation
+      Rubric CSVs — updating either CSV automatically updates the entire simulation.
+    </p>
+
+    <div class="stats-strip" id="curriculum-stats">
+      <span class="stat-chip" id="stat-phases">3 Guided Phases</span>
+      <span class="stat-chip" id="stat-questions">Loading questions…</span>
+      <span class="stat-chip" id="stat-skills">Loading rubric skills…</span>
+      <span class="stat-chip">Model: Qwen 3.8-27B (vLLM)</span>
+    </div>
+
+    <div class="phase-overview-grid" id="phase-grid">
+      <div class="phase-tile">
+        <div class="tile-step">Phase 1 &middot; Mentor Q&amp;A</div>
+        <h3>Before Meeting</h3>
+        <p>Start with <em>"Who is the client and who can authorize decisions?"</em> Frame the alleged contract claim, identify missing documents, and weigh what a motion would achieve or cost.</p>
       </div>
-      <div class="step">
-        <div class="num">2</div>
-        <div>
-          <strong>Review your reflection</strong>
-          <span>See all of your answers together. This is the thinking that should drive how you evaluate the motion — not the other way around.</span>
-        </div>
+      <div class="phase-tile">
+        <div class="tile-step">Phase 2 &middot; Client Roleplay</div>
+        <h3>During Meeting</h3>
+        <p>Roles switch: interview the simulated client directly to elicit ranked outcomes, budget limits, deadlines, settlement terms, relational stakes, adverse facts, and sign-off rules.</p>
       </div>
-      <div class="step">
-        <div class="num">3</div>
-        <div>
-          <strong>Run the Rule 12(b)(6) decision tree</strong>
-          <span>Paste the complaint's allegations. Work through whether each element (duty, breach, causation, cognizable harm) and the <em>Twombly‑Iqbal</em> plausibility standard are adequately pled, and get follow-up questions wherever you're unsure.</span>
-        </div>
+      <div class="phase-tile">
+        <div class="tile-step">Phase 3 &middot; Mentor Debrief</div>
+        <h3>After Meeting</h3>
+        <p>Synthesize client priorities, apply Illinois breach-of-contract law and the 7th Circuit Rule 12(b)(6) <em>Twombly/Iqbal</em> framework, compare alternatives, and form a recommendation.</p>
       </div>
-      <div class="step">
-        <div class="num">4</div>
-        <div>
-          <strong>Feedback after you decide <span class="badge-soon">Coming soon</span></strong>
-          <span>Once a ruling is issued, compare your reasoning against the court's actual analysis — reserved for after the fact, so the ruling never leaks into the initial analysis.</span>
-        </div>
+      <div class="phase-tile">
+        <div class="tile-step">Step 4 &middot; Drafting Studio</div>
+        <h3>Motion Drafting</h3>
+        <p>Carry your interview insights and rubric scorecard into the drafting editor to write your Rule 12(b)(6) motion or strategic counseling memo and receive AI partner feedback.</p>
       </div>
     </div>
 
     <div class="cta-row">
-      <a href="mindset.html" class="btn btn-primary">Start the mindset walkthrough</a>
-      <a href="motion.html" class="btn btn-ghost">Skip to legal analysis</a>
+      <a href="guidance.html" class="btn btn-primary">Start Conversational Guidance &rarr;</a>
+      <a href="guidance.html?sample=1" class="btn btn-gold">Try with Sample IL Contract Case</a>
+      <a href="motion.html" class="btn btn-ghost">Open Motion Drafting Studio</a>
     </div>
-    <p class="note" style="margin-top:16px;">
-      Only the Torts decision tree is built out so far. Contracts and Property are stubbed in —
-      see the Legal Analysis page for details.
-    </p>
   </div>
 </main>
+
+<script>
+  async function loadOverview() {
+    const pill = document.getElementById("llm-status-pill");
+    const pillText = document.getElementById("llm-status-text");
+    try {
+      const res = await fetch("/api/config");
+      if (!res.ok) throw new Error("API unavailable");
+      const data = await res.json();
+      const cur = data.curriculum;
+      const llm = data.llm || {};
+
+      document.getElementById("stat-phases").textContent = `${cur.phases.length} Guided Phases`;
+      document.getElementById("stat-questions").textContent = `${cur.total_questions} Question Bank Prompts`;
+      document.getElementById("stat-skills").textContent = `${cur.skills.length} Rubric Competencies`;
+
+      if (llm.connected) {
+        pill.className = "llm-pill online";
+        pillText.textContent = `${llm.model || "Qwen 3.8"} · Ready`;
+      } else {
+        pill.className = "llm-pill offline";
+        pillText.textContent = `${llm.model || "Qwen 3.8"} · Offline`;
+      }
+    } catch (err) {
+      pill.className = "llm-pill offline";
+      pillText.textContent = "Backend Offline";
+    }
+  }
+  loadOverview();
+</script>
 
 </body>
 </html>

@@ -1,0 +1,19 @@
+Skill,0 - Missing/incorrect,1 - Developing,2 - Competent,3 - Strong,Initial score,Revised score,Notes
+Preparation,No documents ready ,"Some documents, does not know what documents are for",all relevant documents available but has limited understanding of the subject matter ,"All relevant documents included + student has complete understanding of the documents (including why they are necessary, why it had to be prepared)",,,"What is a useful question? In this case, useful = aids in the investigation of the client's case + trust and confidence with the client (so do not ask a lot of pushy answers/questions"
+Client priorities,Assumes goals,"Elicits some goals, may or may not be specific ",Identifies top 3 goals of client ,Ranks and checks tradeoffs,,,Balancing the cost or risk with the expecting outcome
+Client communication,Fails to explain options / alternatives client has ,Incomplete explanations,"Explains key options/alternatives, risks","Clear, tailored, checks their own understanding",,,
+Contract law,Incorrect elements,Partial elements,Accurate elements/application,Accurate nuanced application,,,"Elements for Breach of Contract in IL: The elements of a breach of contract claim are (1) the existence of a valid and enforceable contract, (2) performance by the plaintiff, (3) breach of contract by defendant, and (4) resultant injury to the plaintiff. Citation: Zahdan v. Frotline Business Enterprise Inc., 241 N.E.3d 1040 (2024); 735 ILCS 5/2-603"
+Pleading analysis,Confuses proof and pleading,Some correct concepts,Correct Rule 12(b)(6) reasoning,"Well-grounded, addresses uncertainty",,,"
+The 7th Circuit 12(b)(6) Framework
+
+To survive a motion to dismiss in the Northern District of Illinois, your complaint must satisfy the federal plausibility standard established by the Supreme Court cases Bell Atlantic Corp. v. Twombly and Ashcroft v. Iqbal. The 7th Circuit breaks this down into two core principles:
+• Identify and Disregard Legal Conclusions: The judge will strip away any ""legal conclusions"" or blanket recitations of the elements of a lawsuit. Statements like ""The defendant acted negligently"" or ""The defendant discriminated against me"" are disregarded if they aren't backed by specific facts.
+• Assess Factual Plausibility: The court takes the remaining, well-pleaded factual allegations as true and draws all reasonable inferences in your favor. The judge then decides if these facts state a plausible claim for relief. Plausibility means the factual content allows the court to reasonably infer that the defendant is liable for the misconduct alleged—it must show more than a sheer possibility.
+
+Key Practical Considerations for NDIL
+
+• The ""Four Corners"" Rule: The judge generally cannot look at evidence outside the complaint (like exhibits or affidavits not attached to the lawsuit). If the defendant tries to introduce new evidence to prove you wrong, the court must either reject it or convert the motion into a Motion for Summary Judgment.
+• The Incorporation-by-Reference Exception: There is a critical exception in the 7th Circuit: if you mention a specific document in your complaint (like a contract, an email, or an insurance policy) and that document is central to your claim, the defendant can attach it to their 12(b)(6) motion, and the judge can consider it.
+• Heightened Fraud Standard (Rule 9(b)): If your lawsuit involves allegations of fraud, misrepresentation, or certain statutory scams (like the Illinois Consumer Fraud Act brought in federal court), you cannot just be plausible. The 7th Circuit requires you to plead the ""who, what, when, where, and how"" of the fraud with particularity."
+Strategic judgment,Reflexive filing,Considers limited alternatives,Compares costs/risks/options,Recommendation tracks client priorities,,,
+Revision/reflection,No improvement,Superficial edits,Corrects key weaknesses,Explains changed reasoning,,,
