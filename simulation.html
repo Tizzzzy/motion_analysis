@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Judgment Simulation — Innovation Lab</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .case-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(14, 23, 42, 0.65);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .case-modal-overlay.open { display: flex; }
+  .case-modal-box {
+    background: #fff;
+    width: 100%;
+    max-width: 880px;
+    max-height: 85vh;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+  }
+  .case-modal-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .case-modal-tabs {
+    display: flex;
+    gap: 8px;
+    background: #f0f3f8;
+    padding: 10px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .case-modal-tab-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 14px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .case-modal-tab-btn.active {
+    background: #fff;
+    color: var(--navy);
+    box-shadow: var(--shadow-sm);
+  }
+  .case-modal-content {
+    padding: 24px;
+    overflow-y: auto;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    font-family: "Georgia", serif;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="brand">
+    <span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation
+  </a>
+  <div class="header-right">
+    <button class="btn btn-ghost" id="btn-open-case" style="color:#fff; border-color:rgba(255,255,255,0.3); font-size:0.84rem;">
+      &boxempty; Case File &amp; Complaint
+    </button>
+    <a href="motion.html" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3); font-size:0.84rem;">
+      Motion Studio
+    </a>
+    <div class="llm-pill" id="llm-status-pill" title="Qwen 3.8-27B vLLM status">
+      <span class="dot"></span>
+      <span id="llm-status-text">Checking Model…</span>
+    </div>
+  </div>
+</header>
+
+<main class="sim-shell">
+
+  <!-- 6-Stage Progress Stepper -->
+  <div class="stepper-container">
+    <nav class="sim-stepper" id="sim-stepper">
+      <div class="step-node active" data-step="1" onclick="goToStage(1)">
+        <div class="step-num">1</div>
+        <div class="step-label">1. Client Interview</div>
+      </div>
+      <span class="step-arrow">&rarr;</span>
+      <div class="step-node" data-step="2" onclick="goToStage(2)">
+        <div class="step-num">2</div>
+        <div class="step-label">2. Quantify Tradeoffs</div>
+      </div>
+      <span class="step-arrow">&rarr;</span>
+      <div class="step-node" data-step="3" onclick="goToStage(3)">
+        <div class="step-num">3</div>
+        <div class="step-label">3. Opponent Anticipation</div>
+      </div>
+      <span class="step-arrow">&rarr;</span>
+      <div class="step-node" data-step="4" onclick="goToStage(4)">
+        <div class="step-num">4</div>
+        <div class="step-label">4. Initial Strategy</div>
+      </div>
+      <span class="step-arrow">&rarr;</span>
+      <div class="step-node" data-step="5" onclick="goToStage(5)">
+        <div class="step-num">5</div>
+        <div class="step-label">5. Simulated Event</div>
+      </div>
+      <span class="step-arrow">&rarr;</span>
+      <div class="step-node" data-step="6" onclick="goToStage(6)">
+        <div class="step-num">6</div>
+        <div class="step-label">6. Reflect &amp; Revise</div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Stage Container -->
+  <div id="stage-views-wrapper">
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 1: CLIENT INTERVIEW -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-1">
+      <div class="stage-main-grid">
+        <div class="stage-col-main">
+          <div class="stage-card">
+            <div class="stage-card-header">
+              <div class="stage-eyebrow">Stage 1 &middot; Fact Discovery &amp; Constraint Elicitation</div>
+              <h2 class="stage-title">Interview the Client: Lakeview Cold Chain Logistics</h2>
+              <p class="stage-desc">
+                Ask open-ended questions to uncover Elena Rostova's true business objectives, budget limits,
+                decision authority thresholds, and the critical commercial deadline. <em>The client only reveals facts when appropriately asked.</em>
+              </p>
+            </div>
+
+            <!-- Persona Indicator -->
+            <div class="persona-strip">
+              <div class="persona-avatar elena">ER</div>
+              <div class="persona-info">
+                <div class="name">Elena Rostova &middot; CEO (with Marcus Vance, Warehouse Ops)</div>
+                <div class="role">Corporate Client Representative &middot; Speaks for Lakeview Cold Chain Logistics, LLC</div>
+              </div>
+            </div>
+
+            <!-- Chat Stream -->
+            <div class="chat-thread" id="chat-thread-stream" style="min-height: 380px; max-height: 480px; overflow-y: auto; margin-bottom: 16px;">
+              <!-- Dynamic Messages injected here -->
+            </div>
+
+            <!-- Composer -->
+            <div class="composer-box" style="margin-top:12px;">
+              <textarea id="interview-input" class="composer-textarea" rows="2" placeholder="Ask your client an open-ended question (e.g. business goals, budget, deadlines, contract terms, or records)…"></textarea>
+              <div class="composer-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <span class="note" id="interview-hint-text">Press Enter to send (Shift+Enter for newline)</span>
+                <button class="btn btn-primary" id="btn-send-interview" onclick="sendInterviewMessage()">Send Question &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 1 Sidebar: Priority Ranking & Discovered Facts -->
+        <div class="stage-col-side">
+          <div class="stage-card">
+            <div class="stage-eyebrow">Client Priority Discovery</div>
+            <h3 style="margin:4px 0 10px; font-size:1.1rem; color:var(--navy);">Top 3 Client Priorities</h3>
+            <p class="note" style="margin-bottom:12px;">
+              As Elena answers your questions, determine Lakeview's top 3 ranked outcomes and select them below:
+            </p>
+
+            <div class="priority-board">
+              <div class="priority-slots">
+                <div class="priority-slot-row">
+                  <div class="priority-rank-badge">#1 Priority</div>
+                  <select id="priority-select-1" class="priority-select" onchange="saveRankedPriorities()">
+                    <option value="">-- Select Goal #1 --</option>
+                    <option value="financial_exposure">Limit $340k financial exposure</option>
+                    <option value="refinancing_timing">Resolve before 75-day bank refinancing</option>
+                    <option value="reputation_reliability">Protect refrigeration reliability reputation</option>
+                    <option value="relationship_heartland">Preserve Heartland relationship ($190k/yr)</option>
+                    <option value="control_expenses">Control litigation costs ($15k-$25k max)</option>
+                    <option value="avoid_admission">Avoid admitting wrongdoing or bad faith</option>
+                  </select>
+                </div>
+                <div class="priority-slot-row">
+                  <div class="priority-rank-badge">#2 Priority</div>
+                  <select id="priority-select-2" class="priority-select" onchange="saveRankedPriorities()">
+                    <option value="">-- Select Goal #2 --</option>
+                    <option value="financial_exposure">Limit $340k financial exposure</option>
+                    <option value="refinancing_timing">Resolve before 75-day bank refinancing</option>
+                    <option value="reputation_reliability">Protect refrigeration reliability reputation</option>
+                    <option value="relationship_heartland">Preserve Heartland relationship ($190k/yr)</option>
+                    <option value="control_expenses">Control litigation costs ($15k-$25k max)</option>
+                    <option value="avoid_admission">Avoid admitting wrongdoing or bad faith</option>
+                  </select>
+                </div>
+                <div class="priority-slot-row">
+                  <div class="priority-rank-badge">#3 Priority</div>
+                  <select id="priority-select-3" class="priority-select" onchange="saveRankedPriorities()">
+                    <option value="">-- Select Goal #3 --</option>
+                    <option value="financial_exposure">Limit $340k financial exposure</option>
+                    <option value="refinancing_timing">Resolve before 75-day bank refinancing</option>
+                    <option value="reputation_reliability">Protect refrigeration reliability reputation</option>
+                    <option value="relationship_heartland">Preserve Heartland relationship ($190k/yr)</option>
+                    <option value="control_expenses">Control litigation costs ($15k-$25k max)</option>
+                    <option value="avoid_admission">Avoid admitting wrongdoing or bad faith</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <div class="stage-eyebrow">Discovered Authority &amp; Facts</div>
+              <ul class="clean-list" id="discovered-facts-list" style="font-size:0.83rem; color:var(--ink-soft); margin-top:8px;">
+                <li>&bull; Marcus Vance wants an immediate motion to dismiss.</li>
+                <li>&bull; CEO Elena Rostova holds strategic authority; CFO sign-off required above $25,000.</li>
+                <li>&bull; Master Agreement Sec. 11.2 limitation of liability bars consequential damages.</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:24px;">
+              <button class="btn btn-primary" style="width:100%;" onclick="goToStage(2)">
+                Ready &middot; Advance to Stage 2: Quantify Tradeoffs &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 2: QUANTIFY TRADEOFFS -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-2" style="display:none;">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div class="stage-eyebrow">Stage 2 &middot; Quantitative Decision Support &amp; Sensitivity</div>
+          <h2 class="stage-title">Quantify Tradeoffs &amp; Probability Trees</h2>
+          <p class="stage-desc">
+            Model the expected financial value, time duration, and client utility across all three paths.
+            Notice how conditional probabilities separate legal rules from empirical observations.
+          </p>
+        </div>
+
+        <!-- Formula Callout -->
+        <div class="callout" style="background:#eef4fb; border-left:4px solid var(--navy); padding:14px 18px; border-radius:6px; margin-bottom:20px; font-size:0.88rem;">
+          <strong>Core 7th Circuit Conditional Formula:</strong><br>
+          <code>P(dismissal without amendment) = P(motion granted) &times; P(no amendment | grant)</code><br>
+          <span style="color:var(--muted); font-size:0.82rem;">Under <em>Runnion v. Girl Scouts</em> (7th Cir. 2015), district courts routinely grant leave to amend, meaning even a granted motion rarely ends the case permanently.</span>
+        </div>
+
+        <div class="tradeoff-section-title">1. Legal Cost &amp; Exposure Inputs</div>
+        <div class="tradeoff-form-grid">
+          <div class="tradeoff-field">
+            <label>Proposed Cash Settlement ($)</label>
+            <input type="number" id="trade-settle-cash" value="35000" step="5000" onchange="recalculateTradeoffs()">
+            <div class="field-hint">Plausible range: $25,000 &ndash; $45,000</div>
+          </div>
+          <div class="tradeoff-field">
+            <label>Storage Fee Credit Offer ($)</label>
+            <input type="number" id="trade-settle-credit" value="20000" step="5000" onchange="recalculateTradeoffs()">
+            <div class="field-hint">Warehousing space cost is ~45% of retail credit</div>
+          </div>
+          <div class="tradeoff-field">
+            <label>Rule 12(b)(6) Motion Legal Fees ($)</label>
+            <input type="number" id="trade-fee-motion" value="20000" step="2500" onchange="recalculateTradeoffs()">
+            <div class="field-hint">Briefing, hearing, and reply memorandum</div>
+          </div>
+          <div class="tradeoff-field">
+            <label>Continuing Trial/Discovery Fees ($)</label>
+            <input type="number" id="trade-fee-trial" value="95000" step="10000" onchange="recalculateTradeoffs()">
+            <div class="field-hint">If complaint is amended and case proceeds</div>
+          </div>
+        </div>
+
+        <div class="tradeoff-section-title">2. Conditional Probabilities &amp; Amendment Assumptions</div>
+        <div class="tradeoff-form-grid">
+          <div class="tradeoff-field">
+            <label>P(Rule 12(b)(6) Motion Granted): <span id="val-p-grant">60%</span></label>
+            <input type="range" id="trade-p-grant" min="10" max="90" value="60" oninput="updateProbSliders()">
+            <div class="field-hint">[Legal Rule]: Master Agreement Sec. 11.2 limitation of liability is strong on Four Corners.</div>
+          </div>
+          <div class="tradeoff-field">
+            <label>P(No Leave to Amend | Granted): <span id="val-p-no-amend">15%</span></label>
+            <input type="range" id="trade-p-no-amend" min="5" max="60" value="15" oninput="updateProbSliders()">
+            <div class="field-hint">[Empirical / Doctrinal]: Under <em>Runnion</em>, &gt;80% of granted motions allow leave to amend.</div>
+          </div>
+          <div class="tradeoff-field">
+            <label>P(Permanent Dismissal Result): <span id="val-p-perm" style="font-weight:700; color:var(--navy);">9.0%</span></label>
+            <div style="font-size:0.83rem; color:var(--ink-soft); padding:8px 0;">
+              <code>60% &times; 15% = 9.0%</code> chance the motion ends the lawsuit without an amended complaint.
+            </div>
+          </div>
+        </div>
+
+        <div class="tradeoff-section-title">3. Client Multi-Attribute Priority Weights (1 to 5 Scale)</div>
+        <div class="tradeoff-form-grid">
+          <div class="tradeoff-field">
+            <label>Money / Fee Constraint (Weight 1&ndash;5): <span id="val-w-money">5</span></label>
+            <input type="range" id="trade-w-money" min="1" max="5" value="5" oninput="updateWeightSliders()">
+          </div>
+          <div class="tradeoff-field">
+            <label>Speed / 75-Day Deadline (Weight 1&ndash;5): <span id="val-w-speed">5</span></label>
+            <input type="range" id="trade-w-speed" min="1" max="5" value="5" oninput="updateWeightSliders()">
+          </div>
+          <div class="tradeoff-field">
+            <label>Heartland Relationship (Weight 1&ndash;5): <span id="val-w-rel">4</span></label>
+            <input type="range" id="trade-w-rel" min="1" max="5" value="4" oninput="updateWeightSliders()">
+          </div>
+          <div class="tradeoff-field">
+            <label>Commercial Reputation (Weight 1&ndash;5): <span id="val-w-rep">4</span></label>
+            <input type="range" id="trade-w-rep" min="1" max="5" value="4" oninput="updateWeightSliders()">
+          </div>
+        </div>
+
+        <!-- Comparative Output Cards -->
+        <div class="tradeoff-section-title">4. Real-Time Expected Value &amp; Client Utility Comparison</div>
+        <div class="comparison-grid" id="comparison-cards-row">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+        <!-- Sensitivity Analysis -->
+        <div class="sensitivity-box">
+          <h4 style="margin:0 0 6px; color:var(--navy);">Sensitivity Analysis: How Amendment Odds Change the Expected Cost</h4>
+          <p class="note" style="margin-bottom:12px;">
+            Even if your Rule 12(b)(6) motion is 60% likely to be granted, notice how the expected financial cost changes as leave-to-amend probabilities vary:
+          </p>
+          <div style="overflow-x:auto;">
+            <table class="sim-table" id="sensitivity-table-body">
+              <!-- Dynamically populated -->
+            </table>
+          </div>
+          <div class="note" id="sensitivity-insight-text" style="margin-top:10px; font-weight:600; color:var(--navy);"></div>
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goToStage(1)">&larr; Back to Client Interview</button>
+          <button class="btn btn-primary" onclick="goToStage(3)">Advance to Stage 3: Opponent Anticipation &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 3: OPPONENT ANTICIPATION -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-3" style="display:none;">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div class="stage-eyebrow">Stage 3 &middot; Strategic Empathy &amp; Opponent Modeling</div>
+          <h2 class="stage-title">Anticipate Heartland's Legal &amp; Commercial Moves</h2>
+          <p class="stage-desc">
+            Strategic judgment requires anticipating how the opponent will react. Heartland is represented by aggressive commercial litigators, but its business faces supplier cash flow pressures.
+          </p>
+        </div>
+
+        <div class="stage-main-grid">
+          <div>
+            <div class="field" style="margin-bottom:16px;">
+              <label style="font-weight:700; color:var(--navy);">How will Heartland's litigation counsel respond if you file an immediate Rule 12(b)(6) motion vs. propose a structured settlement?</label>
+              <textarea id="opponent-anticipation-input" class="motion-editor" style="min-height:160px;" placeholder="Analyze Heartland's commercial pressures and litigation options. What leverage does Heartland hold? Will they amend if a motion is filed? Would they accept storage fee credits?"></textarea>
+            </div>
+
+            <div class="field" style="margin-bottom:16px;">
+              <label style="font-weight:700; color:var(--navy);">Your Estimate: Likelihood Heartland Accepts Structured Settlement (0&ndash;100%): <span id="val-opp-prob">70%</span></label>
+              <input type="range" id="opp-prob-slider" min="10" max="95" value="70" oninput="document.getElementById('val-opp-prob').textContent = this.value + '%'">
+            </div>
+
+            <button class="btn btn-primary" id="btn-submit-opponent" onclick="submitOpponentAnticipation()">
+              Evaluate Opponent Anticipation &rarr;
+            </button>
+
+            <!-- Opponent Feedback Card -->
+            <div id="opponent-feedback-card" style="display:none; margin-top:20px; background:#fbfbfb; border:1px solid var(--border); border-radius:8px; padding:18px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="stage-eyebrow" style="margin:0;">Opposing Counsel Analysis</span>
+                <span class="anchor-badge competent" id="opp-rating-badge">Competent</span>
+              </div>
+              <div id="opp-assessment-text" style="font-size:0.92rem; color:var(--navy); margin-bottom:8px;"></div>
+              <div id="opp-perspective-text" style="font-size:0.88rem; font-style:italic; color:var(--ink-soft); border-left:3px solid #8c2828; padding-left:12px; margin-bottom:10px;"></div>
+              <div id="opp-blindspots-text" style="font-size:0.85rem; color:#854d0e; background:#fef9c3; padding:8px 12px; border-radius:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Opponent Profile Box -->
+          <div>
+            <div class="card" style="background:#fdfaf6; border-color:var(--border);">
+              <h4 style="margin:0 0 10px; color:var(--navy);">Opponent Dossier: Heartland Specialty Foods</h4>
+              <ul class="clean-list" style="font-size:0.84rem; color:var(--ink-soft);">
+                <li><strong>Claimed Losses:</strong> $68,400 direct cheese spoilage + $340,000 lost profits &amp; reputation.</li>
+                <li><strong>Incentives:</strong> Owes artisan dairy co-ops for cheese inventory; needs liquidity within 60 days.</li>
+                <li><strong>Litigation Playbook:</strong> Alleged "bad faith &amp; reckless disregard" specifically to circumvent the Section 11.2 limitation of liability.</li>
+                <li><strong>Vulnerabilities:</strong> Two pallets arrived off their truck warm at 45&deg;F; owes $18,200 past-due storage invoices.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goToStage(2)">&larr; Back to Tradeoffs</button>
+          <button class="btn btn-primary" onclick="goToStage(4)">Advance to Stage 4: Initial Strategy &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 4: INITIAL RECOMMENDATION -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-4" style="display:none;">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div class="stage-eyebrow">Stage 4 &middot; Strategy Formulation</div>
+          <h2 class="stage-title">Choose and Explain Your Recommended Action</h2>
+          <p class="stage-desc">
+            Select your initial course of action for Lakeview Cold Chain Logistics.
+            Your choice will be recorded with your supporting reasons; no strategy is marked automatically correct.
+          </p>
+        </div>
+
+        <div class="strategy-picker-grid">
+          <div class="strategy-choice-card selected" id="card-strat-negotiate" onclick="selectStrategyBranch('negotiate')">
+            <span class="deadline-pill ok">Resolves in ~38 Days</span>
+            <h3 style="margin-top:8px;">Option A &middot; Structured Settlement</h3>
+            <p style="font-size:0.87rem; color:var(--ink-soft);">
+              Make a confidential settlement offer combining cash ($35k&ndash;$42.5k) and warehousing fee credits, conditioned on mutual release, confidentiality, and no admission of fault.
+            </p>
+            <div style="font-size:0.8rem; color:var(--accept); font-weight:600;">&check; Clears 75-day bank refinancing</div>
+          </div>
+
+          <div class="strategy-choice-card" id="card-strat-litigate" onclick="selectStrategyBranch('litigate')">
+            <span class="deadline-pill missed">Misses 75-Day Deadline</span>
+            <h3 style="margin-top:8px;">Option B &middot; Rule 12(b)(6) Motion</h3>
+            <p style="font-size:0.87rem; color:var(--ink-soft);">
+              Follow Marcus Vance's request: File an immediate motion to dismiss targeting the $340,000 consequential damages claim under Master Agreement Section 11.2.
+            </p>
+            <div style="font-size:0.8rem; color:#b91c1c; font-weight:600;">&cross; High risk of leave to amend &amp; delay</div>
+          </div>
+
+          <div class="strategy-choice-card" id="card-strat-investigate" onclick="selectStrategyBranch('investigate')">
+            <span class="deadline-pill ok">Pause on Docket (~30 Days)</span>
+            <h3 style="margin-top:8px;">Option C &middot; Pre-Answer Investigation</h3>
+            <p style="font-size:0.87rem; color:var(--ink-soft);">
+              Obtain an informal 30-day extension from opposing counsel. Audit Bay C temperature logs, investigate maintenance records, check insurance coverage, and hold a Rule 408 meet-and-confer.
+            </p>
+            <div style="font-size:0.8rem; color:var(--gold-dark); font-weight:600;">&check; Verifies facts before public filing</div>
+          </div>
+        </div>
+
+        <!-- Strategy Details Form -->
+        <div style="margin:20px 0;">
+          <div class="field" style="margin-bottom:14px;">
+            <label style="font-weight:700; color:var(--navy);">Specific Action Terms / Proposed Offer</label>
+            <input type="text" id="strat-terms-input" class="tradeoff-field" style="width:100%; padding:10px;" value="$35,000 cash + $20,000 storage fee credits, mutual general release, confidentiality, and no admission of fault.">
+          </div>
+
+          <div class="field">
+            <label style="font-weight:700; color:var(--navy);">Explain Your Strategic Rationale (Why this serves Lakeview's goals best):</label>
+            <textarea id="strat-rationale-input" class="motion-editor" style="min-height:160px;" placeholder="Explain why your chosen strategy fits Elena Rostova's ranked priorities, accounts for the 75-day bank credit refinancing deadline, protects customer relationships, and manages litigation expense limits..."></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
+          <button class="btn btn-ghost" onclick="goToStage(3)">&larr; Back to Opponent Anticipation</button>
+          <button class="btn btn-primary" id="btn-commit-strategy" onclick="commitInitialStrategy()">
+            Commit Strategy &amp; Trigger Simulated Event &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 5: SIMULATED EVENT -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-5" style="display:none;">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div class="stage-eyebrow">Stage 5 &middot; Branching Scenario Event</div>
+          <h2 class="stage-title">Simulated Court &amp; Opponent Event</h2>
+          <p class="stage-desc">
+            Your legal choice has been executed. Review the controlled event outcome generated by the simulation engine.
+            <em>Remember: student probability estimates do not control the actual event.</em>
+          </p>
+        </div>
+
+        <!-- Dynamic Event Container -->
+        <div id="simulated-event-container">
+          <!-- Populated dynamically (Court order / Opponent letter / Audit memo) -->
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goToStage(4)">&larr; Review Strategy Rationale</button>
+          <button class="btn btn-primary" onclick="goToStage(6)">
+            Advance to Stage 6: Reflect, Revise &amp; Evaluate &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- STAGE 6: REFLECT & REVISE (100-POINT RUBRIC) -->
+    <!-- ===================================================================== -->
+    <div class="stage-view-panel" id="view-stage-6" style="display:none;">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div class="stage-eyebrow">Stage 6 &middot; Formative Evaluation &amp; Socratic Feedback</div>
+          <h2 class="stage-title">Reflect, Revise, and Faculty Rubric Assessment</h2>
+          <p class="stage-desc">
+            Compare your pre-event reasoning with the simulated reality. Explain whether your recommendation
+            changes or persists and why. Then receive your 100-point rubric assessment.
+          </p>
+        </div>
+
+        <!-- Pre / Post Comparison Split -->
+        <div class="pre-post-split">
+          <div class="pre-post-card initial">
+            <h4 style="margin:0 0 6px; color:#2b4b73;">Initial Strategy &amp; Rationale (Stage 4)</h4>
+            <div id="pre-post-initial-content" style="font-size:0.88rem; color:var(--ink-soft); line-height:1.6;"></div>
+          </div>
+          <div class="pre-post-card post-event">
+            <h4 style="margin:0 0 6px; color:var(--gold-dark);">Event Outcome &amp; Real-World Reality (Stage 5)</h4>
+            <div id="pre-post-event-content" style="font-size:0.88rem; color:var(--ink-soft); line-height:1.6;"></div>
+          </div>
+        </div>
+
+        <!-- Revision Inputs -->
+        <div style="background:#fcfbf7; border:1px solid var(--border); border-radius:8px; padding:20px; margin:20px 0;">
+          <div class="field" style="margin-bottom:14px;">
+            <label style="font-weight:700; color:var(--navy);">Does your strategic recommendation change in light of this event?</label>
+            <div style="display:flex; gap:20px; margin-top:6px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <input type="radio" name="pivot-choice" value="pivot" checked>
+                <strong>Yes, Pivot Strategy</strong> (Adapt terms, settle, or shift approach)
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <input type="radio" name="pivot-choice" value="persist">
+                <strong>No, Persist in Strategy</strong> (Stand firm with reasoned justification)
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label style="font-weight:700; color:var(--navy);">Explain Your Revised Recommendation &amp; Reflection:</label>
+            <textarea id="revised-rationale-input" class="motion-editor" style="min-height:150px;" placeholder="Address what happened during the simulated event. Did your assumptions about the court or opponent hold true? How does your updated plan protect Lakeview's 75-day refinancing deadline and financial solvency?"></textarea>
+          </div>
+
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary" id="btn-submit-evaluation" onclick="submitFinalEvaluation()">
+              Submit for Faculty Rubric Evaluation &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- 100-Point Faculty Rubric Scorecard Result Container -->
+        <div id="scorecard-display-container" style="display:none;">
+          <!-- Dynamically populated after evaluation -->
+        </div>
+
+        <div style="margin-top:24px; display:flex; justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goToStage(5)">&larr; Back to Simulated Event</button>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-gold" id="btn-download-csv-report" onclick="downloadSimulationCSV()">
+              &darr; Export CSV Scorecard
+            </button>
+            <a href="motion.html" class="btn btn-primary">
+              Continue to Motion Drafting Studio &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Case File Modal -->
+<div class="case-modal-overlay" id="case-modal">
+  <div class="case-modal-box">
+    <div class="case-modal-header">
+      <span style="font-weight:700; font-family:'Georgia', serif;">Case File &middot; Heartland Specialty Foods v. Lakeview Cold Chain Logistics (N.D. Ill.)</span>
+      <button onclick="closeCaseModal()" style="background:none; border:none; color:#fff; font-size:1.4rem; cursor:pointer;">&times;</button>
+    </div>
+    <div class="case-modal-tabs">
+      <button class="case-modal-tab-btn active" onclick="switchCaseTab('intake')">Supervising Partner Intake</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('complaint')">Federal Complaint Excerpt</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('clauses')">Master Agreement Clauses</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('precedent')">7th Circuit Precedent</button>
+    </div>
+    <div class="case-modal-content" id="case-modal-body">
+      <!-- Populated dynamically -->
+    </div>
+  </div>
+</div>
+
+<script>
+  let sessionState = null;
+  const STORAGE_KEY = "strategicJudgmentSessionSnapshot";
+
+  const CASE_TEXTS = {
+    intake: `=== SUPERVISING PARTNER INTAKE NOTE ===
+Matter: Heartland Specialty Foods, Inc. v. Lakeview Cold Chain Logistics, LLC
+Court: U.S. District Court for the Northern District of Illinois (Case No. 1:26-cv-04182)
+Procedural Posture: Summons and Complaint served 9 days ago; responsive pleading deadline in 12 days.
+
+How the file arrived:
+Marcus Vance (Director of Warehouse Operations at Lakeview Cold Chain Logistics, LLC) emailed our litigation group forwarding the federal Complaint and asking us to "file a motion to get this thrown out right away." Lakeview Cold Chain Logistics, LLC is a mid-sized Illinois refrigerated warehousing and regional distribution company headquartered in Bolingbrook, Illinois.
+
+Under Lakeview's Operating Agreement on file:
+- Formal engagement, litigation budgets over $15,000, dispositive filings, and any settlement authority rest with CEO Elena Rostova.
+- CFO sign-off is required for any settlement or cumulative commitment above $25,000.
+- Marcus Vance handles warehouse operations and does NOT have authority to authorize motions or settlements.
+- Critical Business Deadline: Lakeview's $2.8M commercial credit facility refinancing underwriting review wraps up in ~75 days (about 2.5 months). An open federal lawsuit with >$250k exposure threatens approval!`,
+
+    complaint: `=== EXCERPT OF PLAINTIFF'S COMPLAINT ===
+IN THE UNITED STATES DISTRICT COURT FOR THE NORTHERN DISTRICT OF ILLINOIS
+EASTERN DIVISION
+
+HEARTLAND SPECIALTY FOODS, INC., Plaintiff,
+v.
+LAKEVIEW COLD CHAIN LOGISTICS, LLC, Defendant.
+Case No. 1:26-cv-04182
+
+COMPLAINT FOR BREACH OF CONTRACT
+1. Plaintiff Heartland Specialty Foods, Inc. ("Heartland"), a Wisconsin corporation with its principal place of business in Madison, Wisconsin, brings this action against Defendant Lakeview Cold Chain Logistics, LLC ("Lakeview"), an Illinois limited liability company, for breach of contract. Diversity jurisdiction exists under 28 U.S.C. § 1332.
+
+2. On March 15, 2024, Heartland and Lakeview entered into a written Master Cold-Storage & Distribution Agreement (the "2024 Master Agreement," referenced herein though not attached as an exhibit) under which Lakeview agreed to store and maintain Heartland's artisan dairy inventory at a continuous temperature between 33°F and 38°F at Lakeview's Bolingbrook Facility (Bay C).
+
+3. Heartland performed all duties, conditions, and obligations required of it under the 2024 Master Agreement, or was excused from doing so.
+
+4. Between August 14, 2026 and August 16, 2026, Lakeview breached the 2024 Master Agreement by failing to maintain proper refrigeration in Bay C, allowing ambient temperatures to rise above 49°F for an extended period and spoiling three commercial pallets of aged specialty cheese products.
+
+5. Lakeview further acted in bad faith and in reckless disregard of industry cold-chain standards by failing to notify Heartland promptly of compressor alarms.
+
+6. As a direct and proximate result of Lakeview's breach, Heartland suffered $68,400 in direct wholesale inventory loss, plus at least $340,000 in lost future profits, damaged retail shelf placement, and reputational harm with regional grocery chains.
+
+COUNT I — BREACH OF CONTRACT (Illinois Law)
+7. Heartland incorporates Paragraphs 1 through 6 as though fully set forth herein.
+8. The 2024 Master Agreement constitutes a valid and enforceable contract under Illinois law.
+9. Heartland complied with its contractual obligations.
+10. Lakeview materially breached the 2024 Master Agreement, directly causing damages exceeding $408,400.
+
+WHEREFORE, Plaintiff demands judgment against Defendant in an amount exceeding $408,400, plus pre-judgment interest, attorney's fees, and costs.`,
+
+    clauses: `=== 2024 MASTER COLD-STORAGE & DISTRIBUTION AGREEMENT (EXCERPTS) ===
+Section 4.1 (Pre-Cooling Requirements):
+"Customer shall deliver all dairy inventory pre-cooled to a temperature not exceeding 38°F. Warehouseman reserves the right to reject or quarantine hot-loaded inventory delivered at higher temperatures."
+
+Section 11.2 (Limitation of Liability & Damages Waiver):
+"TO THE MAXIMUM EXTENT PERMITTED UNDER ILLINOIS LAW, NEITHER PARTY SHALL BE LIABLE TO THE OTHER FOR ANY SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, LOST PROFIT, REPUTATIONAL, OR PUNITIVE DAMAGES ARISING OUT OF THIS AGREEMENT.
+WAREHOUSEMAN'S MAXIMUM CUMULATIVE LIABILITY FOR LOSS OR DAMAGE TO STORED INVENTORY SHALL IN NO EVENT EXCEED TWO (2) TIMES THE MONTHLY STORAGE FEES CHARGED FOR THE AFFECTED BAY IN THE MONTH OF LOSS (CAPPED AT $36,000)."
+
+Section 14.8 (Attorney's Fees):
+"Each party shall bear its own attorney's fees and costs in any legal proceeding arising hereunder, absent proof of willful and malicious fraud."`,
+
+    precedent: `=== SEVENTH CIRCUIT & ILLINOIS APPLICABLE AUTHORITY ===
+1. Pleading Plausibility: Bell Atlantic Corp. v. Twombly, 550 U.S. 544; Ashcroft v. Iqbal, 556 U.S. 662. Legal conclusions and blanket recitations of elements are disregarded.
+2. Liberal Leave to Amend Rule: Runnion v. Girl Scouts of Greater Chi. & Nw. Ind., 786 F.3d 510, 519 (7th Cir. 2015). In the 7th Circuit, when a Rule 12(b)(6) motion is granted, district courts must freely grant leave to amend unless amendment is futile.
+3. Four Corners & Incorporation by Reference: 188 LLC v. Trinity Indus., Inc., 300 F.3d 730 (7th Cir.). A contract referenced in the complaint and central to the claim is considered part of the pleadings without converting to summary judgment under Rule 12(d).
+4. Substantive Contract Elements: Zahdan v. Frontline Business Enterprise Inc., 241 N.E.3d 1040 (Ill. App. Ct. 2024); 735 ILCS 5/2-603.
+5. Professional Conduct: ABA Model Rules 1.2 (Scope of Representation & Allocation of Authority), 1.4 (Communication), 2.1 (Advisor).`
+  };
+
+  function openCaseModal() {
+    switchCaseTab('intake');
+    document.getElementById("case-modal").classList.add("open");
+  }
+  function closeCaseModal() {
+    document.getElementById("case-modal").classList.remove("open");
+  }
+  function switchCaseTab(tabKey) {
+    document.querySelectorAll(".case-modal-tab-btn").forEach(b => b.classList.remove("active"));
+    event && event.target && event.target.classList && event.target.classList.add("active");
+    document.getElementById("case-modal-body").textContent = CASE_TEXTS[tabKey] || "";
+  }
+  document.getElementById("btn-open-case").onclick = openCaseModal;
+
+  // -------------------------------------------------------------------------
+  // INITIALIZATION & STATE HYDRATION
+  // -------------------------------------------------------------------------
+  async function initSimulation() {
+    checkHealth();
+    let saved = null;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) saved = JSON.parse(raw);
+    } catch (_) {}
+
+    if (saved && saved.session_id) {
+      try {
+        const res = await fetch("/api/session/hydrate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_snapshot: saved }),
+        });
+        if (res.ok) {
+          sessionState = await res.json();
+          renderSimulationState();
+          return;
+        }
+      } catch (_) {}
+    }
+
+    // Start fresh session with the closed-world NDIL case
+    try {
+      const res = await fetch("/api/session/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ case_id: "ndil_lakeview_cold_chain" }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderSimulationState();
+      }
+    } catch (e) {
+      console.error("Session start error:", e);
+    }
+  }
+
+  function saveSnapshot() {
+    if (sessionState && sessionState.session_snapshot) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionState.session_snapshot));
+    }
+  }
+
+  async function checkHealth() {
+    const pill = document.getElementById("llm-status-pill");
+    const txt = document.getElementById("llm-status-text");
+    try {
+      const res = await fetch("/api/health");
+      if (res.ok) {
+        const d = await res.json();
+        if (d.llm && d.llm.connected) {
+          pill.className = "llm-pill online";
+          txt.textContent = `${d.llm.model || "Qwen 3.8"} · Online`;
+        } else {
+          pill.className = "llm-pill offline";
+          txt.textContent = "Guided Heuristics";
+        }
+      }
+    } catch (_) {
+      pill.className = "llm-pill offline";
+      txt.textContent = "Offline Mode";
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // NAVIGATION & STAGE SWITCHING
+  // -------------------------------------------------------------------------
+  function goToStage(stepNum) {
+    if (!sessionState) return;
+    sessionState.sim_stage = stepNum;
+    if (sessionState.session_snapshot) sessionState.session_snapshot.sim_stage = stepNum;
+    saveSnapshot();
+
+    // Update Stepper UI
+    document.querySelectorAll(".step-node").forEach(node => {
+      const n = parseInt(node.getAttribute("data-step"), 10);
+      node.classList.remove("active");
+      if (n === stepNum) node.classList.add("active");
+      if (n < stepNum) node.classList.add("completed");
+      else node.classList.remove("completed");
+    });
+
+    // Update Panels
+    for (let i = 1; i <= 6; i++) {
+      const p = document.getElementById(`view-stage-1`.replace('1', String(i)));
+      if (p) p.style.display = (i === stepNum) ? "block" : "none";
+    }
+
+    renderSimulationState();
+  }
+
+  function renderSimulationState() {
+    if (!sessionState) return;
+    const curStage = sessionState.sim_stage || 1;
+
+    // Stage 1: Render Chat Messages & Priorities
+    renderChatThread();
+    renderPriorityDropdowns();
+
+    // Stage 2: Render Tradeoff calculations
+    renderTradeoffInputsAndResults();
+
+    // Stage 3: Render Opponent Anticipation
+    renderOpponentView();
+
+    // Stage 4: Render Initial Strategy
+    renderStrategyChoice();
+
+    // Stage 5: Render Event
+    renderSimulatedEvent();
+
+    // Stage 6: Render Reflection & Rubric Scorecard
+    renderReflectionAndRubric();
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 1 LOGIC
+  // -------------------------------------------------------------------------
+  function renderChatThread() {
+    const thread = document.getElementById("chat-thread-stream");
+    const msgs = sessionState.messages || [];
+    if (msgs.length === 0) {
+      thread.innerHTML = `
+        <div class="chat-bubble client" style="background:#eef7f8; border:1px solid #c2e2e6; border-radius:10px; padding:14px; margin-bottom:12px;">
+          <div style="font-weight:700; color:#1d5b63; font-size:0.83rem; margin-bottom:4px;">Elena Rostova &middot; CEO</div>
+          Hello counsel. Marcus forwarded you Heartland's complaint. We are very concerned and need to figure out our strategy right away. What do you need to know from us?
+        </div>
+      `;
+      return;
+    }
+    thread.innerHTML = msgs.map(m => {
+      const isUser = m.role === "user";
+      const bg = isUser ? "#eef2f8" : "#eef7f8";
+      const border = isUser ? "#c8d7ed" : "#c2e2e6";
+      const speakerColor = isUser ? "var(--navy)" : "#1d5b63";
+      const speaker = isUser ? "Lawyer (You)" : (m.speaker || "Elena Rostova, CEO");
+      return `
+        <div class="chat-bubble ${isUser ? 'user' : 'client'}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px;">
+          <div style="font-weight:700; color:${speakerColor}; font-size:0.83rem; margin-bottom:4px;">${escapeHtml(speaker)}</div>
+          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">${escapeHtml(m.content)}</div>
+        </div>
+      `;
+    }).join("");
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  async function sendInterviewMessage() {
+    const input = document.getElementById("interview-input");
+    const text = input.value.trim();
+    if (!text || !sessionState) return;
+
+    input.value = "";
+    const btn = document.getElementById("btn-send-interview");
+    btn.disabled = true;
+    btn.textContent = "Elena typing…";
+
+    try {
+      const res = await fetch(`/api/session/${sessionState.session_id}/message`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderChatThread();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Send Question →";
+    }
+  }
+
+  document.getElementById("interview-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendInterviewMessage();
+    }
+  });
+
+  function renderPriorityDropdowns() {
+    const ranked = sessionState.ranked_priorities || [];
+    if (ranked[0]) document.getElementById("priority-select-1").value = ranked[0];
+    if (ranked[1]) document.getElementById("priority-select-2").value = ranked[1];
+    if (ranked[2]) document.getElementById("priority-select-3").value = ranked[2];
+  }
+
+  async function saveRankedPriorities() {
+    const p1 = document.getElementById("priority-select-1").value;
+    const p2 = document.getElementById("priority-select-2").value;
+    const p3 = document.getElementById("priority-select-3").value;
+    const list = [p1, p2, p3].filter(Boolean);
+
+    if (!sessionState) return;
+    sessionState.ranked_priorities = list;
+    if (sessionState.session_snapshot) sessionState.session_snapshot.ranked_priorities = list;
+    saveSnapshot();
+
+    try {
+      await fetch(`/api/simulation/${sessionState.session_id}/priorities`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priorities: list, session_snapshot: sessionState.session_snapshot }),
+      });
+    } catch (_) {}
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 2 LOGIC (TRADEOFFS & QUANTITATIVE ENGINE)
+  // -------------------------------------------------------------------------
+  function updateProbSliders() {
+    const pGrant = parseInt(document.getElementById("trade-p-grant").value, 10);
+    const pNoAmend = parseInt(document.getElementById("trade-p-no-amend").value, 10);
+    document.getElementById("val-p-grant").textContent = `${pGrant}%`;
+    document.getElementById("val-p-no-amend").textContent = `${pNoAmend}%`;
+
+    const pPerm = ((pGrant / 100) * (pNoAmend / 100) * 100).toFixed(1);
+    document.getElementById("val-p-perm").textContent = `${pPerm}%`;
+    recalculateTradeoffs();
+  }
+
+  function updateWeightSliders() {
+    document.getElementById("val-w-money").textContent = document.getElementById("trade-w-money").value;
+    document.getElementById("val-w-speed").textContent = document.getElementById("trade-w-speed").value;
+    document.getElementById("val-w-rel").textContent = document.getElementById("trade-w-rel").value;
+    document.getElementById("val-w-rep").textContent = document.getElementById("trade-w-rep").value;
+    recalculateTradeoffs();
+  }
+
+  async function recalculateTradeoffs() {
+    if (!sessionState) return;
+    const payload = {
+      settlement_offer_cash: parseFloat(document.getElementById("trade-settle-cash").value) || 35000,
+      settlement_offer_credits: parseFloat(document.getElementById("trade-settle-credit").value) || 20000,
+      fee_motion: parseFloat(document.getElementById("trade-fee-motion").value) || 20000,
+      fee_full_trial: parseFloat(document.getElementById("trade-fee-trial").value) || 95000,
+      p_motion_granted: (parseFloat(document.getElementById("trade-p-grant").value) || 60) / 100,
+      p_no_amendment_given_grant: (parseFloat(document.getElementById("trade-p-no-amend").value) || 15) / 100,
+      weight_money: parseInt(document.getElementById("trade-w-money").value, 10) || 5,
+      weight_speed: parseInt(document.getElementById("trade-w-speed").value, 10) || 5,
+      weight_relationship: parseInt(document.getElementById("trade-w-rel").value, 10) || 4,
+      weight_reputation: parseInt(document.getElementById("trade-w-rep").value, 10) || 4,
+    };
+
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/tradeoffs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tradeoff_inputs: payload, session_snapshot: sessionState.session_snapshot }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderTradeoffInputsAndResults();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function renderTradeoffInputsAndResults() {
+    const res = sessionState.tradeoff_results;
+    if (!res || !res.path_comparisons) return;
+
+    const cardsRow = document.getElementById("comparison-cards-row");
+    const paths = res.path_comparisons;
+
+    cardsRow.innerHTML = `
+      <div class="path-card ${paths.negotiate.total_ev < paths.litigate.total_ev ? 'recommended' : ''}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="stage-eyebrow" style="margin:0;">Option A</span>
+          <span class="deadline-pill ok">&check; ~${paths.negotiate.duration_months} Mos (Within 75 Days)</span>
+        </div>
+        <h3 style="margin-top:6px;">Negotiated Settlement</h3>
+        <div class="ev-stat">$${Math.round(paths.negotiate.total_ev).toLocaleString()}</div>
+        <div class="note">Expected Payout: $${Math.round(paths.negotiate.expected_payout).toLocaleString()} &middot; Fees: $${Math.round(paths.negotiate.expected_fees).toLocaleString()}</div>
+        <div style="margin-top:8px; font-size:0.83rem;">
+          <strong>Client Utility Score:</strong> <span style="font-weight:700; color:var(--accept);">${paths.negotiate.client_utility_score}/100</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--ink-soft); margin:8px 0 0;">${paths.negotiate.key_pros}</p>
+      </div>
+
+      <div class="path-card ${paths.litigate.misses_refinancing_deadline ? 'warning-deadline' : ''}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="stage-eyebrow" style="margin:0;">Option B</span>
+          <span class="deadline-pill missed">&cross; ~${paths.litigate.duration_months} Mos (Misses 75-Day Loan)</span>
+        </div>
+        <h3 style="margin-top:6px;">Rule 12(b)(6) Motion</h3>
+        <div class="ev-stat" style="color:#b91c1c;">$${Math.round(paths.litigate.total_ev).toLocaleString()}</div>
+        <div class="note">12(b)(6) Fees: $${Math.round(res.inputs.fee_motion).toLocaleString()} &middot; Trial Risk: High</div>
+        <div style="margin-top:8px; font-size:0.83rem;">
+          <strong>Client Utility Score:</strong> <span style="font-weight:700; color:#b91c1c;">${paths.litigate.client_utility_score}/100</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--ink-soft); margin:8px 0 0;">${paths.litigate.key_cons}</p>
+      </div>
+
+      <div class="path-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="stage-eyebrow" style="margin:0;">Option C</span>
+          <span class="deadline-pill ok">&check; ~${paths.investigate.duration_months} Mos (Standstill)</span>
+        </div>
+        <h3 style="margin-top:6px;">Pre-Answer Investigation</h3>
+        <div class="ev-stat">$${Math.round(paths.investigate.total_ev).toLocaleString()}</div>
+        <div class="note">Audit Fees: $${Math.round(paths.investigate.expected_fees).toLocaleString()} &middot; Carrier offset: ~$30k</div>
+        <div style="margin-top:8px; font-size:0.83rem;">
+          <strong>Client Utility Score:</strong> <span style="font-weight:700; color:var(--gold-dark);">${paths.investigate.client_utility_score}/100</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--ink-soft); margin:8px 0 0;">${paths.investigate.key_pros}</p>
+      </div>
+    `;
+
+    // Render Sensitivity Table
+    if (res.sensitivity_analysis && res.sensitivity_analysis.curve) {
+      const tbl = document.getElementById("sensitivity-table-body");
+      tbl.innerHTML = `
+        <thead>
+          <tr>
+            <th>P(No Amendment | Grant)</th>
+            <th>P(Permanent Dismissal)</th>
+            <th>Litigate Expected Cost</th>
+            <th>Early Settlement Cost</th>
+            <th>Cost Difference</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${res.sensitivity_analysis.curve.map(row => `
+            <tr>
+              <td>${(row.p_no_amendment * 100).toFixed(0)}%</td>
+              <td><strong>${(row.p_dismissal_permanent * 100).toFixed(1)}%</strong></td>
+              <td style="color:#b91c1c;">$${Math.round(row.litigate_ev).toLocaleString()}</td>
+              <td style="color:var(--accept);">$${Math.round(row.negotiate_ev).toLocaleString()}</td>
+              <td>+$${Math.round(row.delta_vs_negotiate).toLocaleString()} for litigating</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
+      document.getElementById("sensitivity-insight-text").textContent = res.sensitivity_analysis.insight || "";
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 3 LOGIC (OPPONENT ANTICIPATION)
+  // -------------------------------------------------------------------------
+  function renderOpponentView() {
+    const opp = sessionState.opponent_anticipation;
+    if (opp && opp.text) {
+      document.getElementById("opponent-anticipation-input").value = opp.text;
+      if (opp.probability) {
+        document.getElementById("opp-prob-slider").value = Math.round(opp.probability * 100);
+        document.getElementById("val-opp-prob").textContent = `${Math.round(opp.probability * 100)}%`;
+      }
+    }
+    if (opp && opp.feedback) {
+      const fb = opp.feedback;
+      document.getElementById("opponent-feedback-card").style.display = "block";
+      document.getElementById("opp-rating-badge").textContent = fb.tactical_rating || "Evaluated";
+      document.getElementById("opp-assessment-text").textContent = fb.assessment || "";
+      document.getElementById("opp-perspective-text").textContent = `"${fb.opponent_counsel_perspective || ''}"`;
+      document.getElementById("opp-blindspots-text").textContent = `Blind Spot to Consider: ${fb.blind_spots || ''}`;
+    }
+  }
+
+  async function submitOpponentAnticipation() {
+    const text = document.getElementById("opponent-anticipation-input").value.trim();
+    const prob = parseFloat(document.getElementById("opp-prob-slider").value) / 100;
+    if (!text || !sessionState) return;
+
+    const btn = document.getElementById("btn-submit-opponent");
+    btn.disabled = true;
+    btn.textContent = "Analyzing Opponent Playbook…";
+
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/opponent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          anticipation_text: text,
+          probability_estimate: prob,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderOpponentView();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Evaluate Opponent Anticipation →";
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 4 LOGIC (STRATEGY SELECTION)
+  // -------------------------------------------------------------------------
+  let selectedBranch = "negotiate";
+
+  function selectStrategyBranch(branch) {
+    selectedBranch = branch;
+    document.querySelectorAll(".strategy-choice-card").forEach(c => c.classList.remove("selected"));
+    const activeCard = document.getElementById(`card-strat-${branch}`);
+    if (activeCard) activeCard.classList.add("selected");
+
+    const termsInput = document.getElementById("strat-terms-input");
+    if (branch === "negotiate") {
+      termsInput.value = "$35,000 cash + $20,000 storage fee credits, mutual general release, confidentiality, and no admission of fault.";
+    } else if (branch === "litigate") {
+      termsInput.value = "File Rule 12(b)(6) Motion to Dismiss Count I consequential damages under Master Agreement Section 11.2 limitation of liability.";
+    } else {
+      termsInput.value = "Secure 30-day informal response extension; audit Bay C compressor telemetry & ticket #409; submit insurance notice; Rule 408 conference.";
+    }
+  }
+
+  function renderStrategyChoice() {
+    const strat = sessionState.initial_strategy;
+    if (strat && strat.branch) {
+      selectStrategyBranch(strat.branch);
+      if (strat.terms) document.getElementById("strat-terms-input").value = strat.terms;
+      if (strat.rationale) document.getElementById("strat-rationale-input").value = strat.rationale;
+    }
+  }
+
+  async function commitInitialStrategy() {
+    const terms = document.getElementById("strat-terms-input").value.trim();
+    const rationale = document.getElementById("strat-rationale-input").value.trim();
+    if (!rationale) {
+      alert("Please enter your strategic rationale explaining how this choice serves Lakeview's goals.");
+      return;
+    }
+
+    const btn = document.getElementById("btn-commit-strategy");
+    btn.disabled = true;
+    btn.textContent = "Simulating Scenario Event…";
+
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/strategy`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          branch: selectedBranch,
+          terms: terms,
+          rationale: rationale,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        goToStage(5);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Commit Strategy & Trigger Simulated Event →";
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 5 LOGIC (SIMULATED EVENT)
+  // -------------------------------------------------------------------------
+  function renderSimulatedEvent() {
+    const ev = sessionState.simulated_event;
+    const container = document.getElementById("simulated-event-container");
+    if (!ev || !ev.title) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:40px; color:var(--muted);">
+          No event simulated yet. Complete Stage 4 to commit your strategy and experience the event.
+        </div>
+      `;
+      return;
+    }
+
+    const ref = ev.refinancing_impact || {};
+    const refBannerClass = ref.missed_deadline ? "danger" : "success";
+    const refIcon = ref.missed_deadline ? "&cross; BANK LOAN HOLD" : "&check; BANK DEADLINE CLEARED";
+
+    let docHtml = "";
+    if (ev.branch === "litigate") {
+      docHtml = `
+        <div class="court-order-document">
+          <div class="court-caption">
+            IN THE UNITED STATES DISTRICT COURT FOR THE NORTHERN DISTRICT OF ILLINOIS<br>
+            EASTERN DIVISION<br><br>
+            HEARTLAND SPECIALTY FOODS, INC., Plaintiff,<br>
+            v. &nbsp; Case No. 1:26-cv-04182<br>
+            LAKEVIEW COLD CHAIN LOGISTICS, LLC, Defendant.
+          </div>
+          <div class="court-body">${escapeHtml(ev.court_order_text)}</div>
+        </div>
+      `;
+    } else if (ev.branch === "negotiate") {
+      docHtml = `
+        <div class="opponent-letter-document">
+          <div style="font-weight:700; color:#8c2828; margin-bottom:12px; font-size:0.9rem;">
+            MILLER &amp; VANCE, LLP &middot; COUNSEL FOR HEARTLAND SPECIALTY FOODS, INC.
+          </div>
+          <div style="white-space:pre-wrap; font-size:0.95rem; line-height:1.65;">${escapeHtml(ev.opponent_letter)}</div>
+        </div>
+      `;
+    } else {
+      docHtml = `
+        <div style="background:#fff; border:1px solid var(--border); border-left:4px solid var(--gold); padding:24px; border-radius:8px; font-family:'Georgia', serif;">
+          <h4 style="margin:0 0 12px; color:var(--navy); font-size:1.05rem;">INTERNAL AUDIT FINDINGS &amp; RULE 408 CONFERENCE REPORT</h4>
+          <div style="white-space:pre-wrap; font-size:0.93rem; line-height:1.65;">${escapeHtml(ev.audit_findings_text)}</div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = `
+      <div class="impact-alert-banner ${refBannerClass}">
+        <div><strong>${refIcon}:</strong> ${escapeHtml(ref.bank_status || '')}</div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin-bottom:16px;">
+        <div style="background:#f4f6fa; padding:10px 16px; border-radius:8px; font-size:0.86rem;">
+          <strong>Elapsed Post-Service:</strong> ${ev.date_elapsed_days || 30} Days
+        </div>
+        <div style="background:#f4f6fa; padding:10px 16px; border-radius:8px; font-size:0.86rem;">
+          <strong>Legal Fees Spent:</strong> $${(ev.fees_incurred || 0).toLocaleString()}
+        </div>
+      </div>
+
+      ${docHtml}
+
+      ${ev.client_executive_reaction ? `
+        <div style="background:#fefbf4; border:1px solid #ebd9b0; border-radius:8px; padding:16px; margin:20px 0;">
+          <div style="font-weight:700; color:var(--navy); font-size:0.86rem; margin-bottom:4px;">
+            Executive Reaction &middot; ${escapeHtml(ev.client_executive_reaction.speaker || 'Client')}
+          </div>
+          <div style="font-style:italic; font-size:0.92rem; color:var(--ink-soft);">
+            "${escapeHtml(ev.client_executive_reaction.quote || '')}"
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="callout" style="background:#eef2f8; border-left:4px solid var(--navy); padding:14px 18px; border-radius:6px; margin-top:16px; font-size:0.88rem;">
+        <strong>Strategic Judgment Takeaway:</strong> ${escapeHtml(ev.learning_takeaway || '')}
+      </div>
+    `;
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 6 LOGIC (REFLECT, REVISE & 100-PT RUBRIC)
+  // -------------------------------------------------------------------------
+  function renderReflectionAndRubric() {
+    const strat = sessionState.initial_strategy || {};
+    const ev = sessionState.simulated_event || {};
+    const rev = sessionState.revision || {};
+    const evalData = sessionState.rubric_evaluation;
+
+    // Pre/Post Cards
+    document.getElementById("pre-post-initial-content").innerHTML = `
+      <strong>Chosen Strategy:</strong> ${escapeHtml(strat.branch || 'None')}<br>
+      <strong>Terms:</strong> ${escapeHtml(strat.terms || 'N/A')}<br><br>
+      <strong>Rationale:</strong> ${escapeHtml(strat.rationale || 'N/A')}
+    `;
+
+    document.getElementById("pre-post-event-content").innerHTML = `
+      <strong>Event:</strong> ${escapeHtml(ev.title || 'N/A')}<br>
+      <strong>Elapsed Time:</strong> ${ev.date_elapsed_days || 30} Days &middot; <strong>Fees:</strong> $${(ev.fees_incurred || 0).toLocaleString()}<br><br>
+      <strong>Outcome:</strong> ${escapeHtml(ev.learning_takeaway || 'N/A')}
+    `;
+
+    if (rev.rationale) {
+      document.getElementById("revised-rationale-input").value = rev.rationale;
+    }
+
+    if (evalData && evalData.total_score !== undefined) {
+      renderScorecard(evalData);
+    }
+  }
+
+  async function submitFinalEvaluation() {
+    const rationale = document.getElementById("revised-rationale-input").value.trim();
+    if (!rationale) {
+      alert("Please explain your revised recommendation and reflection before submitting.");
+      return;
+    }
+    const pivotChoice = document.querySelector('input[name="pivot-choice"]:checked').value;
+
+    const btn = document.getElementById("btn-submit-evaluation");
+    btn.disabled = true;
+    btn.textContent = "Scoring Against 100-Point Faculty Rubric…";
+
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/evaluate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          revised_action: pivotChoice,
+          pivoted: (pivotChoice === "pivot"),
+          revised_rationale: rationale,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderScorecard(sessionState.rubric_evaluation);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Submit for Faculty Rubric Evaluation →";
+    }
+  }
+
+  function renderScorecard(ev) {
+    const container = document.getElementById("scorecard-display-container");
+    container.style.display = "block";
+
+    const anchorClass = (ev.performance_anchor || "competent").toLowerCase().replace(/\s+/g, '-');
+
+    container.innerHTML = `
+      <div class="scorecard-hero">
+        <div class="scorecard-left">
+          <div class="headline">Strategic Judgment Assessment</div>
+          <p class="sub">${escapeHtml(ev.overall_critique || '')}</p>
+          <div class="anchor-badge ${anchorClass}">${escapeHtml(ev.performance_anchor || 'Competent')}</div>
+        </div>
+        <div class="score-badge-circle">
+          <div class="num">${ev.total_score || 0}</div>
+          <div class="denom">/ 100 Points</div>
+        </div>
+      </div>
+
+      <div class="stage-card" style="margin-top:20px;">
+        <h3 style="margin:0 0 16px; color:var(--navy);">Faculty Rubric Breakdown (5 Dimensions)</h3>
+
+        <!-- Dim 1 -->
+        <div class="rubric-dimension-row">
+          <div class="dim-header">
+            <span class="dim-name">1. Client Interviewing (Authority &amp; Priorities)</span>
+            <span class="dim-score-pill">${ev.client_interviewing_score || 0} / 25 pts</span>
+          </div>
+          <div class="dim-bar-wrap">
+            <div class="dim-bar-fill" style="width:${((ev.client_interviewing_score || 0) / 25) * 100}%;"></div>
+          </div>
+          <p class="dim-feedback">${escapeHtml(ev.client_interviewing_feedback || '')}</p>
+        </div>
+
+        <!-- Dim 2 -->
+        <div class="rubric-dimension-row">
+          <div class="dim-header">
+            <span class="dim-name">2. Legal Reasoning (Illinois Contract &amp; Rule 12(b)(6)/15)</span>
+            <span class="dim-score-pill">${ev.legal_reasoning_score || 0} / 25 pts</span>
+          </div>
+          <div class="dim-bar-wrap">
+            <div class="dim-bar-fill" style="width:${((ev.legal_reasoning_score || 0) / 25) * 100}%;"></div>
+          </div>
+          <p class="dim-feedback">${escapeHtml(ev.legal_reasoning_feedback || '')}</p>
+        </div>
+
+        <!-- Dim 3 -->
+        <div class="rubric-dimension-row">
+          <div class="dim-header">
+            <span class="dim-name">3. Risk &amp; Uncertainty (Conditional Probabilities &amp; Sensitivity)</span>
+            <span class="dim-score-pill">${ev.risk_uncertainty_score || 0} / 20 pts</span>
+          </div>
+          <div class="dim-bar-wrap">
+            <div class="dim-bar-fill" style="width:${((ev.risk_uncertainty_score || 0) / 20) * 100}%;"></div>
+          </div>
+          <p class="dim-feedback">${escapeHtml(ev.risk_uncertainty_feedback || '')}</p>
+        </div>
+
+        <!-- Dim 4 -->
+        <div class="rubric-dimension-row">
+          <div class="dim-header">
+            <span class="dim-name">4. Strategic Judgment (Client Goals &amp; Defensible Alternatives)</span>
+            <span class="dim-score-pill">${ev.strategic_judgment_score || 0} / 20 pts</span>
+          </div>
+          <div class="dim-bar-wrap">
+            <div class="dim-bar-fill" style="width:${((ev.strategic_judgment_score || 0) / 20) * 100}%;"></div>
+          </div>
+          <p class="dim-feedback">${escapeHtml(ev.strategic_judgment_feedback || '')}</p>
+        </div>
+
+        <!-- Dim 5 -->
+        <div class="rubric-dimension-row">
+          <div class="dim-header">
+            <span class="dim-name">5. Reflection &amp; Revision (Event Adaptation)</span>
+            <span class="dim-score-pill">${ev.reflection_revision_score || 0} / 10 pts</span>
+          </div>
+          <div class="dim-bar-wrap">
+            <div class="dim-bar-fill" style="width:${((ev.reflection_revision_score || 0) / 10) * 100}%;"></div>
+          </div>
+          <p class="dim-feedback">${escapeHtml(ev.reflection_revision_feedback || '')}</p>
+        </div>
+
+        ${ev.actionable_coaching && ev.actionable_coaching.length ? `
+          <div style="background:#fcfbf7; border:1px solid #e8dec8; border-radius:8px; padding:16px; margin-top:20px;">
+            <div class="stage-eyebrow" style="color:var(--gold-dark);">Key Takeaways for Future Commercial Practice</div>
+            <ul style="margin:8px 0 0; padding-left:20px; font-size:0.9rem; color:var(--ink-soft);">
+              ${ev.actionable_coaching.map(c => `<li>${escapeHtml(c)}</li>`).join("")}
+            </ul>
+          </div>
+        ` : ''}
+      </div>
+    `;
+
+    container.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function downloadSimulationCSV() {
+    if (!sessionState) return;
+    window.location.href = `/api/simulation/${sessionState.session_id}/export.csv`;
+  }
+
+  function escapeHtml(str) {
+    if (str == null) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  window.addEventListener("DOMContentLoaded", initSimulation);
+</script>
+
+</body>
+</html>

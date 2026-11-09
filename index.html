@@ -3,88 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motion Mindset — Conversational Motion Guidance</title>
+<title>Innovation Lab | Strategic Judgment Simulation</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <a href="index.html" class="brand"><span class="mark">&sect;</span> Motion Mindset</a>
+  <a href="index.html" class="brand">
+    <span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation
+  </a>
   <div class="header-right">
     <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="guidance.html">Conversational Guidance</a>
-      <a href="motion.html">Motion Drafting</a>
+      <a href="index.html" class="active">Overview</a>
+      <a href="simulation.html">Simulation Workspace</a>
+      <a href="motion.html">Motion Studio</a>
     </nav>
     <div class="llm-pill" id="llm-status-pill" title="Qwen 3.8-27B vLLM status">
       <span class="dot"></span>
-      <span id="llm-status-text">Checking Qwen 3.8…</span>
+      <span id="llm-status-text">Checking Model…</span>
     </div>
   </div>
 </header>
 
 <main class="shell">
   <div class="hero">
-    <div class="eyebrow">For law students &amp; young attorneys &middot; Client-centered motion practice</div>
-    <h1>Write better motions through conversational guidance.</h1>
+    <div class="eyebrow">Northwestern Pritzker School of Law &middot; Innovation Lab</div>
+    <h1>Strategic Judgment Simulation: Commercial Litigation &amp; Client Counseling</h1>
     <p class="lede">
-      Great motions start long before you type a caption. This workspace coaches you through
-      pre-meeting preparation, a live simulated client interview, and post-meeting Rule 12(b)(6)
-      &amp; Illinois contract analysis — evaluating every step against the course rubric before
-      you draft.
+      A controlled, interactive Illinois breach-of-contract hypothetical that develops students' strategic judgment.
+      The project is <strong>not primarily a motion-outcome predictor, case-upload analyzer, or litigation-procedure tutorial</strong>.
+      Students learn that a legally defensible argument may still be a poor strategic choice for a particular client.
     </p>
   </div>
 
   <div class="research-note">
-    <strong>Why conversational guidance instead of a "win likelihood" score?</strong>
-    Legal-judgment-prediction tools often rely on outcome-derived signals unavailable when the
-    filing decision actually had to be made (Medvedeva &amp; McBride). Instead of guessing how a
-    judge will rule, our Qwen 3.8 mentor evaluates <strong>authority recognition, client-interest
-    prioritization, pleading-versus-proof discipline, and strategic judgment</strong> using only
-    legitimate pre-filing information.
+    <strong>Core Learning Objective:</strong>
+    Students learn to discover hidden client priorities, compare legally defensible strategies (Negotiate, Litigate 12(b)(6), Investigate),
+    anticipate opposing-party reactions, quantify uncertainty through conditional probability trees, experience a simulated real-world event,
+    and explain or revise their recommendation against an official <strong>100-Point Faculty Rubric</strong>.
   </div>
 
-  <div class="card">
-    <h2 style="margin-top:0; color:var(--navy);">How the simulation works</h2>
+  <!-- The 6-Stage Student Experience -->
+  <div class="card" style="margin-top:24px;">
+    <h2 style="margin-top:0; color:var(--navy);">The 6-Stage Student Experience &amp; Branching Model</h2>
     <p class="note" style="margin-top:4px;">
-      Questions and evaluation criteria load dynamically from the Question Bank and Evaluation
-      Rubric CSVs — updating either CSV automatically updates the entire simulation.
+      Grounded in our closed-world prototype: <em>Heartland Specialty Foods, Inc. v. Lakeview Cold Chain Logistics, LLC</em> (N.D. Ill.).
     </p>
 
-    <div class="stats-strip" id="curriculum-stats">
-      <span class="stat-chip" id="stat-phases">3 Guided Phases</span>
-      <span class="stat-chip" id="stat-questions">Loading questions…</span>
-      <span class="stat-chip" id="stat-skills">Loading rubric skills…</span>
-      <span class="stat-chip">Model: Qwen 3.8-27B (vLLM)</span>
+    <div class="phase-overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="phase-tile">
+        <div class="tile-step">Stage 1 &middot; Fact Discovery</div>
+        <h3>1. Client Interview</h3>
+        <p>Ask open-ended questions to simulated client representatives (CEO Elena Rostova and Warehouse Ops Director Marcus Vance). Uncover authority limits, budget constraints, and rank Lakeview's top 3 business priorities.</p>
+      </div>
+
+      <div class="phase-tile">
+        <div class="tile-step">Stage 2 &middot; Quantitative Analysis</div>
+        <h3>2. Quantify Tradeoffs</h3>
+        <p>Enter estimated legal fees, liability exposure, and conditional probabilities. Display expected financial values, client utility weighting, and sensitivity to 7th Circuit leave-to-amend odds.</p>
+      </div>
+
+      <div class="phase-tile">
+        <div class="tile-step">Stage 3 &middot; Strategic Empathy</div>
+        <h3>3. Opponent Anticipation</h3>
+        <p>Analyze Heartland's commercial pressures, supplier debts, and litigation incentives. Anticipate opposing counsel's response to an early settlement offer versus a Rule 12(b)(6) motion.</p>
+      </div>
+
+      <div class="phase-tile">
+        <div class="tile-step">Stage 4 &middot; Strategy Formulation</div>
+        <h3>4. Initial Recommendation</h3>
+        <p>Commit to a defensible course of action: Structured Settlement (Option A), Rule 12(b)(6) Motion (Option B), or Pre-Answer Investigation (Option C). Write a detailed strategic rationale tied to client goals.</p>
+      </div>
+
+      <div class="phase-tile">
+        <div class="tile-step">Stage 5 &middot; Dynamic Scenario</div>
+        <h3>5. Experience an Event</h3>
+        <p>Experience a scripted, controlled court ruling or opponent letter. Discover how 7th Circuit Rule 15 standards and commercial loan refinancing deadlines disrupt reflexive motion practice.</p>
+      </div>
+
+      <div class="phase-tile">
+        <div class="tile-step">Stage 6 &middot; Formative Evaluation</div>
+        <h3>6. Reflect &amp; Revise</h3>
+        <p>Compare pre-event assumptions with post-event reality. Explain whether your recommendation pivots or persists. Receive an automated 100-point faculty rubric evaluation across 5 dimensions.</p>
+      </div>
     </div>
 
-    <div class="phase-overview-grid" id="phase-grid">
-      <div class="phase-tile">
-        <div class="tile-step">Phase 1 &middot; Mentor Q&amp;A</div>
-        <h3>Before Meeting</h3>
-        <p>Start with <em>"Who is the client and who can authorize decisions?"</em> Frame the alleged contract claim, identify missing documents, and weigh what a motion would achieve or cost.</p>
+    <!-- Closed-World Case Overview Card -->
+    <div style="background:#fcfbf7; border:1px solid var(--border); border-radius:8px; padding:20px; margin:24px 0;">
+      <h3 style="margin:0 0 10px; color:var(--navy); font-size:1.15rem;">Prototype Case: Heartland Specialty Foods v. Lakeview Cold Chain Logistics</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.87rem; color:var(--ink-soft);">
+        <div><strong>Forum:</strong> N.D. Ill. (Eastern Division)</div>
+        <div><strong>Parties:</strong> Wisconsin Dairy Producer v. Illinois Warehouse LLC</div>
+        <div><strong>Claimed Damages:</strong> $68,400 direct inventory + $340,000 lost profits</div>
+        <div><strong>Critical Constraint:</strong> 75-Day Bank Refinancing Review Window</div>
       </div>
-      <div class="phase-tile">
-        <div class="tile-step">Phase 2 &middot; Client Roleplay</div>
-        <h3>During Meeting</h3>
-        <p>Roles switch: interview the simulated client directly to elicit ranked outcomes, budget limits, deadlines, settlement terms, relational stakes, adverse facts, and sign-off rules.</p>
-      </div>
-      <div class="phase-tile">
-        <div class="tile-step">Phase 3 &middot; Mentor Debrief</div>
-        <h3>After Meeting</h3>
-        <p>Synthesize client priorities, apply Illinois breach-of-contract law and the 7th Circuit Rule 12(b)(6) <em>Twombly/Iqbal</em> framework, compare alternatives, and form a recommendation.</p>
-      </div>
-      <div class="phase-tile">
-        <div class="tile-step">Step 4 &middot; Drafting Studio</div>
-        <h3>Motion Drafting</h3>
-        <p>Carry your interview insights and rubric scorecard into the drafting editor to write your Rule 12(b)(6) motion or strategic counseling memo and receive AI partner feedback.</p>
-      </div>
+      <p style="font-size:0.86rem; color:var(--ink-soft); margin:12px 0 0;">
+        Marcus Vance wants to file an immediate motion to dismiss. As outside counsel, you must interview CEO Elena Rostova,
+        discover that Lakeview's credit facility will be frozen if litigation is unresolved after 75 days, analyze Section 11.2's
+        limitation of liability, and advise the client on the best path forward.
+      </p>
     </div>
 
-    <div class="cta-row">
-      <a href="guidance.html" class="btn btn-primary">Start Conversational Guidance &rarr;</a>
-      <a href="guidance.html?sample=1" class="btn btn-gold">Try with Sample IL Contract Case</a>
-      <a href="motion.html" class="btn btn-ghost">Open Motion Drafting Studio</a>
+    <!-- Official 100-Point Rubric Table -->
+    <div style="margin:24px 0;">
+      <h3 style="margin:0 0 12px; color:var(--navy); font-size:1.1rem;">Faculty Evaluation Rubric (100 Points Total)</h3>
+      <table class="sim-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Points</th>
+            <th>What Earns Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Client Interviewing</strong></td>
+            <td>25 pts</td>
+            <td>Relevant open-ended follow-ups; uncovers client objectives, 75-day refinancing deadline, budget limits, and Elena Rostova's authority vs CFO sign-off.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Legal Reasoning</strong></td>
+            <td>25 pts</td>
+            <td>Accurate application of Illinois contract elements (<em>Zahdan</em>), Master Agreement Sec. 11.2 limitation of liability, and 7th Circuit Rule 12(b)(6) / Rule 15 pleading doctrine (<em>Runnion</em>).</td>
+          </tr>
+          <tr>
+            <td><strong>3. Risk and Uncertainty</strong></td>
+            <td>20 pts</td>
+            <td>Justifies estimates; distinguishes binding legal rules from empirical observations and scenario assumptions; calculates conditional probabilities; explores sensitivity.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Strategic Judgment</strong></td>
+            <td>20 pts</td>
+            <td>Compares defensible alternatives (Negotiate vs Litigate vs Investigate); ties recommendation to client business goals; resists reflexive motion filing.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Reflection and Revision</strong></td>
+            <td>10 pts</td>
+            <td>Responds thoughtfully to simulated court order or opponent counter; explains changes or persistence; compares initial vs revised reasoning.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cta-row" style="margin-top:28px;">
+      <a href="simulation.html" class="btn btn-primary" style="font-size:1.02rem; padding:12px 24px;">
+        Launch Strategic Judgment Simulation &rarr;
+      </a>
+      <a href="motion.html" class="btn btn-ghost" style="font-size:1.02rem; padding:12px 24px;">
+        Open Motion Drafting Studio
+      </a>
     </div>
   </div>
 </main>
@@ -94,26 +161,20 @@
     const pill = document.getElementById("llm-status-pill");
     const pillText = document.getElementById("llm-status-text");
     try {
-      const res = await fetch("/api/config");
-      if (!res.ok) throw new Error("API unavailable");
-      const data = await res.json();
-      const cur = data.curriculum;
-      const llm = data.llm || {};
-
-      document.getElementById("stat-phases").textContent = `${cur.phases.length} Guided Phases`;
-      document.getElementById("stat-questions").textContent = `${cur.total_questions} Question Bank Prompts`;
-      document.getElementById("stat-skills").textContent = `${cur.skills.length} Rubric Competencies`;
-
-      if (llm.connected) {
-        pill.className = "llm-pill online";
-        pillText.textContent = `${llm.model || "Qwen 3.8"} · Ready`;
-      } else {
-        pill.className = "llm-pill offline";
-        pillText.textContent = `${llm.model || "Qwen 3.8"} · Offline`;
+      const res = await fetch("/api/health");
+      if (res.ok) {
+        const d = await res.json();
+        if (d.llm && d.llm.connected) {
+          pill.className = "llm-pill online";
+          pillText.textContent = `${d.llm.model || "Qwen 3.8"} · Online`;
+        } else {
+          pill.className = "llm-pill offline";
+          pillText.textContent = "Guided Heuristics";
+        }
       }
-    } catch (err) {
+    } catch (_) {
       pill.className = "llm-pill offline";
-      pillText.textContent = "Backend Offline";
+      pillText.textContent = "Simulation Ready";
     }
   }
   loadOverview();

@@ -305,3 +305,135 @@ Return ONLY valid JSON with these exact keys:
         {"role": "user", "content": user_prompt},
     ]
 
+
+def build_opponent_anticipation_messages(
+    case_bundle: Dict[str, Any],
+    proposed_strategy: str,
+    student_anticipation_text: str,
+    student_probability_estimate: Optional[float] = None,
+) -> List[Dict[str, str]]:
+    system_prompt = (
+        "You are an expert Litigation Strategist and Clinical Law Professor analyzing a law student's "
+        "anticipation of opposing-party behavior in a commercial breach-of-contract dispute.\n"
+        "Ground your feedback in the realities of Seventh Circuit commercial litigation, plaintiff incentives, "
+        "reputational stakes, and commercial leverage.\n"
+        "Return ONLY valid JSON matching the schema below."
+    )
+
+    user_prompt = f"""{_format_case_section(case_bundle, include_client_secrets=False)}
+
+### STUDENT'S PROPOSED STRATEGY
+Strategy: {proposed_strategy}
+
+### STUDENT'S OPPONENT REACTION ANTICIPATION
+\"\"\"{student_anticipation_text}\"\"\"
+Student's Estimated Opponent Acceptance / Reaction Likelihood: {student_probability_estimate if student_probability_estimate is not None else "Not specified"}
+
+### REQUIRED JSON OUTPUT FORMAT
+Return ONLY valid JSON with these exact keys:
+{{
+  "assessment": "<2-3 sentences evaluating whether the student accurately identified Heartland's commercial incentives and legal leverage>",
+  "opponent_counsel_perspective": "<2-3 sentences written from the perspective of Heartland's aggressive commercial litigation counsel>",
+  "blind_spots": "<1-2 sentences highlighting any opponent reaction the student overlooked, such as amending to plead willful misconduct or subpoenaing warehouse logs>",
+  "tactical_rating": "<'Strong' | 'Competent' | 'Developing' | 'Needs Improvement'>"
+}}"""
+
+    return [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+
+
+def build_strategic_evaluation_messages(
+    case_bundle: Dict[str, Any],
+    session_data: Dict[str, Any],
+) -> List[Dict[str, str]]:
+    """Evaluates the student's full 6-stage simulation performance against the official 100-Point Faculty Rubric."""
+    interview_msgs = session_data.get("interview_messages", [])
+    recent_interview = "\n".join(
+        f"{'Student' if m.get('role') == 'user' else 'Client'}: {m.get('content')}"
+        for m in interview_msgs[-12:]
+    )
+    ranked_priorities = session_data.get("ranked_priorities", [])
+    tradeoffs_summary = session_data.get("tradeoffs_summary", "Not completed")
+    opponent_text = session_data.get("opponent_anticipation_text", "Not specified")
+    initial_strategy = session_data.get("initial_strategy", {})
+    event_result = session_data.get("simulated_event", {})
+    revised_strategy = session_data.get("revised_strategy", {})
+
+    system_prompt = (
+        "You are a Senior Faculty Reviewer and Litigation Partner at Northwestern Pritzker School of Law's "
+        "Innovation Lab evaluating a student's performance in the Strategic Judgment Simulation.\n\n"
+        "CRITICAL EVALUATION PRINCIPLES (FROM INNOVATION LAB DESIGN):\n"
+        "1. Evaluate strictly against the 100-POINT FACULTY EVALUATION RUBRIC:\n"
+        "   - Client Interviewing (25 pts): Relevant follow-ups; uncovers objectives, constraints (75-day refinancing, $15k–$25k budget), and authority (Elena Rostova vs CFO sign-off vs Marcus Vance).\n"
+        "   - Legal Reasoning (25 pts): Accurate application of Illinois contract elements, Section 11.2 limitation of liability, and 7th Circuit Rule 12(b)(6) / Rule 15 pleading doctrine (Runnion liberal amendment standard; Four Corners rule).\n"
+        "   - Risk & Uncertainty (20 pts): Justifies estimates; distinguishes legal rules from empirical observations and scenario assumptions; explores sensitivity; accounts for conditional probability P(dismissal without amendment) = P(grant) * P(no amendment | grant).\n"
+        "   - Strategic Judgment (20 pts): Compares defensible alternatives (Negotiate vs Litigate vs Investigate) and ties recommendation to client business goals; avoids reflexive filing.\n"
+        "   - Reflection & Revision (10 pts): Responds thoughtfully to the simulated event; explains whether strategy pivots or persists and why.\n"
+        "2. Do NOT grade solely on winning, settling, or matching a single predetermined path. Credit well-reasoned, defensible advocacy.\n"
+        "3. Output ONLY a valid JSON object matching the requested schema."
+    )
+
+    user_prompt = f"""{_format_case_section(case_bundle, include_client_secrets=False)}
+
+### STUDENT SIMULATION DOSSIER ACROSS 6 STAGES
+
+STAGE 1: CLIENT INTERVIEW TRANSCRIPT & PRIORITIES
+Student Ranked Top Priorities: {ranked_priorities or 'None logged'}
+Interview Excerpt:
+{recent_interview or '(No interview transcript recorded)'}
+
+STAGE 2: QUANTIFY TRADEOFFS & NUMERICAL ESTIMATES
+{tradeoffs_summary}
+
+STAGE 3: OPPONENT ANTICIPATION
+Student's Analysis: \"\"\"{opponent_text}\"\"\"
+
+STAGE 4: INITIAL STRATEGY RECOMMENDATION
+Chosen Branch: {initial_strategy.get('branch', 'Not chosen')}
+Terms / Specifics: {initial_strategy.get('terms', 'N/A')}
+Student's Initial Written Rationale:
+\"\"\"{initial_strategy.get('rationale', 'N/A')}\"\"\"
+
+STAGE 5: SIMULATED EVENT EXPERIENCED
+Event Triggered: {event_result.get('title', 'N/A')}
+Elapsed Days & Refinancing Impact: {event_result.get('refinancing_impact', {}).get('bank_status', 'N/A')}
+Outcome Summary: {event_result.get('learning_takeaway', 'N/A')}
+
+STAGE 6: REFLECTION AND REVISED STRATEGY
+Revised Action Choice: {revised_strategy.get('action', 'N/A')}
+Did Strategy Change?: {revised_strategy.get('pivoted', 'N/A')}
+Student's Revised Rationale & Pre/Post Reflection:
+\"\"\"{revised_strategy.get('rationale', 'N/A')}\"\"\"
+
+### REQUIRED JSON OUTPUT FORMAT
+Return ONLY valid JSON with these exact keys:
+{{
+  "client_interviewing_score": <integer 0 to 25>,
+  "client_interviewing_feedback": "<2-3 sentences evaluating authority discovery, priority ranking, and fact-finding>",
+  "legal_reasoning_score": <integer 0 to 25>,
+  "legal_reasoning_feedback": "<2-3 sentences evaluating contract law, limitation of liability, and Rule 12(b)(6)/15 doctrine>",
+  "risk_uncertainty_score": <integer 0 to 20>,
+  "risk_uncertainty_feedback": "<2-3 sentences evaluating handling of probabilities, sensitivity, and assumptions>",
+  "strategic_judgment_score": <integer 0 to 20>,
+  "strategic_judgment_feedback": "<2-3 sentences evaluating alignment with client business priorities and comparison of alternatives>",
+  "reflection_revision_score": <integer 0 to 10>,
+  "reflection_revision_feedback": "<2 sentences evaluating how thoughtfully the student reacted to the simulated event>",
+  "total_score": <sum of the 5 scores above, integer 0 to 100>,
+  "performance_anchor": "<'Strong' (90-100) | 'Competent' (75-89) | 'Developing' (60-74) | 'Needs Improvement' (<60)>",
+  "overall_critique": "<3-4 sentence comprehensive assessment of the student's strategic judgment and client counseling maturity>",
+  "pre_post_comparison_note": "<2 sentences analyzing how the student's thinking evolved between Stage 4 and Stage 6>",
+  "actionable_coaching": [
+    "<Key takeaway 1>",
+    "<Key takeaway 2>",
+    "<Key takeaway 3>"
+  ]
+}}"""
+
+    return [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+
+

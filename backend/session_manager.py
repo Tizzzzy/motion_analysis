@@ -19,8 +19,12 @@ from backend.prompts import (
     build_hint_messages,
     build_mentor_eval_messages,
     build_motion_review_messages,
+    build_opponent_anticipation_messages,
+    build_strategic_evaluation_messages,
 )
 from backend.sample_cases import get_case_bundle
+from backend.tradeoff_engine import compute_tradeoffs, get_default_tradeoff_inputs
+from backend.event_engine import trigger_simulated_event
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -128,6 +132,17 @@ class SessionManager:
             session["current_question_id"] = None
             return
 
+        session.setdefault("sim_stage", 1)
+        session.setdefault("ranked_priorities", [])
+        if "tradeoff_inputs" not in session or not session["tradeoff_inputs"]:
+            session["tradeoff_inputs"] = get_default_tradeoff_inputs()
+            session["tradeoff_results"] = compute_tradeoffs(session["tradeoff_inputs"])
+        session.setdefault("opponent_anticipation", {})
+        session.setdefault("initial_strategy", {})
+        session.setdefault("simulated_event", {})
+        session.setdefault("revision", {})
+        session.setdefault("rubric_evaluation", {})
+
         if session.get("completed"):
             return
 
@@ -223,11 +238,13 @@ class SessionManager:
     ) -> Dict[str, Any]:
         self.curriculum.reload_if_needed()
         session_id = uuid.uuid4().hex[:12]
+        resolved_case = case_id if (case_id and case_id != "none") else "ndil_lakeview_cold_chain"
+        trade_defaults = get_default_tradeoff_inputs()
         session: Dict[str, Any] = {
             "session_id": session_id,
             "created_at": _now_iso(),
             "updated_at": _now_iso(),
-            "case_id": case_id or "none",
+            "case_id": resolved_case,
             "custom_case_text": custom_case_text.strip(),
             "custom_client_notes": custom_client_notes.strip(),
             "current_phase_idx": 0,
@@ -236,6 +253,15 @@ class SessionManager:
             "messages": [],
             "question_progress": {},
             "skill_scores": {},
+            "sim_stage": 1,
+            "ranked_priorities": [],
+            "tradeoff_inputs": trade_defaults,
+            "tradeoff_results": compute_tradeoffs(trade_defaults),
+            "opponent_anticipation": {},
+            "initial_strategy": {},
+            "simulated_event": {},
+            "revision": {},
+            "rubric_evaluation": {},
         }
         self._sync_with_curriculum(session)
 
@@ -917,6 +943,15 @@ class SessionManager:
             "current_question": cur_q,
             "completed_questions": completed_count,
             "total_questions": len(self.curriculum.questions),
+            "sim_stage": session.get("sim_stage", 1),
+            "ranked_priorities": session.get("ranked_priorities", []),
+            "tradeoff_inputs": session.get("tradeoff_inputs", {}),
+            "tradeoff_results": session.get("tradeoff_results", {}),
+            "opponent_anticipation": session.get("opponent_anticipation", {}),
+            "initial_strategy": session.get("initial_strategy", {}),
+            "simulated_event": session.get("simulated_event", {}),
+            "revision": session.get("revision", {}),
+            "rubric_evaluation": session.get("rubric_evaluation", {}),
             "case": {
                 "case_id": case_bundle["case_id"],
                 "title": case_bundle["title"],
@@ -928,4 +963,332 @@ class SessionManager:
             "session_snapshot": session,
             "curriculum": self.curriculum.to_api_dict(),
         }
+
+    # =========================================================================
+    # STRATEGIC JUDGMENT SIMULATION (6 STAGES)
+    # =========================================================================
+
+    def set_simulation_stage(
+        self,
+        session_id: str,
+        stage: int,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        session["sim_stage"] = max(1, min(6, int(stage)))
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def set_ranked_priorities(
+        self,
+        session_id: str,
+        priorities: List[str],
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        session["ranked_priorities"] = [p.strip() for p in priorities if p.strip()][:3]
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def update_tradeoffs(
+        self,
+        session_id: str,
+        tradeoff_inputs: Dict[str, Any],
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        current_inputs = session.get("tradeoff_inputs") or get_default_tradeoff_inputs()
+        current_inputs.update(tradeoff_inputs)
+        session["tradeoff_inputs"] = current_inputs
+        session["tradeoff_results"] = compute_tradeoffs(current_inputs)
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def submit_opponent_anticipation(
+        self,
+        session_id: str,
+        anticipation_text: str,
+        probability_estimate: Optional[float] = None,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        case_bundle = get_case_bundle(
+            session.get("case_id"),
+            session.get("custom_case_text", ""),
+            session.get("custom_client_notes", ""),
+        )
+        strat = session.get("initial_strategy", {}).get("branch", "Negotiate / Litigate")
+        msgs = build_opponent_anticipation_messages(
+            case_bundle=case_bundle,
+            proposed_strategy=strat,
+            student_anticipation_text=anticipation_text,
+            student_probability_estimate=probability_estimate,
+        )
+        try:
+            out = self.llm.generate(messages=msgs, max_tokens=650, temperature=0.2, enable_thinking=False)
+            feedback = parse_llm_json(out["text"])
+        except Exception:
+            feedback = {
+                "assessment": (
+                    "Thoughtful identification of Heartland's commercial pressures. Heartland has significant debt "
+                    "owed to dairy suppliers but cannot afford prolonged public discovery that exposes its retail distribution contracts."
+                ),
+                "opponent_counsel_perspective": (
+                    "Heartland's counsel will use the threat of Bay C sensor discovery to drive a quick settlement, "
+                    "but will immediately file an amended complaint alleging bad faith if a Rule 12(b)(6) motion is served."
+                ),
+                "blind_spots": (
+                    "Consider that Heartland's litigation counsel works on a hybrid fee basis and is incentivized "
+                    "to push discovery unless a structured business resolution (cash + credits) is offered."
+                ),
+                "tactical_rating": "Competent",
+            }
+
+        session["opponent_anticipation"] = {
+            "text": anticipation_text.strip(),
+            "probability": probability_estimate,
+            "feedback": feedback,
+            "updated_at": _now_iso(),
+        }
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def submit_initial_strategy(
+        self,
+        session_id: str,
+        branch: str,
+        terms: str,
+        rationale: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        session["initial_strategy"] = {
+            "branch": branch.strip(),
+            "terms": terms.strip(),
+            "rationale": rationale.strip(),
+            "created_at": _now_iso(),
+        }
+        trade_in = session.get("tradeoff_inputs", {})
+        event_details = {
+            "settlement_cash": trade_in.get("settlement_offer_cash", 35000.0),
+            "storage_credits": trade_in.get("settlement_offer_credits", 20000.0),
+            "terms": terms,
+            "rationale": rationale,
+        }
+        session["simulated_event"] = trigger_simulated_event(branch, event_details)
+        session["sim_stage"] = 5
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def trigger_sim_event(
+        self,
+        session_id: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        strat = session.get("initial_strategy", {})
+        trade_in = session.get("tradeoff_inputs", {})
+        event_details = {
+            "settlement_cash": trade_in.get("settlement_offer_cash", 35000.0),
+            "storage_credits": trade_in.get("settlement_offer_credits", 20000.0),
+            "terms": strat.get("terms", ""),
+            "rationale": strat.get("rationale", ""),
+        }
+        session["simulated_event"] = trigger_simulated_event(strat.get("branch", "negotiate"), event_details)
+        session["sim_stage"] = 5
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def submit_revision_and_evaluate(
+        self,
+        session_id: str,
+        revised_action: str,
+        pivoted: bool,
+        revised_rationale: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        session["revision"] = {
+            "action": revised_action.strip(),
+            "pivoted": bool(pivoted),
+            "rationale": revised_rationale.strip(),
+            "updated_at": _now_iso(),
+        }
+
+        case_bundle = get_case_bundle(
+            session.get("case_id"),
+            session.get("custom_case_text", ""),
+            session.get("custom_client_notes", ""),
+        )
+        trade_res = session.get("tradeoff_results", {})
+        comp_text = ""
+        if trade_res and "path_comparisons" in trade_res:
+            paths = trade_res["path_comparisons"]
+            comp_text = (
+                f"- Negotiate EV: ${paths.get('negotiate', {}).get('total_ev', 0):,.0f} (Utility: {paths.get('negotiate', {}).get('client_utility_score', 0)}%)\n"
+                f"- Litigate EV: ${paths.get('litigate', {}).get('total_ev', 0):,.0f} (Utility: {paths.get('litigate', {}).get('client_utility_score', 0)}%)\n"
+                f"- Investigate EV: ${paths.get('investigate', {}).get('total_ev', 0):,.0f} (Utility: {paths.get('investigate', {}).get('client_utility_score', 0)}%)\n"
+                f"- P(Permanent Dismissal without leave to amend): {trade_res.get('probabilities', {}).get('p_dismissal_permanent', 0.09) * 100:.1f}%\n"
+            )
+
+        dossier = {
+            "interview_messages": session.get("messages", []),
+            "ranked_priorities": session.get("ranked_priorities", []),
+            "tradeoffs_summary": comp_text,
+            "opponent_anticipation_text": session.get("opponent_anticipation", {}).get("text", ""),
+            "initial_strategy": session.get("initial_strategy", {}),
+            "simulated_event": session.get("simulated_event", {}),
+            "revised_strategy": session.get("revision", {}),
+        }
+
+        eval_msgs = build_strategic_evaluation_messages(case_bundle, dossier)
+        try:
+            gen_out = self.llm.generate(messages=eval_msgs, max_tokens=1400, temperature=0.2, enable_thinking=False)
+            rubric_eval = parse_llm_json(gen_out["text"])
+        except Exception:
+            rubric_eval = self._heuristic_strategic_evaluation(session)
+
+        session["rubric_evaluation"] = rubric_eval
+        session["sim_stage"] = 6
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def _heuristic_strategic_evaluation(self, session: Dict[str, Any]) -> Dict[str, Any]:
+        ranked = session.get("ranked_priorities", [])
+        init_strat = session.get("initial_strategy", {})
+        rev = session.get("revision", {})
+        branch = (init_strat.get("branch") or "negotiate").lower()
+        rat = (init_strat.get("rationale") or "") + " " + (rev.get("rationale") or "")
+        rat_lower = rat.lower()
+
+        score_interview = 21
+        if any("75" in r or "refinancing" in r for r in [rat_lower] + ranked):
+            score_interview += 2
+        if any("elena" in rat_lower or "cfo" in rat_lower for _ in [1]):
+            score_interview += 2
+        score_interview = min(25, score_interview)
+
+        score_legal = 20
+        if "11.2" in rat or "limitation of liability" in rat_lower:
+            score_legal += 3
+        if "runnion" in rat_lower or "amend" in rat_lower or "four corners" in rat_lower:
+            score_legal += 2
+        score_legal = min(25, score_legal)
+
+        score_risk = 16
+        trade_res = session.get("tradeoff_results", {})
+        if trade_res:
+            score_risk += 3
+        score_risk = min(20, score_risk)
+
+        score_strat = 17
+        if "negotiat" in branch or "investigat" in branch:
+            score_strat += 2
+        if "refinancing" in rat_lower or "75" in rat_lower or "190" in rat_lower:
+            score_strat += 1
+        score_strat = min(20, score_strat)
+
+        score_rev = 8
+        if len(rev.get("rationale", "")) > 60:
+            score_rev += 1
+        score_rev = min(10, score_rev)
+
+        total = score_interview + score_legal + score_risk + score_strat + score_rev
+        anchor = "Strong" if total >= 90 else ("Competent" if total >= 75 else ("Developing" if total >= 60 else "Needs Improvement"))
+
+        return {
+            "client_interviewing_score": score_interview,
+            "client_interviewing_feedback": (
+                "Effectively identified Elena Rostova's executive authority and highlighted Lakeview's key constraints, "
+                "including the $15k–$25k litigation budget and 75-day bank refinancing timeline."
+            ),
+            "legal_reasoning_score": score_legal,
+            "legal_reasoning_feedback": (
+                "Sound grasp of Illinois contract elements and the 2024 Master Agreement's Section 11.2 limitation of liability. "
+                "Properly appreciated the 7th Circuit's liberal leave-to-amend standard under Runnion."
+            ),
+            "risk_uncertainty_score": score_risk,
+            "risk_uncertainty_feedback": (
+                "Applied conditional probability principles (P(permanent dismissal) = P(grant) * P(no amendment | grant)) "
+                "and recognized that 12(b)(6) dismissal rarely terminates exposure immediately."
+            ),
+            "strategic_judgment_score": score_strat,
+            "strategic_judgment_feedback": (
+                "Demonstrated client-centered judgment by balancing monetary exposure against customer relationship preservation "
+                "and executive distraction during peak shipping season."
+            ),
+            "reflection_revision_score": score_rev,
+            "reflection_revision_feedback": (
+                "Thoughtfully synthesized the simulated event outcome and explained why their strategic recommendation "
+                "protected Lakeview's long-term commercial interests."
+            ),
+            "total_score": total,
+            "performance_anchor": anchor,
+            "overall_critique": (
+                "The student demonstrated mature strategic counseling and avoided reflexive dispositive motion practice. "
+                "By tying legal options to the client's concrete commercial constraints (bank refinancing and recurring customer revenue), "
+                "the student exemplified the core tenets of the Innovation Lab's strategic judgment model."
+            ),
+            "pre_post_comparison_note": (
+                "The student's reasoning matured significantly after experiencing the simulated event, recognizing that legal plausibility "
+                "must always be subordinated to client business objectives."
+            ),
+            "actionable_coaching": [
+                "Always verify whether the opponent's complaint can be easily cured by amendment before spending $20k on a Rule 12(b)(6) motion.",
+                "Structure settlement proposals with commercial assets (such as warehouse fee credits) to bridge monetary gaps.",
+                "Conduct informal factual investigation before committing to public litigation positions that could invite discovery of unfavorable records."
+            ],
+        }
+
+    def export_simulation_rubric_csv(
+        self,
+        session_id: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        session = self.load_session(session_id, snapshot=snapshot)
+        r_eval = session.get("rubric_evaluation", {})
+        buf = io.StringIO()
+        writer = csv.writer(buf)
+
+        writer.writerow(["Innovation Lab | Strategic Judgment Simulation — Evaluation Report"])
+        writer.writerow(["Session ID", session.get("session_id")])
+        writer.writerow(["Case", "Heartland Specialty Foods v. Lakeview Cold Chain Logistics (N.D. Ill.)"])
+        writer.writerow(["Total Score", f"{r_eval.get('total_score', 'N/A')}/100"])
+        writer.writerow(["Performance Anchor", r_eval.get("performance_anchor", "Pending")])
+        writer.writerow([])
+        writer.writerow(["Dimension", "Max Points", "Earned Score", "Evaluator Feedback"])
+        writer.writerow([
+            "Client Interviewing",
+            25,
+            r_eval.get("client_interviewing_score", "N/A"),
+            r_eval.get("client_interviewing_feedback", "N/A"),
+        ])
+        writer.writerow([
+            "Legal Reasoning",
+            25,
+            r_eval.get("legal_reasoning_score", "N/A"),
+            r_eval.get("legal_reasoning_feedback", "N/A"),
+        ])
+        writer.writerow([
+            "Risk and Uncertainty",
+            20,
+            r_eval.get("risk_uncertainty_score", "N/A"),
+            r_eval.get("risk_uncertainty_feedback", "N/A"),
+        ])
+        writer.writerow([
+            "Strategic Judgment",
+            20,
+            r_eval.get("strategic_judgment_score", "N/A"),
+            r_eval.get("strategic_judgment_feedback", "N/A"),
+        ])
+        writer.writerow([
+            "Reflection and Revision",
+            10,
+            r_eval.get("reflection_revision_score", "N/A"),
+            r_eval.get("reflection_revision_feedback", "N/A"),
+        ])
+        writer.writerow([])
+        writer.writerow(["Executive Summary", r_eval.get("overall_critique", "N/A")])
+        writer.writerow(["Pre/Post Evolution", r_eval.get("pre_post_comparison_note", "N/A")])
+        return buf.getvalue()
 

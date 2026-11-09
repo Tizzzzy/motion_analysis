@@ -9,16 +9,16 @@
 <body>
 
 <header class="site-header">
-  <a href="index.html" class="brand"><span class="mark">&sect;</span> Motion Mindset</a>
+  <a href="index.html" class="brand"><span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation</a>
   <div class="header-right">
     <nav>
-      <a href="index.html">Home</a>
-      <a href="guidance.html">Conversational Guidance</a>
-      <a href="motion.html" class="active">Motion Drafting</a>
+      <a href="index.html">Overview</a>
+      <a href="simulation.html">Simulation Workspace</a>
+      <a href="motion.html" class="active">Motion Studio</a>
     </nav>
     <div class="llm-pill" id="llm-status-pill">
       <span class="dot"></span>
-      <span id="llm-status-text">Checking Qwen 3.8…</span>
+      <span id="llm-status-text">Checking Model…</span>
     </div>
   </div>
 </header>
@@ -116,7 +116,7 @@
 
   function getSavedSnapshot() {
     try {
-      const raw = localStorage.getItem(SNAPSHOT_STORAGE_KEY);
+      const raw = localStorage.getItem("strategicJudgmentSessionSnapshot") || localStorage.getItem(SNAPSHOT_STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch (_) {
       return null;

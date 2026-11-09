@@ -28,6 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent
 _SESSION_ROUTE_RE = re.compile(
     r"^/api/session/([a-zA-Z0-9_-]+)(?:/(case|message|skip|hint|export\.csv))?$"
 )
+_SIM_ROUTE_RE = re.compile(
+    r"^/api/simulation/([a-zA-Z0-9_-]+)(?:/(stage|priorities|tradeoffs|opponent|strategy|event|evaluate|export\.(?:csv|json)))?$"
+)
 
 
 class ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
@@ -127,6 +130,18 @@ class MotionGuidanceHandler(BaseHTTPRequestHandler):
                 if subaction == "export.csv":
                     csv_str = ctx.sessions.export_rubric_csv(session_id)
                     self._send_csv(f"evaluation_rubric_{session_id}.csv", csv_str)
+                    return
+
+            m_sim = _SIM_ROUTE_RE.match(route)
+            if m_sim:
+                session_id, subaction = m_sim.group(1), m_sim.group(2)
+                if subaction is None:
+                    data = ctx.sessions.serialize_session(ctx.sessions.load_session(session_id))
+                    self._send_json(200, data)
+                    return
+                if subaction == "export.csv":
+                    csv_str = ctx.sessions.export_simulation_rubric_csv(session_id)
+                    self._send_csv(f"strategic_judgment_report_{session_id}.csv", csv_str)
                     return
 
             if route.startswith("/api/"):
@@ -229,6 +244,77 @@ class MotionGuidanceHandler(BaseHTTPRequestHandler):
                         snapshot=snapshot,
                     )
                     self._send_csv(f"evaluation_rubric_{session_id}.csv", csv_str)
+                    return
+
+            m_sim = _SIM_ROUTE_RE.match(route)
+            if m_sim:
+                session_id, subaction = m_sim.group(1), m_sim.group(2)
+                if subaction == "stage":
+                    state = ctx.sessions.set_simulation_stage(
+                        session_id=session_id,
+                        stage=body.get("stage", 1),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "priorities":
+                    state = ctx.sessions.set_ranked_priorities(
+                        session_id=session_id,
+                        priorities=body.get("priorities", []),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "tradeoffs":
+                    state = ctx.sessions.update_tradeoffs(
+                        session_id=session_id,
+                        tradeoff_inputs=body.get("tradeoff_inputs", {}),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "opponent":
+                    state = ctx.sessions.submit_opponent_anticipation(
+                        session_id=session_id,
+                        anticipation_text=body.get("anticipation_text", ""),
+                        probability_estimate=body.get("probability_estimate"),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "strategy":
+                    state = ctx.sessions.submit_initial_strategy(
+                        session_id=session_id,
+                        branch=body.get("branch", "negotiate"),
+                        terms=body.get("terms", ""),
+                        rationale=body.get("rationale", ""),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "event":
+                    state = ctx.sessions.trigger_sim_event(
+                        session_id=session_id,
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "evaluate":
+                    state = ctx.sessions.submit_revision_and_evaluate(
+                        session_id=session_id,
+                        revised_action=body.get("revised_action", "negotiate"),
+                        pivoted=body.get("pivoted", False),
+                        revised_rationale=body.get("revised_rationale", ""),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "export.csv":
+                    csv_str = ctx.sessions.export_simulation_rubric_csv(
+                        session_id=session_id,
+                        snapshot=snapshot,
+                    )
+                    self._send_csv(f"strategic_judgment_report_{session_id}.csv", csv_str)
                     return
 
             self._send_json(404, {"error": f"Unknown POST endpoint: {route}"})

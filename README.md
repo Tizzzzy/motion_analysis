@@ -1,25 +1,59 @@
-# Motion Mindset — Conversational Motion Guidance
+# Innovation Lab | Strategic Judgment Simulation
 
-A client-centered, conversational training site for law students and junior attorneys preparing to counsel a client and evaluate/draft a motion (currently centered on Illinois breach-of-contract claims and the Seventh Circuit Rule 12(b)(6) framework).
+A controlled, interactive Illinois breach-of-contract hypothetical that develops law students' and junior attorneys' strategic judgment.
 
-## Architecture & Pages
+> **Working Direction (from Project Specification):**
+> *"Build a controlled, interactive Illinois breach-of-contract hypothetical that develops students' strategic judgment. The project is not primarily a motion-outcome predictor, case-upload analyzer, or litigation-procedure tutorial. Students should learn to discover client priorities, compare legally defensible strategies, anticipate opposing-party reactions, quantify uncertainty, and explain or revise a recommendation. A strong legal argument may still be a poor strategic choice for a particular client."*
 
-- **`index.html` — Home Overview**: Introduces the three-phase simulation, displays live Question Bank and Evaluation Rubric counts, and explains why the system evaluates legal/counseling completeness rather than judicial outcome probabilities (Medvedeva & McBride).
-- **`guidance.html` — Conversational Guidance**:
-  1. **Before Meeting (`Mentor Q&A`)**: Begins immediately with *"Who is the client and who can authorize decisions?"* Your Supervising Partner evaluates each response against the CSV rubric (`0–3`), coaches revisions Socratically when below competent (`< 2`), and advances automatically once competent (`2` or `3`).
-  2. **During Meeting (`Client Roleplay`)**: Roles switch — you interview the simulated client directly to uncover ranked priorities, budget limits, settlement conditions, business relationships, deadlines, risk preferences, supporting/adverse facts, and formal approval authority while the rubric evaluator tracks your coverage and rapport.
-  3. **After Meeting (`Mentor Debrief`)**: Synthesize client priorities, analyze pleading plausibility under Illinois contract law (*Zahdan*, 735 ILCS 5/2-603) and the 7th Circuit Rule 12(b)(6) *Twombly/Iqbal* framework (Four Corners & Incorporation-by-Reference), weigh alternatives, and formulate a client-aligned recommendation.
-  - Includes an **optional Case File side panel** with a one-click **Sample NDIL Breach-of-Contract Case** (*Heartland Specialty Foods v. Lakeview Cold Chain Logistics*) or custom pasted complaint text, plus live **Initial & Revised Rubric Scoring** and CSV export.
-- **`motion.html` — Motion Drafting Studio**: Carries your conversational session insights and complaint text into a structured editor (full Rule 12(b)(6) motion, partial motion, or strategic counseling memo) with live Qwen 3.8-27B Partner Review.
+---
 
-## Dynamic CSV Hot-Reloading
+## The 6-Stage Student Experience & Branching Model
 
-Both curriculum spreadsheets are read dynamically and watched by modification timestamp (`mtime`):
+1. **Stage 1 &middot; Client Interview**:
+   - Ask open-ended questions to simulated client representatives (**Elena Rostova**, CEO, and **Marcus Vance**, Warehouse Operations).
+   - Discover hidden corporate authority thresholds (CEO authority up to \$25,000; CFO sign-off required above \$25,000; warehouse ops has no dispositive filing authority).
+   - Elicit and rank the client's **Top Three Priorities** (limiting \$340k exposure, protecting cold-chain reputation, and resolving before the **75-day commercial bank refinancing deadline**).
+2. **Stage 2 &middot; Quantify Tradeoffs (Quantitative Decision Support)**:
+   - Interactive calculation engine for legal costs, liabilities, resolution times, and conditional probabilities.
+   - Core 7th Circuit Formula: `P(dismissal without amendment) = P(motion granted) * P(no amendment | grant)`.
+   - Explicit pedagogical separation of:
+     - `[Binding Legal Rule]` (e.g. FRCP 15(a)(2) / *Runnion* liberal amendment rule; Master Agreement Sec. 11.2 limitation of liability).
+     - `[Empirical Reference Observation]` (e.g. FJC motion-to-dismiss empirical rates).
+     - `[Scenario Assumption]` (e.g. 75-day bank credit refinancing window).
+   - Real-time Expected Value (EV), multi-attribute client utility scores (0–100%), and sensitivity analysis curves.
+3. **Stage 3 &middot; Opponent Anticipation**:
+   - Analyze opposing party (Heartland Specialty Foods) commercial pressures (dairy supplier debt, retail placement, spoilage loss).
+   - Anticipate opposing counsel's reaction to settlement versus a Rule 12(b)(6) motion, with instant Socratic feedback.
+4. **Stage 4 &middot; Initial Recommendation (Strategy Selection)**:
+   - Commit to a defensible course of action:
+     - **Option A &middot; Structured Early Settlement** (\$35k–\$42.5k cash + storage credits + mutual release + confidentiality).
+     - **Option B &middot; Rule 12(b)(6) Motion to Dismiss** (targeting Count I consequential damages under Sec. 11.2).
+     - **Option C &middot; Pre-Answer Factual Investigation** (informal 30-day extension, sensor telemetry audit, insurance notice).
+   - Record decision and detailed strategic rationale tied to client business constraints.
+5. **Stage 5 &middot; Experience a Simulated Event**:
+   - Scripted, controlled scenario event triggered based on the student's strategy:
+     - *Litigate*: Judge Kendall issues order dismissing consequential damages without prejudice, but grants 21 days leave to amend under *Runnion*. Heartland amends pleading willful misconduct via leaked maintenance ticket #409, spending \$19,400 in fees and **missing the 75-day bank loan deadline**.
+     - *Negotiate*: Heartland counters with \$42,500 cash + \$20k storage credits, settling within 38 days before bank review.
+     - *Investigate*: Audit uncovers dock logs + ticket #409, secures \$30k insurance contribution and 45-day mediation standstill.
+6. **Stage 6 &middot; Reflect, Revise & 100-Point Faculty Rubric Assessment**:
+   - Pre/post comparison of reasoning before and after experiencing the event.
+   - Automated Socratic grading against the official **100-Point Faculty Rubric**:
+     1. Client Interviewing (25 pts)
+     2. Legal Reasoning (25 pts)
+     3. Risk & Uncertainty (20 pts)
+     4. Strategic Judgment (20 pts)
+     5. Reflection & Revision (10 pts)
+   - Performance anchors: **Strong** (90–100), **Competent** (75–89), **Developing** (60–74), **Needs Improvement** (<60).
+   - Downloadable CSV scorecard report and printable PDF assessment.
 
-- `Client Simulation Question Bank(Question Bank).csv`
-- `Client Simulation Question Bank(Evaluation Rubric).csv`
+---
 
-Replacing or updating either CSV file in the repository automatically updates phases, questions, evaluation criteria, extra columns, and rubric skills **without any code changes** (including UTF-8 and Windows-1252 encodings and skipping blank placeholder rows).
+## Architecture & Workspaces
+
+- **`index.html` — Overview**: Homepage introducing the Innovation Lab simulation, learning goals, case background, and 100-point rubric breakdown.
+- **`simulation.html` — 6-Stage Simulation Workspace**: The full interactive simulation application covering Stages 1 through 6.
+- **`motion.html` — Motion Drafting Studio**: Editor for drafting Rule 12(b)(6) briefs or client counseling memos, carrying over simulation findings and case notes.
+- **`guidance.html` & `mindset.html`**: Automatically route to `simulation.html`.
 
 ---
 
@@ -42,23 +76,19 @@ Or launch directly from a Quest login node into an active SLURM GPU job (`squeue
 srun --jobid <JOBID> --overlap /projects/p32143/ai_law_course/run_qwen_with_tunnel.sh
 ```
 
-What `run_qwen_with_tunnel.sh` does automatically:
+`run_qwen_with_tunnel.sh` automatically:
 1. Generates and persists a secret Bearer token in `data/qwen_api_key.txt` (`QWEN_API_KEY`) so only your Vercel backend can call your GPU.
 2. Activates `qwen` + `module load vllm/0.19.0` and starts `vllm_server.py` on port `8001`.
 3. Downloads standalone `cloudflared` to `bin/cloudflared` (if not already present), opens an outbound HTTP/2 TLS tunnel, and prints:
    - `VLLM_URL` (e.g. `https://xxxx.trycloudflare.com`)
    - `QWEN_API_KEY` (e.g. `qwen_sk_...`)
 
-> **Tip — Permanent Tunnel URL across SLURM Jobs**:
-> Quick Tunnel URLs (`*.trycloudflare.com`) change when a SLURM job restarts. To keep `VLLM_URL` fixed permanently so you never have to touch Vercel settings again, pass either a free static ngrok domain (`NGROK_DOMAIN=your-name.ngrok-free.app ./run_qwen_with_tunnel.sh`) or a Cloudflare Named Tunnel token (`CLOUDFLARE_TUNNEL_TOKEN=... ./run_qwen_with_tunnel.sh`).
-
 ### 2. Configure Vercel Environment Variables & Deploy
 
 1. In your **Vercel Project Dashboard** (`Settings` → `Environment Variables`), add:
    - `VLLM_URL` = the HTTPS tunnel URL printed by `run_qwen_with_tunnel.sh`
    - `QWEN_API_KEY` = the key printed by `run_qwen_with_tunnel.sh` (from `data/qwen_api_key.txt`)
-   - *(Note: Ensure your Vercel project's Function Max Duration supports 30–60s; `vercel.json` requests `maxDuration: 60`.)*
-2. Commit and push to `main` (or run `vercel --prod`) to deploy. When updating the CSV files later, simply replace the CSVs and push to `main`.
+2. Commit and push to `main` (or run `vercel --prod`) to deploy.
 
 ---
 
@@ -77,9 +107,7 @@ On your login/IDE node (e.g., `quser42` for automatic VS Code port forwarding) o
 
 ```bash
 cd /projects/p32143/ai_law_course
-./run_web.sh --port 8821 --vllm-url http://qgpu2008:8001
+./run_web.sh --port 8821 --vllm-url http://qgpu2009:8001
 ```
-
-*(Or run everything inside a single process directly on the GPU node via `python server.py --port 8821 --local-vllm`.)*
 
 Then open `http://localhost:8821` in your browser.
