@@ -75,10 +75,10 @@
     <span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation
   </a>
   <div class="header-right">
-    <button class="btn btn-ghost" id="btn-open-case" style="color:#fff; border-color:rgba(255,255,255,0.3); font-size:0.84rem;">
+    <button class="btn-header" id="btn-open-case">
       &boxempty; Case File &amp; Complaint
     </button>
-    <a href="motion.html" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3); font-size:0.84rem;">
+    <a href="motion.html" class="btn-header">
       Motion Studio
     </a>
     <div class="llm-pill" id="llm-status-pill" title="Qwen 3.8-27B vLLM status">
@@ -159,10 +159,10 @@
             </div>
 
             <!-- Composer -->
-            <div class="composer-box" style="margin-top:12px;">
-              <textarea id="interview-input" class="composer-textarea" rows="2" placeholder="Ask your client an open-ended question (e.g. business goals, budget, deadlines, contract terms, or records)…"></textarea>
-              <div class="composer-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                <span class="note" id="interview-hint-text">Press Enter to send (Shift+Enter for newline)</span>
+            <div class="composer-box">
+              <textarea id="interview-input" class="composer-textarea" placeholder="Ask your client an open-ended question (e.g. business goals, budget, deadlines, contract terms, or records)…"></textarea>
+              <div class="composer-footer">
+                <span class="note" id="interview-hint-text">Press Enter &crarr; to send &middot; Shift+Enter for newline</span>
                 <button class="btn btn-primary" id="btn-send-interview" onclick="sendInterviewMessage()">Send Question &rarr;</button>
               </div>
             </div>
@@ -594,10 +594,10 @@
       <button onclick="closeCaseModal()" style="background:none; border:none; color:#fff; font-size:1.4rem; cursor:pointer;">&times;</button>
     </div>
     <div class="case-modal-tabs">
-      <button class="case-modal-tab-btn active" onclick="switchCaseTab('intake')">Supervising Partner Intake</button>
-      <button class="case-modal-tab-btn" onclick="switchCaseTab('complaint')">Federal Complaint Excerpt</button>
-      <button class="case-modal-tab-btn" onclick="switchCaseTab('clauses')">Master Agreement Clauses</button>
-      <button class="case-modal-tab-btn" onclick="switchCaseTab('precedent')">7th Circuit Precedent</button>
+      <button class="case-modal-tab-btn active" onclick="switchCaseTab('intake', this)">Supervising Partner Intake</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('complaint', this)">Federal Complaint Excerpt</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('clauses', this)">Master Agreement Clauses</button>
+      <button class="case-modal-tab-btn" onclick="switchCaseTab('precedent', this)">7th Circuit Precedent</button>
     </div>
     <div class="case-modal-content" id="case-modal-body">
       <!-- Populated dynamically -->
@@ -680,9 +680,14 @@ Section 14.8 (Attorney's Fees):
   function closeCaseModal() {
     document.getElementById("case-modal").classList.remove("open");
   }
-  function switchCaseTab(tabKey) {
+  function switchCaseTab(tabKey, targetEl) {
     document.querySelectorAll(".case-modal-tab-btn").forEach(b => b.classList.remove("active"));
-    event && event.target && event.target.classList && event.target.classList.add("active");
+    if (targetEl) {
+      targetEl.classList.add("active");
+    } else {
+      const btn = Array.from(document.querySelectorAll(".case-modal-tab-btn")).find(b => b.getAttribute("onclick") && b.getAttribute("onclick").includes(tabKey));
+      if (btn) btn.classList.add("active");
+    }
     document.getElementById("case-modal-body").textContent = CASE_TEXTS[tabKey] || "";
   }
   document.getElementById("btn-open-case").onclick = openCaseModal;
@@ -817,8 +822,8 @@ Section 14.8 (Attorney's Fees):
     if (msgs.length === 0) {
       thread.innerHTML = `
         <div class="chat-bubble client" style="background:#eef7f8; border:1px solid #c2e2e6; border-radius:10px; padding:14px; margin-bottom:12px;">
-          <div style="font-weight:700; color:#1d5b63; font-size:0.83rem; margin-bottom:4px;">Elena Rostova &middot; CEO</div>
-          Hello counsel. Marcus forwarded you Heartland's complaint. We are very concerned and need to figure out our strategy right away. What do you need to know from us?
+          <div style="font-weight:700; color:#1d5b63; font-size:0.83rem; margin-bottom:4px;">Elena Rostova, CEO (with Marcus Vance)</div>
+          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">Hello counsel. Thank you for making time to meet with us on such short notice. Marcus and I received Heartland's federal complaint claiming over $408,000 for cheese spoilage in Bay C. Marcus wants to file an immediate motion to dismiss, but as CEO, I have to make sure we make the right business move and consider our cash reserves, our credit facility refinancing in 75 days, and our commercial relationships.\n\nWhat questions do you have for us about our priorities, budget, the contract, or what happened?</div>
         </div>
       `;
       return;
@@ -828,9 +833,14 @@ Section 14.8 (Attorney's Fees):
       const bg = isUser ? "#eef2f8" : "#eef7f8";
       const border = isUser ? "#c8d7ed" : "#c2e2e6";
       const speakerColor = isUser ? "var(--navy)" : "#1d5b63";
-      const speaker = isUser ? "Lawyer (You)" : (m.speaker || "Elena Rostova, CEO");
+      let speaker = m.speaker;
+      if (isUser) {
+        speaker = "Lawyer (You)";
+      } else if (!speaker || speaker === "Client") {
+        speaker = "Elena Rostova, CEO (with Marcus Vance)";
+      }
       return `
-        <div class="chat-bubble ${isUser ? 'user' : 'client'}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px;">
+        <div class="chat-bubble ${isUser ? 'user' : 'client'}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;">
           <div style="font-weight:700; color:${speakerColor}; font-size:0.83rem; margin-bottom:4px;">${escapeHtml(speaker)}</div>
           <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">${escapeHtml(m.content)}</div>
         </div>
@@ -844,11 +854,37 @@ Section 14.8 (Attorney's Fees):
     const text = input.value.trim();
     if (!text || !sessionState) return;
 
+    // 1. Immediately clear and disable input to prevent double sending
     input.value = "";
     const btn = document.getElementById("btn-send-interview");
     btn.disabled = true;
-    btn.textContent = "Elena typing…";
+    input.disabled = true;
+    btn.textContent = "Sending…";
 
+    // 2. Optimistic UI: Immediately append the user message to the chat thread!
+    const thread = document.getElementById("chat-thread-stream");
+    const userBubble = document.createElement("div");
+    userBubble.className = "chat-bubble user";
+    userBubble.style.cssText = "background:#eef2f8; border:1px solid #c8d7ed; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;";
+    userBubble.innerHTML = `
+      <div style="font-weight:700; color:var(--navy); font-size:0.83rem; margin-bottom:4px;">Lawyer (You)</div>
+      <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">${escapeHtml(text)}</div>
+    `;
+    thread.appendChild(userBubble);
+
+    // 3. Immediately append animated typing indicator for Elena Rostova
+    const typingBubble = document.createElement("div");
+    typingBubble.id = "active-typing-indicator";
+    typingBubble.className = "chat-bubble client";
+    typingBubble.style.cssText = "background:#eef7f8; border:1px solid #c2e2e6; border-radius:10px; padding:12px 14px; margin-bottom:12px; display:inline-flex; align-items:center; gap:8px; animation:fadeInBubble 0.2s ease;";
+    typingBubble.innerHTML = `
+      <span style="font-weight:700; color:#1d5b63; font-size:0.83rem;">Elena Rostova is answering</span>
+      <span class="typing-dots"><span></span><span></span><span></span></span>
+    `;
+    thread.appendChild(typingBubble);
+    thread.scrollTop = thread.scrollHeight;
+
+    // 4. Send to server
     try {
       const res = await fetch(`/api/session/${sessionState.session_id}/message`, {
         method: "POST",
@@ -862,12 +898,22 @@ Section 14.8 (Attorney's Fees):
         sessionState = await res.json();
         saveSnapshot();
         renderChatThread();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert("Error from client interview service: " + (err.error || "Server error"));
+        const ind = document.getElementById("active-typing-indicator");
+        if (ind) ind.remove();
       }
     } catch (e) {
       console.error(e);
+      alert("Network error communicating with client. Please check your connection.");
+      const ind = document.getElementById("active-typing-indicator");
+      if (ind) ind.remove();
     } finally {
       btn.disabled = false;
+      input.disabled = false;
       btn.textContent = "Send Question →";
+      input.focus();
     }
   }
 

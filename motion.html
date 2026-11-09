@@ -267,8 +267,8 @@ V. OPEN VERIFICATION ITEMS & NEXT APPROVAL STEPS
 
     els.recapBody.innerHTML = `
       <p class="note" style="margin:0;">
-        No active conversational session found yet.
-        <a href="guidance.html" style="color:var(--navy); font-weight:700;">Complete Conversational Guidance</a>
+        No active simulation session found yet.
+        <a href="simulation.html" style="color:var(--navy); font-weight:700;">Open Simulation Workspace</a>
         first so your client's priorities and rubric insights carry into your draft!
       </p>
     `;
@@ -310,7 +310,7 @@ V. OPEN VERIFICATION ITEMS & NEXT APPROVAL STEPS
         <p class="note" style="margin:0 0 10px;">
           Session started (${sess.completed_questions}/${sess.total_questions} completed), no answers recorded yet.
         </p>
-        <a href="guidance.html" class="btn btn-ghost btn-sm">Return to Conversational Guidance &rarr;</a>
+        <a href="simulation.html" class="btn btn-ghost btn-sm">Return to Simulation &rarr;</a>
       `;
       return;
     }
@@ -318,7 +318,7 @@ V. OPEN VERIFICATION ITEMS & NEXT APPROVAL STEPS
     els.recapBody.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <span class="score-pill pass">${sess.completed_questions}/${sess.total_questions} Topics Covered</span>
-        <a href="guidance.html" class="note" style="font-weight:600; color:var(--navy);">Back to Chat &rarr;</a>
+        <a href="simulation.html" class="note" style="font-weight:600; color:var(--navy);">Back to Simulation &rarr;</a>
       </div>
       <div class="recap-qa-list">
         ${questions.map(item => `
