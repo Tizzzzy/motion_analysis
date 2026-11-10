@@ -136,25 +136,55 @@
         <div class="stage-col-main">
           <div class="stage-card">
             <div class="stage-card-header">
-              <div class="stage-eyebrow">Stage 1 &middot; Fact Discovery &amp; Constraint Elicitation</div>
+              <div class="stage-eyebrow">Stage 1 &middot; Preparation, Fact Discovery &amp; Client Interview</div>
               <h2 class="stage-title">Interview the Client: Lakeview Cold Chain Logistics</h2>
               <p class="stage-desc">
-                Ask open-ended questions to uncover Elena Rostova's true business objectives, budget limits,
-                decision authority thresholds, and the critical commercial deadline. <em>The client only reveals facts when appropriately asked.</em>
+                First, review your supervisory partner's preparation questions (Rules 1.13, 1.2, 1.4). Then conduct the interactive client interview with Elena Rostova and Marcus Vance to uncover business constraints, budget limits, and the critical 75-day commercial deadline.
               </p>
             </div>
+
+            <!-- Step 1A: Supervisory Preparation Questions (Word Doc Prompts Q1 - Q3) -->
+            <details class="prep-accordion" open style="margin-bottom:16px;">
+              <summary>
+                <span style="color:var(--gold-dark); margin-right:6px;">&#9733;</span>
+                Step 1A &middot; Preparation &amp; Client Understanding Prompts (Word Doc Questions)
+              </summary>
+              <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:10px; line-height:1.55;">
+                <p style="margin:0 0 10px;">
+                  Before interviewing Elena Rostova and Marcus Vance, ground your strategy in these supervisory preparation questions:
+                </p>
+                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px; margin-bottom:8px;">
+                  <strong style="color:var(--navy);">Q1 (Representation &amp; Authority):</strong> "Marcus has instructed you to file a motion to dismiss immediately. Before acting on that request, whose interests are you representing, and whose authorisation do you need?"
+                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
+                    <span class="legal-source-badge">Illinois Rules 1.13 &amp; 1.2</span> &middot; You represent the corporate entity (Lakeview Cold Chain Logistics, LLC), not employee Marcus Vance. CEO Elena Rostova holds executive authority, with CFO sign-off required above $25,000.
+                  </div>
+                </div>
+                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px; margin-bottom:8px;">
+                  <strong style="color:var(--navy);">Q2 (Known Facts vs. Assumptions):</strong> "What information do you currently know, and what assumptions are you making about the client's objectives?"
+                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
+                    <span class="legal-source-badge">Illinois Rule 1.4</span> &middot; Separate known facts (served federal complaint alleging cheese spoilage) from assumptions (assuming client wants an aggressive fight). Identify information gaps regarding client finances and deadlines.
+                  </div>
+                </div>
+                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px;">
+                  <strong style="color:var(--navy);">Q3 (Interview Question Prioritization):</strong> "What three questions would you prioritise in your client interview, and how could the answers affect your eventual recommendation?"
+                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
+                    <span class="legal-source-badge">Illinois Rules 1.4 &amp; 2.1</span> &middot; Prioritize uncovering (1) decision authority thresholds, (2) financial/legal budget limits, (3) commercial deadlines (bank refinancing), and (4) customer relationship retention.
+                  </div>
+                </div>
+              </div>
+            </details>
 
             <!-- Persona Indicator -->
             <div class="persona-strip">
               <div class="persona-avatar elena">ER</div>
               <div class="persona-info">
-                <div class="name">Elena Rostova &middot; CEO (with Marcus Vance, Warehouse Ops)</div>
+                <div class="name">Step 1B &middot; Live Client Interview: Elena Rostova, CEO (with Marcus Vance)</div>
                 <div class="role">Corporate Client Representative &middot; Speaks for Lakeview Cold Chain Logistics, LLC</div>
               </div>
             </div>
 
             <!-- Chat Stream -->
-            <div class="chat-thread" id="chat-thread-stream" style="min-height: 380px; max-height: 480px; overflow-y: auto; margin-bottom: 16px;">
+            <div class="chat-thread" id="chat-thread-stream" style="min-height: 360px; max-height: 460px; overflow-y: auto; margin-bottom: 16px;">
               <!-- Dynamic Messages injected here -->
             </div>
 
@@ -253,39 +283,79 @@
           </p>
         </div>
 
+        <!-- Stage 1 Ingestion Banner -->
+        <div class="stage1-sync-banner" id="stage1-ingestion-banner">
+          <div>
+            <div class="stage1-sync-title">
+              <span>&#10003; Ingested from Stage 1: Client Priorities &amp; Constraints</span>
+            </div>
+            <div style="font-size:0.84rem; color:var(--ink-soft); margin-top:6px; display:flex; flex-wrap:wrap; gap:8px;" id="stage1-pills-container">
+              <span class="stage1-pill-tag" id="sync-p1">#1: Resolve before 75-day bank refinancing</span>
+              <span class="stage1-pill-tag" id="sync-p2">#2: Control litigation costs ($15k-$25k max)</span>
+              <span class="stage1-pill-tag" id="sync-p3">#3: Preserve Heartland relationship ($190k/yr)</span>
+            </div>
+            <div style="font-size:0.78rem; color:#0e444b; margin-top:6px;">
+              <strong>Discovered Constraints:</strong> 75-Day Bank Refinancing Review &middot; $15k&ndash;$25k Budget Cap &middot; Master Agreement Sec. 11.2 Liability Cap
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary btn-sm" onclick="resetToStage1Defaults()" style="font-size:0.8rem; padding:6px 12px; background:#fff; border-color:#bce1e6;">
+              &#8634; Reset to Stage 1 Discovered Defaults
+            </button>
+          </div>
+        </div>
+
         <!-- Formula Callout -->
         <div class="callout" style="background:#eef4fb; border-left:4px solid var(--navy); padding:14px 18px; border-radius:6px; margin-bottom:20px; font-size:0.88rem;">
           <strong>Core 7th Circuit Conditional Formula:</strong><br>
           <code>P(dismissal without amendment) = P(motion granted) &times; P(no amendment | grant)</code><br>
-          <span style="color:var(--muted); font-size:0.82rem;">Under <em>Runnion v. Girl Scouts</em> (7th Cir. 2015), district courts routinely grant leave to amend, meaning even a granted motion rarely ends the case permanently.</span>
+          <span style="color:var(--muted); font-size:0.82rem;">Under <em>Runnion v. Girl Scouts</em> (7th Cir. 2015), district courts routinely grant leave to amend, meaning even a granted motion rarely terminates litigation without an amended pleading.</span>
         </div>
 
-        <div class="tradeoff-section-title">1. Legal Cost &amp; Exposure Inputs</div>
-        <div class="tradeoff-form-grid">
+        <!-- Section 1: Interactive Visual Decision Tree -->
+        <div class="tradeoff-section-title">1. Interactive Decision Tree &amp; Probability Branches</div>
+        <p class="note" style="margin-bottom:12px;">
+          This visual decision tree maps each course of action from T=0 through judicial rulings, leave-to-amend outcomes, and commercial refinancing deadlines:
+        </p>
+        <div class="decision-tree-wrapper" id="decision-tree-container">
+          <!-- Populated dynamically by renderDecisionTree() -->
+        </div>
+
+        <!-- Section 2: Feature Modification Controls -->
+        <div class="tradeoff-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <span>2. Modify Decision Tree Features &amp; Probabilities at Any Time</span>
+          <span class="note" style="font-size:0.8rem; color:var(--gold-dark);">&#9889; Decision tree, EV, and utility scores re-calculate live on input</span>
+        </div>
+        <p class="note" style="margin-bottom:14px;">
+          Adjust any financial offer, fee estimate, probability, or priority weight below to see the decision tree and sensitivity curve recalculate dynamically:
+        </p>
+
+        <div style="font-weight:700; font-size:0.88rem; color:var(--navy); margin-bottom:8px;">A. Legal Cost &amp; Exposure Features</div>
+        <div class="tradeoff-form-grid" style="margin-bottom:18px;">
           <div class="tradeoff-field">
             <label>Proposed Cash Settlement ($)</label>
-            <input type="number" id="trade-settle-cash" value="35000" step="5000" onchange="recalculateTradeoffs()">
+            <input type="number" id="trade-settle-cash" value="35000" step="5000" oninput="recalculateTradeoffs()">
             <div class="field-hint">Plausible range: $25,000 &ndash; $45,000</div>
           </div>
           <div class="tradeoff-field">
             <label>Storage Fee Credit Offer ($)</label>
-            <input type="number" id="trade-settle-credit" value="20000" step="5000" onchange="recalculateTradeoffs()">
+            <input type="number" id="trade-settle-credit" value="20000" step="5000" oninput="recalculateTradeoffs()">
             <div class="field-hint">Warehousing space cost is ~45% of retail credit</div>
           </div>
           <div class="tradeoff-field">
             <label>Rule 12(b)(6) Motion Legal Fees ($)</label>
-            <input type="number" id="trade-fee-motion" value="20000" step="2500" onchange="recalculateTradeoffs()">
+            <input type="number" id="trade-fee-motion" value="20000" step="2500" oninput="recalculateTradeoffs()">
             <div class="field-hint">Briefing, hearing, and reply memorandum</div>
           </div>
           <div class="tradeoff-field">
             <label>Continuing Trial/Discovery Fees ($)</label>
-            <input type="number" id="trade-fee-trial" value="95000" step="10000" onchange="recalculateTradeoffs()">
+            <input type="number" id="trade-fee-trial" value="95000" step="10000" oninput="recalculateTradeoffs()">
             <div class="field-hint">If complaint is amended and case proceeds</div>
           </div>
         </div>
 
-        <div class="tradeoff-section-title">2. Conditional Probabilities &amp; Amendment Assumptions</div>
-        <div class="tradeoff-form-grid">
+        <div style="font-weight:700; font-size:0.88rem; color:var(--navy); margin-bottom:8px;">B. Conditional Probabilities &amp; Amendment Assumptions</div>
+        <div class="tradeoff-form-grid" style="margin-bottom:18px;">
           <div class="tradeoff-field">
             <label>P(Rule 12(b)(6) Motion Granted): <span id="val-p-grant">60%</span></label>
             <input type="range" id="trade-p-grant" min="10" max="90" value="60" oninput="updateProbSliders()">
@@ -304,8 +374,8 @@
           </div>
         </div>
 
-        <div class="tradeoff-section-title">3. Client Multi-Attribute Priority Weights (1 to 5 Scale)</div>
-        <div class="tradeoff-form-grid">
+        <div style="font-weight:700; font-size:0.88rem; color:var(--navy); margin-bottom:8px;">C. Client Multi-Attribute Priority Weights (1 to 5 Scale)</div>
+        <div class="tradeoff-form-grid" style="margin-bottom:20px;">
           <div class="tradeoff-field">
             <label>Money / Fee Constraint (Weight 1&ndash;5): <span id="val-w-money">5</span></label>
             <input type="range" id="trade-w-money" min="1" max="5" value="5" oninput="updateWeightSliders()">
@@ -324,15 +394,15 @@
           </div>
         </div>
 
-        <!-- Comparative Output Cards -->
-        <div class="tradeoff-section-title">4. Real-Time Expected Value &amp; Client Utility Comparison</div>
+        <!-- Section 3: Comparative Output Cards -->
+        <div class="tradeoff-section-title">3. Real-Time Expected Value &amp; Client Utility Comparison</div>
         <div class="comparison-grid" id="comparison-cards-row">
           <!-- Injected dynamically by JS -->
         </div>
 
-        <!-- Sensitivity Analysis -->
+        <!-- Section 4: Sensitivity Analysis -->
         <div class="sensitivity-box">
-          <h4 style="margin:0 0 6px; color:var(--navy);">Sensitivity Analysis: How Amendment Odds Change the Expected Cost</h4>
+          <h4 style="margin:0 0 6px; color:var(--navy);">4. Sensitivity Analysis: How Amendment Odds Change the Expected Cost</h4>
           <p class="note" style="margin-bottom:12px;">
             Even if your Rule 12(b)(6) motion is 60% likely to be granted, notice how the expected financial cost changes as leave-to-amend probabilities vary:
           </p>
@@ -342,6 +412,84 @@
             </table>
           </div>
           <div class="note" id="sensitivity-insight-text" style="margin-top:10px; font-weight:600; color:var(--navy);"></div>
+        </div>
+
+        <!-- Section 5: Stage 2 Legal Analysis Questions (Word Doc Q4 - Q8) -->
+        <div class="tradeoff-section-title" style="margin-top:24px;">5. Stage 2 &middot; Legal Analysis &amp; Pleading Standards (Word Doc Questions)</div>
+        <p class="note" style="margin-bottom:12px;">
+          Supervisory partners require young attorneys to ground quantitative tradeoff models in these essential Illinois and federal pleading doctrines:
+        </p>
+
+        <div class="legal-q-grid">
+          <!-- Q4 -->
+          <details class="legal-q-card" open>
+            <summary>Q4 &middot; Contract Elements &amp; Pleading Standards (Illinois Law)</summary>
+            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
+              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?"</p>
+              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
+                <span class="legal-source-badge">Ivey v. Transunion Rental Screening Solutions, Inc., 2022 IL 127903, &para; 28</span>
+                <div style="margin-top:6px; font-size:0.82rem;">
+                  To state a claim for breach of contract under Illinois law, plaintiff must allege: (1) existence of a valid contract, (2) performance by plaintiff, (3) breach by defendant, and (4) resulting injury/damages.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Q5 -->
+          <details class="legal-q-card">
+            <summary>Q5 &middot; Concrete Facts vs. Legal Conclusions (Twombly / Iqbal)</summary>
+            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
+              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Which allegations describe concrete facts, and which are primarily legal conclusions? How does this distinction affect your Rule 12(b)(6) analysis?"</p>
+              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
+                <span class="legal-source-badge">Federal Rule 8(a)(2); Twombly and Iqbal</span>
+                <div style="margin-top:6px; font-size:0.82rem;">
+                  Concrete factual allegations (e.g., recorded cheese temperature of 45&deg;F) are accepted as true on a 12(b)(6) motion. Conclusory assertions (e.g., "Lakeview acted with willful gross negligence and bad faith") are legal labels stripped away under <em>Twombly/Iqbal</em>.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Q6 -->
+          <details class="legal-q-card">
+            <summary>Q6 &middot; Four Corners vs. Outside Extrinsic Evidence (Rule 12(d))</summary>
+            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
+              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Suppose Lakeview's internal refrigeration records contradict Heartland's allegations. Can you rely on those records to argue that the complaint should be dismissed under Rule 12(b)(6)? Why or why not?"</p>
+              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
+                <span class="legal-source-badge">Federal Rules 12(b)(6) &amp; 12(d)</span>
+                <div style="margin-top:6px; font-size:0.82rem;">
+                  A Rule 12(b)(6) motion is strictly confined to the Four Corners of the complaint (and contracts incorporated by reference). Lakeview cannot introduce internal maintenance logs or ticket #409 without converting the motion to a Rule 56 summary judgment under Rule 12(d).
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Q7 -->
+          <details class="legal-q-card">
+            <summary>Q7 &middot; 7th Circuit Leave to Amend Practice (Runnion v. Girl Scouts)</summary>
+            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
+              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "If you successfully challenge part of the complaint, would that necessarily end the litigation? What possibility should you consider before estimating the benefit of filing the motion?"</p>
+              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
+                <span class="legal-source-badge">Federal Rule 15(a); Runnion v. Girl Scouts, 786 F.3d 510 (7th Cir. 2015)</span>
+                <div style="margin-top:6px; font-size:0.82rem;">
+                  In the Seventh Circuit, district courts routinely grant leave to amend upon granting a 12(b)(6) motion unless amendment is demonstrably futile. Even if Marcus Vance's motion is granted, Heartland will simply file an amended complaint, prolonging litigation past 75 days.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Q8 -->
+          <details class="legal-q-card">
+            <summary>Q8 &middot; Consequential Damages &amp; Lost Profits Uncertainty</summary>
+            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
+              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Heartland alleges $68,400 in direct losses and $340,000 in additional damages. How would you assess the legal and evidentiary uncertainty surrounding the claimed lost profits?"</p>
+              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
+                <span class="legal-source-badge">Ivey, &para;&para; 28&ndash;29; Tri-G, Inc. v. Burke, Bosselman &amp; Weaver; Contract Sec. 11.2</span>
+                <div style="margin-top:6px; font-size:0.82rem;">
+                  Consequential damages and lost profits require proof to a reasonable certainty under Illinois law. Crucially, Master Agreement Sec. 11.2 expressly waives consequential and special damages, capping liability to storage charges, rendering the $340,000 claim legally vulnerable.
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
 
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
@@ -712,6 +860,7 @@ Section 14.8 (Attorney's Fees):
         });
         if (res.ok) {
           sessionState = await res.json();
+          syncInputsFromState(true);
           renderSimulationState();
           return;
         }
@@ -728,6 +877,7 @@ Section 14.8 (Attorney's Fees):
       if (res.ok) {
         sessionState = await res.json();
         saveSnapshot();
+        syncInputsFromState(true);
         renderSimulationState();
       }
     } catch (e) {
@@ -784,6 +934,10 @@ Section 14.8 (Attorney's Fees):
     for (let i = 1; i <= 6; i++) {
       const p = document.getElementById(`view-stage-1`.replace('1', String(i)));
       if (p) p.style.display = (i === stepNum) ? "block" : "none";
+    }
+
+    if (stepNum === 2) {
+      syncInputsFromState(true);
     }
 
     renderSimulationState();
@@ -952,8 +1106,67 @@ Section 14.8 (Attorney's Fees):
   }
 
   // -------------------------------------------------------------------------
-  // STAGE 2 LOGIC (TRADEOFFS & QUANTITATIVE ENGINE)
+  // STAGE 2 LOGIC (TRADEOFFS & QUANTITATIVE DECISION TREE ENGINE)
   // -------------------------------------------------------------------------
+  const PRIORITY_LABELS = {
+    financial_exposure: "Limit $340k financial exposure",
+    refinancing_timing: "Resolve before 75-day bank refinancing",
+    reputation_reliability: "Protect refrigeration reliability reputation",
+    relationship_heartland: "Preserve Heartland relationship ($190k/yr)",
+    control_expenses: "Control litigation costs ($15k-$25k max)",
+    avoid_admission: "Avoid admitting wrongdoing or bad faith"
+  };
+
+  function syncInputsFromState(force = false) {
+    if (!sessionState || !sessionState.tradeoff_inputs) return;
+    const inp = sessionState.tradeoff_inputs;
+
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (force || document.activeElement !== el) {
+        el.value = val;
+      }
+    };
+
+    setVal("trade-settle-cash", inp.settlement_offer_cash ?? 35000);
+    setVal("trade-settle-credit", inp.settlement_offer_credits ?? 20000);
+    setVal("trade-fee-motion", inp.fee_motion ?? 20000);
+    setVal("trade-fee-trial", inp.fee_full_trial ?? 95000);
+
+    const pGrantPct = Math.round((inp.p_motion_granted ?? 0.6) * 100);
+    setVal("trade-p-grant", pGrantPct);
+    const valPGrant = document.getElementById("val-p-grant");
+    if (valPGrant) valPGrant.textContent = `${pGrantPct}%`;
+
+    const pNoAmendPct = Math.round((inp.p_no_amendment_given_grant ?? 0.15) * 100);
+    setVal("trade-p-no-amend", pNoAmendPct);
+    const valPNoAmend = document.getElementById("val-p-no-amend");
+    if (valPNoAmend) valPNoAmend.textContent = `${pNoAmendPct}%`;
+
+    const valPPerm = document.getElementById("val-p-perm");
+    if (valPPerm) {
+      const permPct = ((pGrantPct / 100) * (pNoAmendPct / 100) * 100).toFixed(1);
+      valPPerm.textContent = `${permPct}%`;
+    }
+
+    setVal("trade-w-money", inp.weight_money ?? 5);
+    const valWMoney = document.getElementById("val-w-money");
+    if (valWMoney) valWMoney.textContent = inp.weight_money ?? 5;
+
+    setVal("trade-w-speed", inp.weight_speed ?? 5);
+    const valWSpeed = document.getElementById("val-w-speed");
+    if (valWSpeed) valWSpeed.textContent = inp.weight_speed ?? 5;
+
+    setVal("trade-w-rel", inp.weight_relationship ?? 4);
+    const valWRel = document.getElementById("val-w-rel");
+    if (valWRel) valWRel.textContent = inp.weight_relationship ?? 4;
+
+    setVal("trade-w-rep", inp.weight_reputation ?? 4);
+    const valWRep = document.getElementById("val-w-rep");
+    if (valWRep) valWRep.textContent = inp.weight_reputation ?? 4;
+  }
+
   function updateProbSliders() {
     const pGrant = parseInt(document.getElementById("trade-p-grant").value, 10);
     const pNoAmend = parseInt(document.getElementById("trade-p-no-amend").value, 10);
@@ -1000,14 +1213,283 @@ Section 14.8 (Attorney's Fees):
         renderTradeoffInputsAndResults();
       }
     } catch (e) {
-      console.error(e);
+      console.error("Error recalculating tradeoffs:", e);
     }
+  }
+
+  async function resetToStage1Defaults() {
+    if (!sessionState) return;
+    const ranked = sessionState.ranked_priorities || [];
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/priorities`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priorities: ranked, session_snapshot: sessionState.session_snapshot }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        syncInputsFromState(true);
+        renderTradeoffInputsAndResults();
+      }
+    } catch (e) {
+      console.error("Failed to reset to Stage 1 defaults:", e);
+    }
+  }
+
+  function renderDecisionTree(tree) {
+    const container = document.getElementById("decision-tree-container");
+    if (!container) return;
+    if (!tree || !tree.root || !tree.root.branches) {
+      container.innerHTML = `<div class="note" style="padding:16px;">Decision tree data loading...</div>`;
+      return;
+    }
+
+    const branches = tree.root.branches;
+    const optA = branches.find(b => b.id === "negotiate");
+    const optB = branches.find(b => b.id === "litigate");
+    const optC = branches.find(b => b.id === "investigate");
+
+    let html = `
+      <div class="tree-root-box">
+        <div>
+          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; opacity:0.85;">Root Decision Node (T = 0)</div>
+          <div style="font-weight:700; font-size:1.08rem; letter-spacing:-0.01em;">Initial Strategic Course of Action</div>
+        </div>
+        <div style="font-size:0.82rem; background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.25);">
+          Discovered Constraints: <strong>75-Day Bank Refinancing Cutoff</strong> &middot; Budget Cap: <strong>$25,000</strong>
+        </div>
+      </div>
+
+      <div class="tree-branch-group">
+    `;
+
+    // Branch A: Structured Settlement Offer
+    if (optA) {
+      const deadlinePill = optA.deadline_met 
+        ? `<span class="tree-deadline-badge pass">&#10003; CLEARS 75-DAY DEADLINE (~${optA.duration_months} Mos / ${optA.expected_duration_days} Days)</span>`
+        : `<span class="tree-deadline-badge fail">&#10007; MISSED 75-DAY DEADLINE (~${optA.duration_months} Mos / ${optA.expected_duration_days} Days)</span>`;
+
+      html += `
+        <div class="tree-branch-card ${optA.deadline_met ? 'optimal' : ''}">
+          <div class="tree-branch-header">
+            <div>
+              <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); font-weight:600;">Option A &middot; Direct Commercial Settlement</div>
+              <div style="font-size:1.05rem; font-weight:700; color:var(--navy);">${escapeHtml(optA.label)}</div>
+            </div>
+            <div>${deadlinePill}</div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:16px; margin:8px 0 12px; font-size:0.88rem;">
+            <div><strong>Expected Total Cost (EV):</strong> <span style="font-weight:700; color:var(--navy);">$${Math.round(optA.expected_total_cost).toLocaleString()}</span></div>
+            <div><strong>Upfront Legal Fee:</strong> $${Math.round(optA.initial_cost).toLocaleString()}</div>
+            <div><strong>Client Utility Score:</strong> <span style="font-weight:700; color:var(--accept);">${optA.client_utility}/100</span></div>
+          </div>
+
+          <div class="tree-subnodes">
+            ${(optA.nodes || []).map(n => `
+              <div class="tree-leaf-node ${n.deadline_met ? 'pass' : 'fail'}">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <strong style="color:var(--navy);">${escapeHtml(n.name)}</strong>
+                  <span style="font-size:0.78rem; font-weight:700; color:var(--ink-soft);">${Math.round(n.prob * 100)}% prob</span>
+                </div>
+                <div style="font-size:0.82rem; color:var(--ink-soft); line-height:1.4;">
+                  ${escapeHtml(n.summary)}
+                </div>
+                <div style="margin-top:6px; font-size:0.78rem; font-weight:600; color:#15803d;">
+                  Cost: $${Math.round(n.total_ev).toLocaleString()} &middot; Timeline: ${n.duration_days} days &middot; &#10003; Resolves before loan underwriting
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    // Branch B: Rule 12(b)(6) Motion to Dismiss (Marcus's Plan)
+    if (optB) {
+      const chance = optB.chance_node || {};
+      const branchesGrant = (chance.branches && chance.branches[0]) || {};
+      const branchesDenied = (chance.branches && chance.branches[1]) || {};
+      const subChance = branchesGrant.sub_chance_node || {};
+      const runnionLeaves = subChance.branches || [];
+      const leaveAmend = runnionLeaves[0] || {};
+      const noAmend = runnionLeaves[1] || {};
+
+      const deadlinePill = `<span class="tree-deadline-badge fail">&#10007; ${escapeHtml(optB.deadline_status)} (~${optB.duration_months} Mos / ${optB.expected_duration_days} Days)</span>`;
+
+      html += `
+        <div class="tree-branch-card warning-fail">
+          <div class="tree-branch-header">
+            <div>
+              <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#991b1b; font-weight:600;">Option B &middot; Dispositive Pleading Challenge (Marcus's Instruction)</div>
+              <div style="font-size:1.05rem; font-weight:700; color:var(--navy);">${escapeHtml(optB.label)}</div>
+            </div>
+            <div>${deadlinePill}</div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:16px; margin:8px 0 12px; font-size:0.88rem;">
+            <div><strong>Expected Total Cost (EV):</strong> <span style="font-weight:700; color:#b91c1c;">$${Math.round(optB.expected_total_cost).toLocaleString()}</span></div>
+            <div><strong>Initial Motion Fee:</strong> $${Math.round(optB.initial_cost).toLocaleString()}</div>
+            <div><strong>Client Utility Score:</strong> <span style="font-weight:700; color:#b91c1c;">${optB.client_utility}/100</span></div>
+          </div>
+
+          <!-- Chance Node: Motion Outcome & Runnion Amendment -->
+          <div class="tree-chance-box">
+            <div class="tree-chance-title">
+              <span>&#9878; Chance Node 1: ${escapeHtml(chance.name || "P(12(b)(6) Motion Granted by Judge Kendall)")}</span>
+              <span>Granted: ${Math.round((chance.prob || 0.6) * 100)}% &middot; Denied: ${Math.round((1 - (chance.prob || 0.6)) * 100)}%</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:8px;">
+              <!-- Branch 1: Granted -> Chance Node 2: Runnion Leave to Amend -->
+              <div style="background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:12px;">
+                <div style="font-weight:700; color:var(--navy); font-size:0.86rem; margin-bottom:4px; display:flex; justify-content:space-between;">
+                  <span>1. Motion Granted (${Math.round((chance.prob || 0.6) * 100)}% Prob)</span>
+                  <span class="tree-deadline-badge borderline">7th Cir. Rule 15(a)</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--ink-soft); margin:0 0 8px;">
+                  Under <em>Runnion v. Girl Scouts</em> (7th Cir. 2015), district courts freely grant leave to amend upon granting a Rule 12(b)(6) dismissal.
+                </p>
+
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <!-- Leave to Amend Granted -->
+                  <div class="tree-leaf-node fail" style="padding:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <strong style="color:#b91c1c; font-size:0.83rem;">Leave to Amend Granted</strong>
+                      <span style="font-size:0.75rem; font-weight:700; color:#b91c1c;">Net ${((leaveAmend.net_prob || 0.51) * 100).toFixed(1)}% Prob</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:var(--ink-soft); margin-top:3px;">
+                      ${escapeHtml(leaveAmend.summary || "Heartland files amended complaint; full discovery ensues; bank refinancing frozen.")}
+                    </div>
+                    <div style="margin-top:5px; font-size:0.75rem; font-weight:700; color:#b91c1c;">
+                      Cost: $${Math.round(leaveAmend.cost || 217200).toLocaleString()} &middot; Timeline: ${leaveAmend.duration_months || 11.5} Mos &middot; &#10007; Refinancing Frozen
+                    </div>
+                  </div>
+
+                  <!-- Permanent Dismissal without Amendment -->
+                  <div class="tree-leaf-node borderline" style="padding:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <strong style="color:#b45309; font-size:0.83rem;">Permanent Dismissal (No Amend)</strong>
+                      <span style="font-size:0.75rem; font-weight:700; color:#b45309;">Net ${((noAmend.net_prob || 0.09) * 100).toFixed(1)}% Prob</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:var(--ink-soft); margin-top:3px;">
+                      ${escapeHtml(noAmend.summary || "Permanent dismissal without leave to amend. Fees $20k.")}
+                    </div>
+                    <div style="margin-top:5px; font-size:0.75rem; font-weight:700; color:#b45309;">
+                      Cost: $${Math.round(noAmend.cost || 20000).toLocaleString()} &middot; Timeline: ${noAmend.duration_months || 4.5} Mos (${noAmend.duration_days || 135} days) &middot; Exceeds 75 Days
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Branch 2: Motion Denied -->
+              <div style="background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:12px;">
+                <div style="font-weight:700; color:var(--navy); font-size:0.86rem; margin-bottom:4px; display:flex; justify-content:space-between;">
+                  <span>2. Motion Denied (${Math.round((1 - (chance.prob || 0.6)) * 100)}% Prob)</span>
+                  <span class="tree-deadline-badge fail">Direct Litigation</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--ink-soft); margin:0 0 8px;">
+                  Judge Kendall denies motion to dismiss; complaint sustained; case proceeds directly into Rule 26 discovery.
+                </p>
+                <div class="tree-leaf-node fail" style="padding:10px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:#b91c1c; font-size:0.83rem;">Full Discovery &amp; Trial Risk</strong>
+                    <span style="font-size:0.75rem; font-weight:700; color:#b91c1c;">Net ${Math.round(((branchesDenied.net_prob || 0.4)) * 100)}% Prob</span>
+                  </div>
+                  <div style="font-size:0.79rem; color:var(--ink-soft); margin-top:3px;">
+                    ${escapeHtml(branchesDenied.summary || "Discovery commences; legal spend exceeds $95,000; bank loan line downgraded.")}
+                  </div>
+                  <div style="margin-top:5px; font-size:0.75rem; font-weight:700; color:#b91c1c;">
+                    Cost: $${Math.round(branchesDenied.cost || 217200).toLocaleString()} &middot; Timeline: ${branchesDenied.duration_months || 14.0} Mos &middot; &#10007; Misses 75-Day Cutoff
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Branch C: Pre-Answer Investigation & Standstill
+    if (optC) {
+      const deadlinePill = optC.deadline_met 
+        ? `<span class="tree-deadline-badge pass">&#10003; CLEARS 75-DAY DEADLINE (~${optC.duration_months} Mos / ${optC.expected_duration_days} Days)</span>`
+        : `<span class="tree-deadline-badge fail">&#10007; MISSED 75-DAY DEADLINE</span>`;
+
+      html += `
+        <div class="tree-branch-card ${optC.deadline_met ? 'optimal' : ''}">
+          <div class="tree-branch-header">
+            <div>
+              <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); font-weight:600;">Option C &middot; Fact Discovery &amp; Standstill</div>
+              <div style="font-size:1.05rem; font-weight:700; color:var(--navy);">${escapeHtml(optC.label)}</div>
+            </div>
+            <div>${deadlinePill}</div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:16px; margin:8px 0 12px; font-size:0.88rem;">
+            <div><strong>Expected Total Cost (EV):</strong> <span style="font-weight:700; color:var(--navy);">$${Math.round(optC.expected_total_cost).toLocaleString()}</span></div>
+            <div><strong>Audit / Standstill Fee:</strong> $${Math.round(optC.initial_cost).toLocaleString()}</div>
+            <div><strong>Client Utility Score:</strong> <span style="font-weight:700; color:var(--gold-dark);">${optC.client_utility}/100</span></div>
+          </div>
+
+          <div class="tree-subnodes">
+            ${(optC.nodes || []).map(n => `
+              <div class="tree-leaf-node ${n.deadline_met ? 'pass' : 'fail'}">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <strong style="color:var(--navy);">${escapeHtml(n.name)}</strong>
+                  <span style="font-size:0.78rem; font-weight:700; color:var(--ink-soft);">${Math.round(n.prob * 100)}% prob</span>
+                </div>
+                <div style="font-size:0.82rem; color:var(--ink-soft); line-height:1.4;">
+                  ${escapeHtml(n.summary)}
+                </div>
+                <div style="margin-top:6px; font-size:0.78rem; font-weight:600; color:#15803d;">
+                  Cost: $${Math.round(n.total_ev).toLocaleString()} &middot; Standstill: ${n.duration_days} days &middot; &#10003; Carrier coverage active
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    html += `</div>`;
+    container.innerHTML = html;
   }
 
   function renderTradeoffInputsAndResults() {
     const res = sessionState.tradeoff_results;
     if (!res || !res.path_comparisons) return;
 
+    // 1. Sync Stage 1 Ingestion Banner Pills
+    const ranked = sessionState.ranked_priorities || [];
+    const p1El = document.getElementById("sync-p1");
+    const p2El = document.getElementById("sync-p2");
+    const p3El = document.getElementById("sync-p3");
+
+    if (p1El) {
+      p1El.textContent = ranked[0] && PRIORITY_LABELS[ranked[0]]
+        ? `#1: ${PRIORITY_LABELS[ranked[0]]}`
+        : "#1: Resolve before 75-day bank refinancing (Stage 1 Default)";
+    }
+    if (p2El) {
+      p2El.textContent = ranked[1] && PRIORITY_LABELS[ranked[1]]
+        ? `#2: ${PRIORITY_LABELS[ranked[1]]}`
+        : "#2: Control litigation costs ($15k-$25k max) (Stage 1 Default)";
+    }
+    if (p3El) {
+      p3El.textContent = ranked[2] && PRIORITY_LABELS[ranked[2]]
+        ? `#3: ${PRIORITY_LABELS[ranked[2]]}`
+        : "#3: Preserve Heartland relationship ($190k/yr) (Stage 1 Default)";
+    }
+
+    // 2. Synchronize input fields (without clobbering active focus)
+    syncInputsFromState(false);
+
+    // 3. Render Visual Decision Tree
+    renderDecisionTree(res.decision_tree);
+
+    // 4. Render Comparative Cards
     const cardsRow = document.getElementById("comparison-cards-row");
     const paths = res.path_comparisons;
 
@@ -1055,7 +1537,7 @@ Section 14.8 (Attorney's Fees):
       </div>
     `;
 
-    // Render Sensitivity Table
+    // 5. Render Sensitivity Table
     if (res.sensitivity_analysis && res.sensitivity_analysis.curve) {
       const tbl = document.getElementById("sensitivity-table-body");
       tbl.innerHTML = `

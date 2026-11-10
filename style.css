@@ -1815,3 +1815,223 @@ a {
   color: var(--ink-soft);
   margin: 4px 0 0;
 }
+
+/* ---- Stage 1 Ingestion Banner ---- */
+.stage1-sync-banner {
+  background: #eef7f8;
+  border: 1px solid #bce1e6;
+  border-left: 5px solid #1d5b63;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stage1-sync-title {
+  font-weight: 700;
+  color: #1d5b63;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage1-pill-tag {
+  display: inline-block;
+  background: #d8eef0;
+  color: #13484f;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ---- Interactive Visual Decision Tree ---- */
+.decision-tree-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 22px 0;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.tree-root-box {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 8px;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tree-branch-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tree-branch-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fafaf8;
+  padding: 18px 20px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tree-branch-card.optimal {
+  border-color: #236e42;
+  background: #f4faf6;
+  box-shadow: 0 2px 10px rgba(35, 110, 66, 0.08);
+}
+
+.tree-branch-card.warning-fail {
+  border-color: #a3372f;
+  background: #fdf5f4;
+}
+
+.tree-branch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tree-subnodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.tree-leaf-node {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+}
+
+.tree-leaf-node.fail {
+  border-left: 4px solid #b91c1c;
+}
+
+.tree-leaf-node.pass {
+  border-left: 4px solid #15803d;
+}
+
+.tree-leaf-node.borderline {
+  border-left: 4px solid #b45309;
+}
+
+.tree-chance-box {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 10px;
+}
+
+.tree-chance-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tree-deadline-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+
+.tree-deadline-badge.pass {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.tree-deadline-badge.fail {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.tree-deadline-badge.borderline {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+/* Legal Analysis Question Cards */
+.legal-q-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.legal-q-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fcfcfb;
+  padding: 14px 18px;
+  transition: background 0.15s ease;
+}
+
+.legal-q-card:hover {
+  background: #fff;
+}
+
+.legal-q-card summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.94rem;
+  outline: none;
+}
+
+.legal-source-badge {
+  display: inline-block;
+  background: #eef2f8;
+  color: var(--navy);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* Supervisory Prep Tabs */
+.prep-accordion {
+  background: #fbfaf6;
+  border: 1px solid #e5dcce;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.prep-accordion summary {
+  font-weight: 700;
+  color: var(--navy);
+  cursor: pointer;
+  font-size: 0.95rem;
+}

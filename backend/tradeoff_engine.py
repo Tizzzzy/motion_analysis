@@ -74,6 +74,29 @@ BENCHMARKS: Dict[str, Any] = {
 }
 
 
+def map_priorities_to_tradeoff_weights(ranked_priorities: List[str]) -> Dict[str, int]:
+    """Map client priorities discovered in Stage 1 into quantitative utility weights (1 to 5)."""
+    weights = {
+        "weight_money": 3,
+        "weight_speed": 3,
+        "weight_relationship": 3,
+        "weight_reputation": 3,
+        "weight_risk_tolerance": 2,
+    }
+    for rank_idx, p in enumerate(ranked_priorities[:3]):
+        boost = 5 if rank_idx == 0 else (4 if rank_idx == 1 else 3)
+        p_clean = (p or "").lower().strip()
+        if any(w in p_clean for w in ("refinanc", "timing", "deadline", "75")):
+            weights["weight_speed"] = max(weights["weight_speed"], boost)
+        elif any(w in p_clean for w in ("expense", "cost", "exposure", "money", "budget", "340")):
+            weights["weight_money"] = max(weights["weight_money"], boost)
+        elif any(w in p_clean for w in ("relationship", "heartland", "190")):
+            weights["weight_relationship"] = max(weights["weight_relationship"], boost)
+        elif any(w in p_clean for w in ("reputation", "admission", "publicity", "wrongdoing")):
+            weights["weight_reputation"] = max(weights["weight_reputation"], boost)
+    return weights
+
+
 def get_default_tradeoff_inputs() -> Dict[str, Any]:
     return {
         # Financial estimates entered by student
@@ -239,6 +262,131 @@ def compute_tradeoffs(inputs: Optional[Dict[str, Any]] = None) -> Dict[str, Any]
             "delta_vs_negotiate": round(test_ev - negotiate_total_ev, 2),
         })
 
+    decision_tree = {
+        "title": "Litigation vs. Settlement Decision Tree (Northern District of Illinois)",
+        "client_deadline_days": 75,
+        "root": {
+            "name": "Initial Strategy Decision (T=0)",
+            "branches": [
+                {
+                    "id": "negotiate",
+                    "label": "Option A: Structured Settlement Offer",
+                    "initial_cost": negotiate_fees,
+                    "expected_total_cost": negotiate_total_ev,
+                    "expected_duration_days": int(round(negotiate_duration * 30.5)),
+                    "duration_months": negotiate_duration,
+                    "deadline_status": "CLEARS 75-DAY DEADLINE",
+                    "deadline_met": not refinancing_risk["negotiate"],
+                    "client_utility": utility_negotiate,
+                    "nodes": [
+                        {
+                            "name": "Heartland Accepts ($35k cash + $20k credits)",
+                            "prob": 0.70,
+                            "payout": negotiate_payout,
+                            "fees": negotiate_fees,
+                            "total_ev": negotiate_total_ev,
+                            "duration_days": 38,
+                            "deadline_met": True,
+                            "summary": "Full mutual release & dismissal with prejudice within 38 days. Bank loan closes on schedule."
+                        },
+                        {
+                            "name": "Heartland Counters ($42.5k cash + $20k credits)",
+                            "prob": 0.30,
+                            "payout": round(42500.0 + effective_credit_cost, 2),
+                            "fees": 7500.0,
+                            "total_ev": round(42500.0 + effective_credit_cost + 7500.0, 2),
+                            "duration_days": 48,
+                            "deadline_met": True,
+                            "summary": "Finalizes prior to 75-day underwriting cutoff; maintains recurring $190k/yr storage account."
+                        }
+                    ]
+                },
+                {
+                    "id": "litigate",
+                    "label": "Option B: Rule 12(b)(6) Motion to Dismiss (Marcus's Plan)",
+                    "initial_cost": motion_fees,
+                    "expected_total_cost": litigate_total_ev,
+                    "expected_duration_days": int(round(litigate_duration * 30.5)),
+                    "duration_months": litigate_duration,
+                    "deadline_status": "MISSED 75-DAY DEADLINE",
+                    "deadline_met": not refinancing_risk["litigate"],
+                    "client_utility": utility_litigate,
+                    "chance_node": {
+                        "name": "P(12(b)(6) Motion Granted by Judge Kendall)",
+                        "prob": p_grant,
+                        "branches": [
+                            {
+                                "name": "Motion Granted",
+                                "prob": p_grant,
+                                "sub_chance_node": {
+                                    "name": "7th Cir. Rule 15(a) Leave to Amend (Runnion)",
+                                    "branches": [
+                                        {
+                                            "name": "Leave to Amend Granted",
+                                            "conditional_prob": round(1.0 - p_no_amend, 2),
+                                            "net_prob": p_leave_to_amend,
+                                            "cost": cost_branch_amended,
+                                            "duration_months": 11.5,
+                                            "duration_days": 350,
+                                            "deadline_met": False,
+                                            "deadline_status": "CRITICAL FAIL: Refinancing Frozen",
+                                            "summary": "Heartland amends pleading with ticket #409; full discovery ensues; bank underwriting delayed past 75 days; loan frozen."
+                                        },
+                                        {
+                                            "name": "Permanent Dismissal / No Amendment",
+                                            "conditional_prob": round(p_no_amend, 2),
+                                            "net_prob": p_dismissal_permanent,
+                                            "cost": cost_branch_permanent,
+                                            "duration_months": 4.5,
+                                            "duration_days": 135,
+                                            "deadline_met": False,
+                                            "deadline_status": "BORDERLINE (Exceeds 75 Days)",
+                                            "summary": "Permanent dismissal of consequential damages without leave to amend. Total fees $20,000."
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "Motion Denied",
+                                "prob": p_motion_denied,
+                                "net_prob": p_motion_denied,
+                                "cost": cost_branch_denied,
+                                "duration_months": 14.0,
+                                "duration_days": 420,
+                                "deadline_met": False,
+                                "deadline_status": "MISSED 75-DAY DEADLINE",
+                                "summary": "Complaint sustained; discovery commences; legal spend exceeds $95,000; loan line downgraded."
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "investigate",
+                    "label": "Option C: Pre-Answer Investigation & Standstill",
+                    "initial_cost": investigate_fees,
+                    "expected_total_cost": investigate_total_ev,
+                    "expected_duration_days": int(round(investigate_duration * 30.5)),
+                    "duration_months": investigate_duration,
+                    "deadline_status": "CLEARS 75-DAY DEADLINE",
+                    "deadline_met": not refinancing_risk["investigate"],
+                    "client_utility": utility_investigate,
+                    "nodes": [
+                        {
+                            "name": "30-Day Standstill & Fact Audit",
+                            "prob": 1.0,
+                            "payout": round(investigate_settlement_cash + effective_credit_cost, 2),
+                            "fees": investigate_fees,
+                            "total_ev": investigate_total_ev,
+                            "duration_days": 30,
+                            "deadline_met": True,
+                            "summary": "Informal 30-day extension pauses docket; audits Bay C sensors and notifies insurer ($30k offset); prepares targeted mediation."
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
     return {
         "inputs": cfg,
         "probabilities": {
@@ -250,6 +398,7 @@ def compute_tradeoffs(inputs: Optional[Dict[str, Any]] = None) -> Dict[str, Any]
             "p_motion_denied": p_motion_denied,
             "formula_explanation": "P(Permanent Dismissal) = P(Motion Granted) * P(No Amendment | Grant)",
         },
+        "decision_tree": decision_tree,
         "path_comparisons": {
             "negotiate": {
                 "name": "Early Negotiated Settlement",

@@ -23,7 +23,7 @@ from backend.prompts import (
     build_strategic_evaluation_messages,
 )
 from backend.sample_cases import get_case_bundle
-from backend.tradeoff_engine import compute_tradeoffs, get_default_tradeoff_inputs
+from backend.tradeoff_engine import compute_tradeoffs, get_default_tradeoff_inputs, map_priorities_to_tradeoff_weights
 from backend.event_engine import trigger_simulated_event
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -1116,7 +1116,16 @@ class SessionManager:
         snapshot: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         session = self.load_session(session_id, snapshot=snapshot)
-        session["ranked_priorities"] = [p.strip() for p in priorities if p.strip()][:3]
+        cleaned = [p.strip() for p in priorities if p.strip()][:3]
+        session["ranked_priorities"] = cleaned
+
+        # Ingest Stage 1 priorities into Stage 2 quantitative weights and recompute decision tree
+        weights = map_priorities_to_tradeoff_weights(cleaned)
+        cur_inputs = session.get("tradeoff_inputs") or get_default_tradeoff_inputs()
+        cur_inputs.update(weights)
+        session["tradeoff_inputs"] = cur_inputs
+        session["tradeoff_results"] = compute_tradeoffs(cur_inputs)
+
         self.save_session(session)
         return self.serialize_session(session)
 
