@@ -450,82 +450,59 @@
           <div class="note" id="sensitivity-insight-text" style="margin-top:10px; font-weight:600; color:var(--navy);"></div>
         </div>
 
-        <!-- Section 5: Stage 2 Legal Analysis Questions (Word Doc Q4 - Q8) -->
-        <div class="tradeoff-section-title" style="margin-top:24px;">5. Stage 2 &middot; Legal Analysis &amp; Pleading Standards (Word Doc Questions)</div>
-        <p class="note" style="margin-bottom:12px;">
-          Supervisory partners require young attorneys to ground quantitative tradeoff models in these essential Illinois and federal pleading doctrines:
+        <!-- Section 5: Stage 2 Conversational Legal Analysis Colloquy (Word Doc Q4 - Q8) -->
+        <div class="tradeoff-section-title" style="margin-top:28px;">5. Stage 2 &middot; Legal Analysis &amp; Pleading Standards Colloquy</div>
+        <p class="note" style="margin-bottom:14px;">
+          Supervising partners require young attorneys to ground quantitative tradeoff models in these essential Illinois and federal pleading doctrines through conversational colloquy (Word Doc Questions Q4 &ndash; Q8):
         </p>
 
-        <div class="legal-q-grid">
-          <!-- Q4 -->
-          <details class="legal-q-card" open>
-            <summary>Q4 &middot; Contract Elements &amp; Pleading Standards (Illinois Law)</summary>
-            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
-              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?"</p>
-              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
-                <span class="legal-source-badge">Ivey v. Transunion Rental Screening Solutions, Inc., 2022 IL 127903, &para; 28</span>
-                <div style="margin-top:6px; font-size:0.82rem;">
-                  To state a claim for breach of contract under Illinois law, plaintiff must allege: (1) existence of a valid contract, (2) performance by plaintiff, (3) breach by defendant, and (4) resulting injury/damages.
-                </div>
-              </div>
+        <div class="stage2-colloquy-card" style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; box-shadow:var(--shadow-sm); margin-bottom:20px;">
+          <!-- Persona Header -->
+          <div class="persona-strip" style="margin-bottom:14px;">
+            <div class="persona-avatar" style="background:var(--navy); color:var(--gold-light); font-weight:700;">SP</div>
+            <div class="persona-info">
+              <div class="name">Supervising Partner &middot; Senior Litigation Partner &amp; Clinical Mentor</div>
+              <div class="role">Legal Analysis &amp; Federal Pleading Colloquy &middot; Word Doc Q4 &ndash; Q8</div>
             </div>
-          </details>
+            <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+              <span class="score-pill pass" style="font-size:0.75rem;" id="colloquy-status-badge">Colloquy Active</span>
+            </div>
+          </div>
 
-          <!-- Q5 -->
-          <details class="legal-q-card">
-            <summary>Q5 &middot; Concrete Facts vs. Legal Conclusions (Twombly / Iqbal)</summary>
-            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
-              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Which allegations describe concrete facts, and which are primarily legal conclusions? How does this distinction affect your Rule 12(b)(6) analysis?"</p>
-              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
-                <span class="legal-source-badge">Federal Rule 8(a)(2); Twombly and Iqbal</span>
-                <div style="margin-top:6px; font-size:0.82rem;">
-                  Concrete factual allegations (e.g., recorded cheese temperature of 45&deg;F) are accepted as true on a 12(b)(6) motion. Conclusory assertions (e.g., "Lakeview acted with willful gross negligence and bad faith") are legal labels stripped away under <em>Twombly/Iqbal</em>.
-                </div>
-              </div>
-            </div>
-          </details>
+          <!-- Question Progress Tabs / Tracker -->
+          <div class="colloquy-tabs-bar" id="colloquy-tabs-bar" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:14px; border-bottom:1px solid var(--border);">
+            <!-- Injected by renderStage2ColloquyTabs() -->
+          </div>
 
-          <!-- Q6 -->
-          <details class="legal-q-card">
-            <summary>Q6 &middot; Four Corners vs. Outside Extrinsic Evidence (Rule 12(d))</summary>
-            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
-              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Suppose Lakeview's internal refrigeration records contradict Heartland's allegations. Can you rely on those records to argue that the complaint should be dismissed under Rule 12(b)(6)? Why or why not?"</p>
-              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
-                <span class="legal-source-badge">Federal Rules 12(b)(6) &amp; 12(d)</span>
-                <div style="margin-top:6px; font-size:0.82rem;">
-                  A Rule 12(b)(6) motion is strictly confined to the Four Corners of the complaint (and contracts incorporated by reference). Lakeview cannot introduce internal maintenance logs or ticket #409 without converting the motion to a Rule 56 summary judgment under Rule 12(d).
-                </div>
-              </div>
-            </div>
-          </details>
+          <!-- Active Question Prompt Banner -->
+          <div id="colloquy-active-prompt-box" style="background:#f4f7fb; border:1px solid #c9d7ea; border-left:4px solid var(--navy); border-radius:8px; padding:14px 16px; margin-bottom:16px;">
+            <!-- Injected by renderStage2ColloquyActivePrompt() -->
+          </div>
 
-          <!-- Q7 -->
-          <details class="legal-q-card">
-            <summary>Q7 &middot; 7th Circuit Leave to Amend Practice (Runnion v. Girl Scouts)</summary>
-            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
-              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "If you successfully challenge part of the complaint, would that necessarily end the litigation? What possibility should you consider before estimating the benefit of filing the motion?"</p>
-              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
-                <span class="legal-source-badge">Federal Rule 15(a); Runnion v. Girl Scouts, 786 F.3d 510 (7th Cir. 2015)</span>
-                <div style="margin-top:6px; font-size:0.82rem;">
-                  In the Seventh Circuit, district courts routinely grant leave to amend upon granting a 12(b)(6) motion unless amendment is demonstrably futile. Even if Marcus Vance's motion is granted, Heartland will simply file an amended complaint, prolonging litigation past 75 days.
-                </div>
-              </div>
-            </div>
-          </details>
+          <!-- Colloquy Chat Thread -->
+          <div class="chat-thread" id="stage2-colloquy-stream" style="min-height:300px; max-height:440px; overflow-y:auto; margin-bottom:14px; padding:8px 4px;">
+            <!-- Messages injected dynamically by renderStage2ColloquyMessages() -->
+          </div>
 
-          <!-- Q8 -->
-          <details class="legal-q-card">
-            <summary>Q8 &middot; Consequential Damages &amp; Lost Profits Uncertainty</summary>
-            <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:8px; line-height:1.55;">
-              <p style="margin:0 0 6px;"><strong>Question to Student:</strong> "Heartland alleges $68,400 in direct losses and $340,000 in additional damages. How would you assess the legal and evidentiary uncertainty surrounding the claimed lost profits?"</p>
-              <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:6px;">
-                <span class="legal-source-badge">Ivey, &para;&para; 28&ndash;29; Tri-G, Inc. v. Burke, Bosselman &amp; Weaver; Contract Sec. 11.2</span>
-                <div style="margin-top:6px; font-size:0.82rem;">
-                  Consequential damages and lost profits require proof to a reasonable certainty under Illinois law. Crucially, Master Agreement Sec. 11.2 expressly waives consequential and special damages, capping liability to storage charges, rendering the $340,000 claim legally vulnerable.
-                </div>
-              </div>
+          <!-- Colloquy Composer Box -->
+          <div class="composer-box" style="margin-top:10px;">
+            <textarea id="stage2-colloquy-input" class="composer-textarea" placeholder="Type your legal analysis response to the Supervising Partner (addressing governing elements, specific allegations, and procedural doctrine)…"></textarea>
+            <div class="composer-footer">
+              <span class="note" id="stage2-colloquy-hint">Press Enter &crarr; to send &middot; Shift+Enter for newline</span>
+              <button class="btn btn-primary" id="btn-send-colloquy" onclick="sendStage2ColloquyMessage()">Send Legal Analysis &rarr;</button>
             </div>
-          </details>
+          </div>
+
+          <!-- Revealed Doctrinal Reference Drawer -->
+          <div style="margin-top:20px; border-top:1px dashed var(--border); padding-top:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleDoctrinalDrawer()">
+              <strong style="color:var(--navy); font-size:0.9rem;">&#128218; Unlocked Doctrinal Standards &amp; Supporting Authorities (<span id="unlocked-rules-count">0/5</span>)</strong>
+              <span id="drawer-toggle-icon" style="font-size:0.8rem; color:var(--muted); font-weight:600;">&plus; View Details</span>
+            </div>
+            <div id="colloquy-doctrinal-drawer" style="margin-top:12px; display:none;">
+              <!-- Revealed cards injected here -->
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
@@ -991,8 +968,9 @@ Section 14.8 (Attorney's Fees):
     renderPriorityDropdowns();
     renderDiscoveredFacts();
 
-    // Stage 2: Render Tradeoff calculations
+    // Stage 2: Render Tradeoff calculations & Legal Analysis Colloquy
     renderTradeoffInputsAndResults();
+    renderStage2Colloquy();
 
     // Stage 3: Render Opponent Anticipation
     renderOpponentView();
@@ -1219,6 +1197,16 @@ Section 14.8 (Attorney's Fees):
       sendInterviewMessage();
     }
   });
+
+  const stage2Input = document.getElementById("stage2-colloquy-input");
+  if (stage2Input) {
+    stage2Input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendStage2ColloquyMessage();
+      }
+    });
+  }
 
   function renderPriorityDropdowns() {
     const ranked = sessionState.ranked_priorities || [];
@@ -1705,6 +1693,318 @@ Section 14.8 (Attorney's Fees):
         </tbody>
       `;
       document.getElementById("sensitivity-insight-text").textContent = res.sensitivity_analysis.insight || "";
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // STAGE 2 LOGIC: CONVERSATIONAL LEGAL ANALYSIS COLLOQUY (WORD DOC Q4 - Q8)
+  // -------------------------------------------------------------------------
+  const STAGE2_QUESTIONS_META = {
+    q4_elements: {
+      number: "Q4",
+      short: "Contract Elements",
+      title: "Contract Elements & Pleading Standards (Illinois Law)",
+      question: "What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?",
+      why_ask: "Tests accurate claim identification and application of contract elements to the complaint.",
+      source: "Ivey v. Transunion Rental Screening Solutions, Inc., 2022 IL 127903, ¶ 28; 735 ILCS 5/2-603",
+    },
+    q5_facts: {
+      number: "Q5",
+      short: "Facts vs Conclusions",
+      title: "Concrete Facts vs. Legal Conclusions (Twombly / Iqbal)",
+      question: "Which allegations describe concrete facts, and which are primarily legal conclusions? How does this distinction affect your Rule 12(b)(6) analysis?",
+      why_ask: "Tests understanding of pleading sufficiency and the distinction between factual content and conclusory statements.",
+      source: "Federal Rule 8(a)(2); Bell Atlantic Corp. v. Twombly, 550 U.S. 544; Ashcroft v. Iqbal, 556 U.S. 662",
+    },
+    q6_four_corners: {
+      number: "Q6",
+      short: "Four Corners & 12(d)",
+      title: "Four Corners vs. Outside Extrinsic Evidence (Rule 12(d))",
+      question: "Suppose Lakeview's internal refrigeration records contradict Heartland's allegations. Can you rely on those records to argue that the complaint should be dismissed under Rule 12(b)(6)? Why or why not?",
+      why_ask: "Tests whether students understand the pleading-stage standard and restrictions on considering outside evidence.",
+      source: "Federal Rules 12(b)(6) & 12(d); 7th Circuit Incorporation-by-Reference Doctrine",
+    },
+    q7_amend: {
+      number: "Q7",
+      short: "Leave to Amend",
+      title: "7th Circuit Leave to Amend Practice (Runnion v. Girl Scouts)",
+      question: "If you successfully challenge part of the complaint, would that necessarily end the litigation? What possibility should you consider before estimating the benefit of filing the motion?",
+      why_ask: "Tests recognition of amendment and the distinction between a successful pleading challenge and final resolution.",
+      source: "Federal Rule 15(a)(2); Runnion v. Girl Scouts of Greater Chicago, 786 F.3d 510 (7th Cir. 2015)",
+    },
+    q8_damages: {
+      number: "Q8",
+      short: "Lost Profits & Caps",
+      title: "Consequential Damages & Lost Profits Uncertainty",
+      question: "Heartland alleges $68,400 in direct losses and $340,000 in additional damages. How would you assess the legal and evidentiary uncertainty surrounding the claimed lost profits?",
+      why_ask: "Tests whether the student evaluates causation and the reasonable-certainty standard without assuming that a large claim is automatically recoverable or automatically defective at the pleading stage.",
+      source: "Ivey v. Transunion, 2022 IL 127903, ¶¶ 28–29; Tri-G, Inc. v. Burke, Bosselman & Weaver; Master Agreement Sec. 11.2",
+    },
+  };
+
+  let doctrinalDrawerOpen = false;
+
+  function renderStage2Colloquy() {
+    if (!sessionState) return;
+    const colloquy = sessionState.stage2_colloquy || {};
+    const curKey = colloquy.current_question_key || "q4_elements";
+    const questions = colloquy.questions || {};
+    const messages = colloquy.messages || [];
+
+    // 1. Render Question Tabs Bar
+    const tabsContainer = document.getElementById("colloquy-tabs-bar");
+    if (tabsContainer) {
+      tabsContainer.innerHTML = Object.keys(STAGE2_QUESTIONS_META).map(key => {
+        const meta = STAGE2_QUESTIONS_META[key];
+        const qState = questions[key] || {};
+        const isCompleted = qState.status === "completed";
+        const isActive = (key === curKey);
+
+        let badgeText = meta.short;
+        let badgeClass = "pending";
+        let style = "background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;";
+
+        if (isCompleted) {
+          badgeClass = "completed";
+          style = "background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; font-weight:600;";
+          badgeText = `✓ ${meta.number} (${qState.rating || "Done"})`;
+        } else if (isActive) {
+          badgeClass = "active";
+          style = "background:var(--navy); color:#ffffff; border:1px solid var(--navy); font-weight:700;";
+          badgeText = `▶ ${meta.number}: ${meta.short}`;
+        } else {
+          badgeText = `${meta.number}: ${meta.short}`;
+        }
+
+        return `
+          <button type="button" class="colloquy-tab-btn ${badgeClass}" style="padding:6px 14px; border-radius:20px; font-size:0.8rem; cursor:pointer; white-space:nowrap; transition:all 0.15s ease; ${style}" onclick="selectStage2ColloquyQuestion('${key}')">
+            ${escapeHtml(badgeText)}
+          </button>
+        `;
+      }).join("");
+    }
+
+    // 2. Render Active Question Prompt Banner
+    const promptBox = document.getElementById("colloquy-active-prompt-box");
+    if (promptBox) {
+      const activeMeta = STAGE2_QUESTIONS_META[curKey] || STAGE2_QUESTIONS_META["q4_elements"];
+      const activeState = questions[curKey] || {};
+      const isDone = activeState.status === "completed";
+
+      promptBox.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+          <div style="font-weight:700; color:var(--navy); font-size:0.95rem;">
+            ${escapeHtml(activeMeta.number)} &middot; ${escapeHtml(activeMeta.title)}
+          </div>
+          <div style="display:flex; gap:6px;">
+            ${isDone ? `<span class="score-pill pass" style="font-size:0.75rem;">${escapeHtml(activeState.rating || "Completed")} (${activeState.score || 5}/5)</span>` : '<span class="score-pill" style="font-size:0.75rem;">In Progress</span>'}
+          </div>
+        </div>
+        <p style="margin:0 0 10px; font-size:0.92rem; color:var(--ink); font-weight:600; line-height:1.45;">
+          &ldquo;${escapeHtml(activeMeta.question)}&rdquo;
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; font-size:0.78rem;">
+          <span style="background:#eef2f8; color:var(--navy); padding:3px 8px; border-radius:4px; font-weight:500;">
+            <strong>Purpose:</strong> ${escapeHtml(activeMeta.why_ask)}
+          </span>
+          <span style="background:#fef3c7; color:#92400e; padding:3px 8px; border-radius:4px; font-weight:500;">
+            <strong>Authority:</strong> ${escapeHtml(activeMeta.source)}
+          </span>
+        </div>
+      `;
+    }
+
+    // 3. Render Chat Thread Messages
+    const stream = document.getElementById("stage2-colloquy-stream");
+    if (stream) {
+      if (!messages.length) {
+        stream.innerHTML = `
+          <div class="chat-bubble client" style="background:#eef7f8; border:1px solid #c2e2e6; border-radius:10px; padding:14px; margin-bottom:12px;">
+            <div style="font-weight:700; color:#1d5b63; font-size:0.83rem; margin-bottom:4px;">Supervising Partner</div>
+            <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">Welcome to our Stage 2 Legal Analysis Colloquy. Let's examine Question 4 (Contract Elements &amp; Pleading Standards): "What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?"</div>
+          </div>
+        `;
+      } else {
+        stream.innerHTML = messages.map(m => {
+          const isUser = m.role === "user";
+          const bg = isUser ? "#eef2f8" : "#fbfcfe";
+          const border = isUser ? "#c8d7ed" : "#cdd9e8";
+          const speakerColor = isUser ? "var(--navy)" : "#16233f";
+          const speaker = isUser ? "Lawyer (You)" : "Supervising Partner";
+          return `
+            <div class="chat-bubble ${isUser ? 'user' : 'client'}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <span style="font-weight:700; color:${speakerColor}; font-size:0.83rem;">${escapeHtml(speaker)}</span>
+                ${m.timestamp ? `<span style="font-size:0.72rem; color:var(--muted);">${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>` : ""}
+              </div>
+              <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink); line-height:1.5;">${escapeHtml(m.content)}</div>
+            </div>
+          `;
+        }).join("");
+        stream.scrollTop = stream.scrollHeight;
+      }
+    }
+
+    // 4. Update Status Badge & Drawer
+    const completedCount = Object.keys(STAGE2_QUESTIONS_META).filter(k => questions[k] && questions[k].status === "completed").length;
+    const badge = document.getElementById("colloquy-status-badge");
+    if (badge) {
+      if (completedCount === 5) {
+        badge.className = "score-pill pass";
+        badge.textContent = "Colloquy Complete (5/5)";
+      } else {
+        badge.className = "score-pill";
+        badge.textContent = `Progress: ${completedCount}/5 Questions`;
+      }
+    }
+    const countEl = document.getElementById("unlocked-rules-count");
+    if (countEl) countEl.textContent = `${completedCount}/5`;
+
+    renderStage2DoctrinalDrawer();
+  }
+
+  function renderStage2DoctrinalDrawer() {
+    const container = document.getElementById("colloquy-doctrinal-drawer");
+    if (!container || !sessionState) return;
+    const questions = (sessionState.stage2_colloquy && sessionState.stage2_colloquy.questions) || {};
+
+    const answeredKeys = Object.keys(STAGE2_QUESTIONS_META).filter(k => questions[k] && questions[k].status === "completed");
+    if (!answeredKeys.length) {
+      container.innerHTML = `<div class="note" style="font-style:italic; padding:6px 0;">No doctrinal standards unlocked yet. Answer questions in the colloquy above to reveal model rules and case law citations.</div>`;
+      return;
+    }
+
+    container.innerHTML = answeredKeys.map(key => {
+      const meta = STAGE2_QUESTIONS_META[key];
+      const q = questions[key];
+      return `
+        <div style="background:#fafbfc; border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="color:var(--navy); font-size:0.9rem;">${escapeHtml(meta.number)} &middot; ${escapeHtml(meta.title)}</strong>
+            <span class="score-pill pass" style="font-size:0.75rem;">${escapeHtml(q.rating || "Proficient")} (${q.score || 5}/5)</span>
+          </div>
+          <div style="font-size:0.8rem; color:#854d0e; font-weight:600; margin-bottom:6px;">
+            ${escapeHtml(meta.source)}
+          </div>
+          <div style="font-size:0.84rem; color:var(--ink-soft); line-height:1.45; background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:10px; margin-top:6px;">
+            <strong style="color:var(--navy);">Model Standard:</strong> ${escapeHtml(q.model_rule || "")}
+          </div>
+          ${q.student_answer ? `
+            <div style="margin-top:8px; font-size:0.8rem; color:var(--muted);">
+              <strong>Your Analysis:</strong> &ldquo;${escapeHtml(q.student_answer)}&rdquo;
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function toggleDoctrinalDrawer() {
+    doctrinalDrawerOpen = !doctrinalDrawerOpen;
+    const d = document.getElementById("colloquy-doctrinal-drawer");
+    const icon = document.getElementById("drawer-toggle-icon");
+    if (d) d.style.display = doctrinalDrawerOpen ? "block" : "none";
+    if (icon) icon.textContent = doctrinalDrawerOpen ? "− Collapse Details" : "+ View Details";
+  }
+
+  async function selectStage2ColloquyQuestion(key) {
+    if (!sessionState) return;
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/colloquy`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "select",
+          question_key: key,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderStage2Colloquy();
+        const input = document.getElementById("stage2-colloquy-input");
+        if (input) input.focus();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function sendStage2ColloquyMessage() {
+    const input = document.getElementById("stage2-colloquy-input");
+    if (!input || !sessionState) return;
+    const text = input.value.trim();
+    if (!text) {
+      alert("Please enter your legal analysis before sending.");
+      input.focus();
+      return;
+    }
+
+    const curKey = (sessionState.stage2_colloquy && sessionState.stage2_colloquy.current_question_key) || "q4_elements";
+
+    // 1. Clear input & disable button
+    input.value = "";
+    const btn = document.getElementById("btn-send-colloquy");
+    btn.disabled = true;
+    input.disabled = true;
+    btn.textContent = "Analyzing…";
+
+    // 2. Optimistic UI: Immediately render Lawyer (You) bubble
+    const stream = document.getElementById("stage2-colloquy-stream");
+    const userBubble = document.createElement("div");
+    userBubble.className = "chat-bubble user";
+    userBubble.style.cssText = "background:#eef2f8; border:1px solid #c8d7ed; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;";
+    userBubble.innerHTML = `
+      <div style="font-weight:700; color:var(--navy); font-size:0.83rem; margin-bottom:4px;">Lawyer (You)</div>
+      <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink); line-height:1.5;">${escapeHtml(text)}</div>
+    `;
+    stream.appendChild(userBubble);
+
+    // 3. Immediately render animated typing indicator for Supervising Partner
+    const typingBubble = document.createElement("div");
+    typingBubble.id = "active-partner-typing-indicator";
+    typingBubble.className = "chat-bubble client";
+    typingBubble.style.cssText = "background:#fbfcfe; border:1px solid #cdd9e8; border-radius:10px; padding:12px 14px; margin-bottom:12px; display:inline-flex; align-items:center; gap:8px; animation:fadeInBubble 0.2s ease;";
+    typingBubble.innerHTML = `
+      <span style="font-weight:700; color:var(--navy); font-size:0.83rem;">Supervising Partner is analyzing your legal arguments</span>
+      <span class="typing-dots"><span></span><span></span><span></span></span>
+    `;
+    stream.appendChild(typingBubble);
+    stream.scrollTop = stream.scrollHeight;
+
+    // 4. Send to server
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/colloquy`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "message",
+          message: text,
+          question_key: curKey,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderStage2Colloquy();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert("Error from colloquy service: " + (err.error || "Server error"));
+        const ind = document.getElementById("active-partner-typing-indicator");
+        if (ind) ind.remove();
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Network error communicating with server. Please try again.");
+      const ind = document.getElementById("active-partner-typing-indicator");
+      if (ind) ind.remove();
+    } finally {
+      btn.disabled = false;
+      input.disabled = false;
+      btn.textContent = "Send Legal Analysis →";
+      input.focus();
     }
   }
 

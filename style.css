@@ -2166,3 +2166,33 @@ button, input, textarea, select {
   color: #991b1b;
   background: #fef2f2;
 }
+
+/* Stage 2 Legal Analysis & Pleading Colloquy */
+.stage2-colloquy-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.colloquy-tab-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.96);
+}
+
+.colloquy-tab-btn:active {
+  transform: translateY(0);
+}
+
+.colloquy-tab-btn.active {
+  box-shadow: 0 2px 6px rgba(22, 35, 63, 0.25);
+}
+
+.colloquy-tabs-bar::-webkit-scrollbar {
+  height: 5px;
+}
+.colloquy-tabs-bar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+.colloquy-tabs-bar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}

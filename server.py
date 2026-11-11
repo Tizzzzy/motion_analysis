@@ -29,7 +29,7 @@ _SESSION_ROUTE_RE = re.compile(
     r"^/api/session/([a-zA-Z0-9_-]+)(?:/(case|message|skip|hint|export\.csv))?$"
 )
 _SIM_ROUTE_RE = re.compile(
-    r"^/api/simulation/([a-zA-Z0-9_-]+)(?:/(stage|priorities|tradeoffs|opponent|strategy|event|evaluate|prep|export\.(?:csv|json)))?$"
+    r"^/api/simulation/([a-zA-Z0-9_-]+)(?:/(stage|priorities|tradeoffs|opponent|strategy|event|evaluate|prep|colloquy|export\.(?:csv|json)))?$"
 )
 
 
@@ -272,6 +272,23 @@ class MotionGuidanceHandler(BaseHTTPRequestHandler):
                         student_answer=body.get("answer", ""),
                         snapshot=snapshot,
                     )
+                    self._send_json(200, state)
+                    return
+                if subaction == "colloquy":
+                    action = body.get("action", "message")
+                    if action == "select":
+                        state = ctx.sessions.set_stage2_colloquy_question(
+                            session_id=session_id,
+                            question_key=body.get("question_key", "q4_elements"),
+                            snapshot=snapshot,
+                        )
+                    else:
+                        state = ctx.sessions.submit_stage2_colloquy_message(
+                            session_id=session_id,
+                            message=body.get("message", ""),
+                            question_key=body.get("question_key"),
+                            snapshot=snapshot,
+                        )
                     self._send_json(200, state)
                     return
                 if subaction == "tradeoffs":

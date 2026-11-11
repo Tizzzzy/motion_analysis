@@ -439,3 +439,65 @@ Return ONLY valid JSON with these exact keys:
     ]
 
 
+def build_stage2_colloquy_messages(
+    case_bundle: Dict[str, Any],
+    question_key: str,
+    question_title: str,
+    question_text: str,
+    why_ask: str,
+    supporting_source: str,
+    legal_rule: str,
+    student_answer: str,
+    prior_messages: Optional[List[Dict[str, str]]] = None,
+) -> List[Dict[str, str]]:
+    """Builds prompt for the Senior Litigation Partner conducting Stage 2 Legal Analysis Colloquy (Word Doc Q4-Q8)."""
+    system_prompt = (
+        "You are an experienced Senior Litigation Partner at a premier Chicago litigation firm, supervising a junior associate "
+        "in the commercial breach-of-contract lawsuit Heartland Specialty Foods, Inc. v. Lakeview Cold Chain Logistics, LLC (N.D. Ill.).\n\n"
+        "You are conducting a one-on-one Stage 2 Legal Analysis Colloquy to ground the team's quantitative litigation model in governing "
+        "Illinois contract law and Seventh Circuit federal pleading doctrine.\n\n"
+        "Tone and Pedagogical Style:\n"
+        "- Conversational, intellectually rigorous, collegial, and Socratic.\n"
+        "- Evaluate the associate's legal reasoning directly against governing authorities.\n"
+        "- Affirm what the associate got right; constructively coach where they missed nuances or conflated standards.\n"
+        "- Cite the relevant governing authority by name.\n"
+        "- Keep your reply to 3-5 sentences total."
+    )
+
+    user_prompt = f"""### CASE CONTEXT:
+Matter: Heartland Specialty Foods, Inc. v. Lakeview Cold Chain Logistics, LLC
+Court: U.S. District Court for the Northern District of Illinois (Eastern Division)
+Complaint Allegations:
+- Master Cold-Storage Agreement entered March 15, 2024.
+- Heartland delivered artisan cheese inventory.
+- Lakeview allegedly failed to maintain refrigeration in Bay C (temp rose above 49°F), spoiling 3 pallets.
+- Heartland demands $68,400 direct wholesale loss + $340,000 lost profits & reputational harm.
+- Lakeview Master Agreement Section 11.2 contains an express waiver of consequential/lost-profit damages and liability cap of 2x monthly bay storage fees ($36,000).
+
+### ACTIVE QUESTION UNDER REVIEW:
+Question Key: {question_key}
+Title: {question_title}
+Question to Associate: "{question_text}"
+Instructional Purpose: {why_ask}
+Supporting Source: {supporting_source}
+Governing Legal Rule: {legal_rule}
+
+### ASSOCIATE'S SUBMITTED LEGAL ANALYSIS:
+\"\"\"{student_answer}\"\"\"
+
+### REQUIRED JSON OUTPUT FORMAT:
+Return ONLY valid JSON with these exact keys:
+{{
+  "rating": "<'Proficient' | 'Competent' | 'Developing'>",
+  "score": <integer 1 to 5>,
+  "mentor_reply": "<3-5 conversational sentences spoken directly to the associate evaluating their legal reasoning, citing the governing authority, and affirming or coaching them>",
+  "key_takeaway": "<1 crisp summary sentence of the doctrinal rule>",
+  "ready_for_next": true
+}}"""
+
+    return [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+
+

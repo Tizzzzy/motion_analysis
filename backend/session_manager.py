@@ -20,6 +20,7 @@ from backend.prompts import (
     build_mentor_eval_messages,
     build_motion_review_messages,
     build_opponent_anticipation_messages,
+    build_stage2_colloquy_messages,
     build_strategic_evaluation_messages,
 )
 from backend.sample_cases import get_case_bundle
@@ -54,6 +55,104 @@ def _clamp_int(val: Any, lo: int, hi: int, default: int = 0) -> int:
         return max(lo, min(hi, iv))
     except Exception:
         return default
+
+
+STAGE2_COLLOQUY_QUESTIONS = {
+    "q4_elements": {
+        "id": "q4_elements",
+        "number": "Q4",
+        "title": "Contract Elements & Pleading Standards (Illinois Law)",
+        "question": "What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?",
+        "why_ask": "Tests accurate claim identification and application of contract elements to the complaint.",
+        "supporting_source": "Ivey v. Transunion Rental Screening Solutions, Inc., 2022 IL 127903, ¶ 28; 735 ILCS 5/2-603",
+        "legal_rule": "Under Illinois law, plaintiff must allege: (1) existence of a valid and enforceable contract, (2) substantial performance by plaintiff, (3) breach of duty by defendant, and (4) resultant injury/damages. In the complaint, ¶ 2 alleges contract; ¶ 3 alleges performance; ¶ 4-5 allege breach (refrigeration failure); ¶ 6, 10 allege damages ($68,400 direct inventory + $340,000 lost profits).",
+        "key_concepts": ["contract", "valid", "perform", "breach", "damage", "injury", "ivey", "paragraph", "alleg", "element"],
+        "next_key": "q5_facts",
+    },
+    "q5_facts": {
+        "id": "q5_facts",
+        "number": "Q5",
+        "title": "Concrete Facts vs. Legal Conclusions (Twombly / Iqbal)",
+        "question": "Which allegations describe concrete facts, and which are primarily legal conclusions? How does this distinction affect your Rule 12(b)(6) analysis?",
+        "why_ask": "Tests understanding of pleading sufficiency and the distinction between factual content and conclusory statements.",
+        "supporting_source": "Federal Rule 8(a)(2); Bell Atlantic Corp. v. Twombly, 550 U.S. 544; Ashcroft v. Iqbal, 556 U.S. 662",
+        "legal_rule": "Concrete factual allegations (e.g., recorded ambient temperature above 49°F, three spoiled pallets, compressor alarms) are accepted as true on a Rule 12(b)(6) motion. Conclusory assertions (e.g., 'Lakeview acted in bad faith and in reckless disregard of industry standards') are legal labels stripped away under Twombly/Iqbal. Under Rule 8(a)(2), the court disregards bare legal conclusions when evaluating whether a plausible claim is stated.",
+        "key_concepts": ["twombly", "iqbal", "conclus", "fact", "true", "label", "bad faith", "temperature", "49", "plausib", "presum"],
+        "next_key": "q6_four_corners",
+    },
+    "q6_four_corners": {
+        "id": "q6_four_corners",
+        "number": "Q6",
+        "title": "Four Corners vs. Outside Extrinsic Evidence (Rule 12(d))",
+        "question": "Suppose Lakeview's internal refrigeration records contradict Heartland's allegations. Can you rely on those records to argue that the complaint should be dismissed under Rule 12(b)(6)? Why or why not?",
+        "why_ask": "Tests whether students understand the pleading-stage standard and restrictions on considering outside evidence.",
+        "supporting_source": "Federal Rules 12(b)(6) & 12(d); 7th Circuit Incorporation-by-Reference Doctrine",
+        "legal_rule": "A Rule 12(b)(6) motion is strictly confined to the Four Corners of the complaint (and contracts incorporated by reference). Lakeview cannot introduce internal maintenance logs, warehouse technician tickets (#409), or sensor spreadsheets on a 12(b)(6) motion without converting the motion to a Rule 56 summary judgment under Rule 12(d), which triggers formal discovery and defeats our 75-day refinancing deadline.",
+        "key_concepts": ["four corners", "12(d)", "convert", "summary judgment", "extrinsic", "outside", "rule 56", "discovery", "incorporated", "log", "ticket"],
+        "next_key": "q7_amend",
+    },
+    "q7_amend": {
+        "id": "q7_amend",
+        "number": "Q7",
+        "title": "7th Circuit Leave to Amend Practice (Runnion v. Girl Scouts)",
+        "question": "If you successfully challenge part of the complaint, would that necessarily end the litigation? What possibility should you consider before estimating the benefit of filing the motion?",
+        "why_ask": "Tests recognition of amendment and the distinction between a successful pleading challenge and final resolution.",
+        "supporting_source": "Federal Rule 15(a)(2); Runnion v. Girl Scouts of Greater Chicago, 786 F.3d 510 (7th Cir. 2015)",
+        "legal_rule": "In the Seventh Circuit, district courts routinely grant leave to amend upon granting a 12(b)(6) motion unless amendment is demonstrably futile (Runnion, 786 F.3d at 519). A partial or initial dismissal does NOT end the case—Heartland will simply file an amended complaint curing technical deficiencies (91% probability in this posture), blowing past Lakeview's 75-day refinancing deadline and increasing fees beyond the $25k budget cap.",
+        "key_concepts": ["runnion", "amend", "leave to amend", "rule 15", "end the case", "futile", "prolong", "delay", "refinancing", "75", "replead"],
+        "next_key": "q8_damages",
+    },
+    "q8_damages": {
+        "id": "q8_damages",
+        "number": "Q8",
+        "title": "Consequential Damages & Lost Profits Uncertainty",
+        "question": "Heartland alleges $68,400 in direct losses and $340,000 in additional damages. How would you assess the legal and evidentiary uncertainty surrounding the claimed lost profits?",
+        "why_ask": "Tests whether the student evaluates causation and the reasonable-certainty standard without assuming that a large claim is automatically recoverable or automatically defective at the pleading stage.",
+        "supporting_source": "Ivey v. Transunion, 2022 IL 127903, ¶¶ 28–29; Tri-G, Inc. v. Burke, Bosselman & Weaver; Master Agreement Sec. 11.2",
+        "legal_rule": "Under Illinois law, lost profits and consequential damages are subject to substantial legal and evidentiary uncertainty; they require proof to a reasonable certainty and proximate causation (Tri-G). Crucially, Section 11.2 of the Master Agreement expressly waives all consequential and lost-profit damages and caps liability at 2x monthly storage charges ($36,000 max). Because the contract is referenced in the complaint, Lakeview can use Section 11.2 to attack the $340,000 claim as legally barred.",
+        "key_concepts": ["consequential", "lost profit", "reasonable certainty", "tri-g", "11.2", "waiver", "cap", "36,000", "speculative", "direct", "limitation of liability"],
+        "next_key": None,
+    },
+}
+
+
+def _create_default_stage2_colloquy() -> Dict[str, Any]:
+    initial_msg = (
+        "Welcome to our Stage 2 Legal Analysis Colloquy. Before we finalize our quantitative litigation decision tree "
+        "and advise Elena Rostova, we need to ground our strategy in governing Illinois contract law and Seventh Circuit federal pleading doctrine.\n\n"
+        "Let's examine **Question 4 (Contract Elements & Pleading Standards)**:\n"
+        "\"What elements must Heartland establish for breach of contract under Illinois law? Which allegations in the complaint address each element?\""
+    )
+    return {
+        "current_question_key": "q4_elements",
+        "messages": [
+            {
+                "role": "assistant",
+                "speaker": "Supervising Partner",
+                "content": initial_msg,
+                "timestamp": _now_iso(),
+                "question_key": "q4_elements",
+            }
+        ],
+        "questions": {
+            k: {
+                "id": k,
+                "number": q["number"],
+                "title": q["title"],
+                "question": q["question"],
+                "why_ask": q["why_ask"],
+                "supporting_source": q["supporting_source"],
+                "status": "in_progress" if k == "q4_elements" else "pending",
+                "student_answer": None,
+                "rating": None,
+                "score": None,
+                "feedback": None,
+                "model_rule": None,
+                "answered_at": None,
+            }
+            for k, q in STAGE2_COLLOQUY_QUESTIONS.items()
+        },
+    }
 
 
 class SessionManager:
@@ -142,6 +241,8 @@ class SessionManager:
         session.setdefault("simulated_event", {})
         session.setdefault("revision", {})
         session.setdefault("rubric_evaluation", {})
+        if "stage2_colloquy" not in session or not session["stage2_colloquy"]:
+            session["stage2_colloquy"] = _create_default_stage2_colloquy()
 
         if session.get("completed"):
             return
@@ -1153,6 +1254,7 @@ class SessionManager:
             "ranked_priorities": session.get("ranked_priorities", []),
             "discovered_facts": session.get("discovered_facts", []),
             "prep_answers": session.get("prep_answers", {}),
+            "stage2_colloquy": session.get("stage2_colloquy", {}),
             "tradeoff_inputs": session.get("tradeoff_inputs", {}),
             "tradeoff_results": session.get("tradeoff_results", {}),
             "opponent_anticipation": session.get("opponent_anticipation", {}),
@@ -1244,6 +1346,210 @@ class SessionManager:
         }
 
         self.save_session(session)
+        return self.serialize_session(session)
+
+    def submit_stage2_colloquy_message(
+        self,
+        session_id: str,
+        message: str,
+        question_key: Optional[str] = None,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        colloquy = session.setdefault("stage2_colloquy", _create_default_stage2_colloquy())
+
+        target_key = question_key or colloquy.get("current_question_key") or "q4_elements"
+        if target_key not in STAGE2_COLLOQUY_QUESTIONS:
+            target_key = "q4_elements"
+
+        q_def = STAGE2_COLLOQUY_QUESTIONS[target_key]
+        clean_msg = (message or "").strip()
+
+        # 1. Append the associate/student message to colloquy chat history
+        colloquy.setdefault("messages", []).append({
+            "role": "user",
+            "speaker": "Lawyer (You)",
+            "content": clean_msg,
+            "timestamp": _now_iso(),
+            "question_key": target_key,
+        })
+
+        # 2. Evaluate the student response
+        case_bundle = get_case_bundle(
+            session.get("case_id"),
+            session.get("custom_case_text", ""),
+            session.get("custom_client_notes", ""),
+        )
+
+        ans_lower = clean_msg.lower()
+        matches = sum(1 for c in q_def["key_concepts"] if c in ans_lower)
+
+        rating = "Competent"
+        score = 3
+        if len(clean_msg) < 20:
+            rating = "Developing"
+            score = 1
+        elif matches >= 4 or (len(clean_msg) >= 110 and matches >= 2):
+            rating = "Proficient"
+            score = 5
+        elif matches >= 2:
+            rating = "Competent"
+            score = 4
+        else:
+            rating = "Developing"
+            score = 2
+
+        fallback_replies = {
+            "q4_elements": (
+                f"You have correctly grounded your analysis in governing Illinois contract principles under {q_def['supporting_source']}. "
+                "In Illinois, a plaintiff must allege (1) a valid enforceable contract, (2) substantial performance by the plaintiff, "
+                "(3) breach by the defendant, and (4) resultant damages. Heartland has formally addressed each element across paragraphs 2, 3, 4, and 6/10. "
+                "Therefore, on the face of the complaint alone, Heartland satisfies basic pleading requirements."
+            ),
+            "q5_facts": (
+                f"Excellent distinction under Federal Rule 8(a)(2) and {q_def['supporting_source']}. "
+                "The ambient temperature reading (>49°F), the three spoiled pallets, and the delivery dates are concrete factual allegations "
+                "that the court must accept as true at this stage. By contrast, Heartland's assertion that Lakeview acted in 'bad faith and reckless disregard' "
+                "is a bare legal conclusion that the court disregards under Twombly and Iqbal."
+            ),
+            "q6_four_corners": (
+                f"Crucial procedural insight under {q_def['supporting_source']}. "
+                "A Rule 12(b)(6) motion is strictly confined to the Four Corners of the complaint (and incorporated contracts). "
+                "We cannot introduce our internal refrigeration logs or technician ticket #409 without converting the motion to a Rule 56 summary judgment under Rule 12(d). "
+                "Doing so would trigger formal discovery and completely blow past our 75-day refinancing deadline."
+            ),
+            "q7_amend": (
+                f"Spot-on recognition of Seventh Circuit practice under {q_def['supporting_source']}. "
+                "Under Rule 15(a)(2) and Runnion v. Girl Scouts (786 F.3d at 519), district courts routinely grant leave to amend upon granting a 12(b)(6) motion. "
+                "Even if we won a dismissal of certain allegations, Heartland would simply replead with more specific facts. "
+                "A motion to dismiss does not end this dispute—it merely delays resolution past our 75-day commercial loan deadline."
+            ),
+            "q8_damages": (
+                f"Outstanding commercial and legal evaluation under {q_def['supporting_source']}. "
+                "Under Illinois law (Tri-G), lost profits require proof to a reasonable certainty and proximate causation. "
+                "More importantly, Master Agreement Section 11.2 contains an express waiver of consequential damages and caps warehouse liability at $36,000. "
+                "Because the agreement is central to the claim, we have a decisive legal weapon to eliminate the $340,000 lost profits exposure early."
+            ),
+        }
+
+        mentor_reply = fallback_replies.get(target_key, "Good legal analysis.")
+
+        if self.llm:
+            try:
+                llm_msgs = build_stage2_colloquy_messages(
+                    case_bundle=case_bundle,
+                    question_key=target_key,
+                    question_title=q_def["title"],
+                    question_text=q_def["question"],
+                    why_ask=q_def["why_ask"],
+                    supporting_source=q_def["supporting_source"],
+                    legal_rule=q_def["legal_rule"],
+                    student_answer=clean_msg,
+                    prior_messages=colloquy.get("messages", [])[-6:],
+                )
+                gen_out = self.llm.generate(messages=llm_msgs, max_tokens=450, temperature=0.3, enable_thinking=False)
+                parsed = parse_llm_json(gen_out["text"])
+                if parsed and parsed.get("mentor_reply"):
+                    mentor_reply = parsed["mentor_reply"]
+                if parsed and parsed.get("rating"):
+                    rating = parsed["rating"]
+                if parsed and parsed.get("score"):
+                    score = _clamp_int(parsed["score"], 1, 5, default=score)
+            except Exception:
+                pass
+
+        # 3. Update question state
+        colloquy.setdefault("questions", {})
+        if target_key not in colloquy["questions"]:
+            colloquy["questions"][target_key] = {
+                "id": target_key,
+                "number": q_def["number"],
+                "title": q_def["title"],
+                "question": q_def["question"],
+                "why_ask": q_def["why_ask"],
+                "supporting_source": q_def["supporting_source"],
+            }
+        colloquy["questions"][target_key].update({
+            "status": "completed",
+            "student_answer": clean_msg,
+            "rating": rating,
+            "score": score,
+            "feedback": mentor_reply,
+            "model_rule": q_def["legal_rule"],
+            "answered_at": _now_iso(),
+        })
+
+        # 4. Advance to next question or conclude
+        next_key = q_def.get("next_key")
+        partner_full_message = mentor_reply
+
+        if next_key and next_key in STAGE2_COLLOQUY_QUESTIONS:
+            next_q = STAGE2_COLLOQUY_QUESTIONS[next_key]
+            colloquy["current_question_key"] = next_key
+            if next_key in colloquy["questions"]:
+                colloquy["questions"][next_key]["status"] = "in_progress"
+            partner_full_message += (
+                f"\n\n---\n**Next Question ({next_q['number']} · {next_q['title']}):**\n"
+                f"\"{next_q['question']}\""
+            )
+        else:
+            colloquy["current_question_key"] = target_key
+            all_done = all(
+                colloquy["questions"].get(k, {}).get("status") == "completed"
+                for k in STAGE2_COLLOQUY_QUESTIONS
+            )
+            if all_done:
+                partner_full_message += (
+                    "\n\n---\n**Supervisory Synthesis:**\n"
+                    "Superb work completing our legal analysis colloquy! You have established that while Heartland technically pleaded "
+                    "contract breach, Section 11.2 legally caps damages at $36,000, and a Rule 12(b)(6) dismissal carries a 91% risk of "
+                    "leave-to-amend delay under Runnion. Now let's review the quantitative decision tree and sensitivity matrix below to test "
+                    "these legal realities against Elena Rostova's 75-day refinancing deadline."
+                )
+
+        colloquy["messages"].append({
+            "role": "assistant",
+            "speaker": "Supervising Partner",
+            "content": partner_full_message,
+            "timestamp": _now_iso(),
+            "question_key": target_key,
+        })
+
+        self._record_skill_observation(
+            session=session,
+            skill_id="legal_reasoning",
+            score=score,
+            is_revision=False,
+            comment=f"{q_def['number']}: {rating} - {mentor_reply[:80]}...",
+        )
+
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def set_stage2_colloquy_question(
+        self,
+        session_id: str,
+        question_key: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        colloquy = session.setdefault("stage2_colloquy", _create_default_stage2_colloquy())
+        if question_key in STAGE2_COLLOQUY_QUESTIONS:
+            colloquy["current_question_key"] = question_key
+            q_state = colloquy.setdefault("questions", {}).setdefault(question_key, {})
+            if q_state.get("status") in (None, "pending"):
+                q_state["status"] = "in_progress"
+            q_def = STAGE2_COLLOQUY_QUESTIONS[question_key]
+            last_msg = colloquy.get("messages", [])[-1] if colloquy.get("messages") else {}
+            if last_msg.get("question_key") != question_key:
+                colloquy["messages"].append({
+                    "role": "assistant",
+                    "speaker": "Supervising Partner",
+                    "content": f"Let's focus on **{q_def['number']} ({q_def['title']})**:\n\"{q_def['question']}\"",
+                    "timestamp": _now_iso(),
+                    "question_key": question_key,
+                })
+            self.save_session(session)
         return self.serialize_session(session)
 
     def set_ranked_priorities(
