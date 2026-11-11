@@ -368,7 +368,7 @@ def build_strategic_evaluation_messages(
         "Innovation Lab evaluating a student's performance in the Strategic Judgment Simulation.\n\n"
         "CRITICAL EVALUATION PRINCIPLES (FROM INNOVATION LAB DESIGN):\n"
         "1. Evaluate strictly against the 100-POINT FACULTY EVALUATION RUBRIC:\n"
-        "   - Client Interviewing (25 pts): Relevant follow-ups; uncovers objectives, constraints (75-day refinancing, $15k–$25k budget), and authority (Elena Rostova vs CFO sign-off vs Marcus Vance).\n"
+        "   - Client Interviewing (25 pts): Relevant follow-ups; uncovers objectives, constraints (75-day refinancing, $15k–$25k budget), and authority (Elena Rostova vs CFO David Park sign-off vs Marcus Vance).\n"
         "   - Legal Reasoning (25 pts): Accurate application of Illinois contract elements, Section 11.2 limitation of liability, and 7th Circuit Rule 12(b)(6) / Rule 15 pleading doctrine (Runnion liberal amendment standard; Four Corners rule).\n"
         "   - Risk & Uncertainty (20 pts): Justifies estimates; distinguishes legal rules from empirical observations and scenario assumptions; explores sensitivity; accounts for conditional probability P(dismissal without amendment) = P(grant) * P(no amendment | grant).\n"
         "   - Strategic Judgment (20 pts): Compares defensible alternatives (Negotiate vs Litigate vs Investigate) and ties recommendation to client business goals; avoids reflexive filing.\n"

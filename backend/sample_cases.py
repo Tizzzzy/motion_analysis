@@ -15,7 +15,7 @@ Court: U.S. District Court for the Northern District of Illinois (Case No. 1:26-
 Procedural Posture: Summons and Complaint served 9 days ago; responsive pleading deadline in 12 days.
 
 How the file arrived:
-Yesterday evening, Marcus Vance (Director of Warehouse Operations at Lakeview Cold Chain Logistics, LLC) emailed our litigation group forwarding the federal Complaint below and asking us to "file a motion to get this thrown out right away." Lakeview Cold Chain Logistics, LLC is a mid-sized Illinois refrigerated warehousing and regional distribution company headquartered in Bolingbrook, Illinois. Under Lakeview's Operating Agreement on file from prior corporate work, formal engagement, litigation budgets over $15,000, dispositive filings, and any settlement authority rest with CEO Elena Rostova (with CFO sign-off required above $25,000), though Marcus Vance is scheduled to join Elena Rostova for your upcoming client call.
+Yesterday evening, Marcus Vance (Director of Warehouse Operations at Lakeview Cold Chain Logistics, LLC) emailed our litigation group forwarding the federal Complaint below and asking us to "file a motion to get this thrown out right away." Lakeview Cold Chain Logistics, LLC is a mid-sized Illinois refrigerated warehousing and regional distribution company headquartered in Bolingbrook, Illinois. Under Lakeview's Operating Agreement on file from prior corporate work, formal engagement, litigation budgets over $15,000, dispositive filings, and any settlement authority rest with CEO Elena Rostova (with CFO David Park's sign-off required above $25,000), though Marcus Vance is scheduled to join Elena Rostova for your upcoming client call.
 
 === EXCERPT OF PLAINTIFF'S COMPLAINT ===
 IN THE UNITED STATES DISTRICT COURT
