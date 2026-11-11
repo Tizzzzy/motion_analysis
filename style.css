@@ -48,6 +48,10 @@ a {
   color: inherit;
 }
 
+button, input, textarea, select {
+  font-family: inherit;
+}
+
 /* ---- Site Header ---- */
 
 .site-header {
@@ -256,6 +260,8 @@ a {
 }
 
 .btn-header {
+  appearance: none;
+  -webkit-appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -272,6 +278,7 @@ a {
   transition: all 0.18s ease;
   line-height: 1.4;
   white-space: nowrap;
+  outline: none;
 }
 
 .btn-header:hover {
@@ -2034,4 +2041,128 @@ a {
   color: var(--navy);
   cursor: pointer;
   font-size: 0.95rem;
+}
+
+/* Preparation Prompt Answer & Feedback Box */
+.prep-q-box {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.prep-input-area {
+  width: 100%;
+  min-height: 65px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 0.86rem;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  resize: vertical;
+  margin: 8px 0 6px;
+  box-sizing: border-box;
+}
+
+.prep-input-area:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px rgba(15, 34, 64, 0.1);
+}
+
+.prep-feedback-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid var(--navy);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+/* Discovered Facts List in Sidebar */
+.fact-item-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.fact-item-card.known {
+  border-left: 4px solid #0284c7;
+  background: #f0f9ff;
+}
+
+.fact-item-card.discovered {
+  border-left: 4px solid #16a34a;
+  background: #f0fdf4;
+  animation: fadeInFact 0.3s ease;
+}
+
+@keyframes fadeInFact {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fact-source-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.fact-source-tag.known { color: #0369a1; }
+.fact-source-tag.discovered { color: #15803d; }
+
+/* Motion Studio Evidence & LR 56.1 Workspace */
+.evidence-workspace-card {
+  background: #fbfbf9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.evidence-fact-row {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.evidence-tag-select {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  color: var(--navy);
+  background: #fff;
+}
+
+.evidence-tag-select.undisputed {
+  border-color: #16a34a;
+  color: #166534;
+  background: #f0fdf4;
+}
+
+.evidence-tag-select.disputed {
+  border-color: #ea580c;
+  color: #9a3412;
+  background: #fff7ed;
+}
+
+.evidence-tag-select.unsupported {
+  border-color: #dc2626;
+  color: #991b1b;
+  background: #fef2f2;
 }

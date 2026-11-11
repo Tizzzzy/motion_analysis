@@ -255,6 +255,21 @@ class SessionManager:
             "skill_scores": {},
             "sim_stage": 1,
             "ranked_priorities": [],
+            "discovered_facts": [
+                {
+                    "id": "known_marcus_preference",
+                    "category": "Known Authority",
+                    "source": "Supervising Partner Intake Note",
+                    "text": "Marcus Vance (Warehouse Ops) wants to file an immediate motion to dismiss, but lacks authority for dispositive litigation filings or budgets over $15,000.",
+                },
+                {
+                    "id": "known_elena_authority",
+                    "category": "Known Authority",
+                    "source": "Supervising Partner Intake Note",
+                    "text": "CEO Elena Rostova holds executive strategic authority; joint CFO David Park sign-off required for legal commitments exceeding $25,000.",
+                },
+            ],
+            "prep_answers": {},
             "tradeoff_inputs": trade_defaults,
             "tradeoff_results": compute_tradeoffs(trade_defaults),
             "opponent_anticipation": {},
@@ -269,6 +284,7 @@ class SessionManager:
         if phases:
             # If the session is for the Strategic Simulation (ndil_lakeview_cold_chain),
             # Stage 1 is the Client Interview. Start directly in client roleplay with Elena Rostova!
+            # The client acknowledges the dispute without prematurely revealing hidden constraints (75-day loan, Sec. 11.2)
             client_phase_idx = next(
                 (i for i, p in enumerate(phases) if p.mode == "client_roleplay" or p.id == "during_meeting"),
                 None
@@ -283,9 +299,9 @@ class SessionManager:
                     content=(
                         "Hello counsel. Thank you for making time to meet with us on such short notice. "
                         "Marcus and I received Heartland's federal complaint claiming over $408,000 for cheese spoilage in Bay C. "
-                        "Marcus wants to file an immediate motion to dismiss, but as CEO, I have to make sure we make the right business move "
-                        "and consider our cash reserves, our credit facility refinancing in 75 days, and our commercial relationships.\n\n"
-                        "What questions do you have for us about our priorities, budget, the contract, or what happened?"
+                        "Marcus wants to file an immediate motion to dismiss right away, but as CEO, I want to make sure we evaluate all our options "
+                        "and make the right strategic move for Lakeview before making any commitments.\n\n"
+                        "What questions do you have for us about our business, the lawsuit, or what happened?"
                     ),
                     phase_id=client_phase.id,
                 )
@@ -771,6 +787,66 @@ class SessionManager:
             phase_id=cur_phase.id,
         )
 
+        # Dynamically uncover scenario facts based on student inquiry (Page 5, 6, 10 of PDF recommendations)
+        t_lower = student_text.lower()
+        discovered = session.setdefault("discovered_facts", [])
+        discovered_ids = {f["id"] for f in discovered}
+
+        FACT_TRIGGERS = [
+            (
+                "fact_refinancing_deadline",
+                ("refinanc", "bank", "credit", "deadline", "loan", "75 day", "timing", "when", "urgent", "pressure"),
+                "Commercial Urgency",
+                "Discovered from CEO Elena Rostova",
+                "75-Day Bank Refinancing Window: Commercial credit facility with Midwest Business Bank is up for renewal; open litigation >$250k threatens to freeze Lakeview's credit line.",
+            ),
+            (
+                "fact_budget_cap",
+                ("budget", "fee", "cost", "spend", "how much", "expense", "dollars", "funds", "afford"),
+                "Financial Constraint",
+                "Discovered from CEO Elena Rostova",
+                "Litigation Budget Cap: Client budget is strictly $15,000–$25,000; Lakeview cannot afford a protracted $75k+ discovery war over a $68k shipment.",
+            ),
+            (
+                "fact_section_11_2",
+                ("contract", "section 11", "11.2", "limitation", "waiver", "consequential", "lost profit", "agreement", "clause", "terms"),
+                "Contractual Defense",
+                "Discovered from Master Agreement & Elena",
+                "Master Agreement Sec. 11.2: Expressly bars consequential and lost-profit damages ($340,000) and caps cumulative warehouse liability at $36,000 (2x monthly storage).",
+            ),
+            (
+                "fact_settlement_appetite",
+                ("settle", "offer", "compromise", "resolve", "deal", "negotiat", "informal"),
+                "Commercial Resolution",
+                "Discovered from CEO Elena Rostova",
+                "Settlement Terms: Client willing to offer $30k–$40k cash + $20k storage fee credits conditioned on mutual general release, confidentiality, and no admission of fault.",
+            ),
+            (
+                "fact_dock_records",
+                ("what happened", "spoil", "temperature", "pallet", "bay c", "cheese", "alarm", "ticket", "sensor", "dock", "log", "truck", "record"),
+                "Evidentiary Facts",
+                "Discovered from Marcus Vance",
+                "Warehouse Dock Logs & Ticket #409: Receiving dock logs show cheese was delivered at 45°F hot-loaded (violating Sec. 4.1 pre-cooling); internal ticket #409 logged auxiliary sensor alert on Aug 15.",
+            ),
+            (
+                "fact_heartland_relationship",
+                ("relationship", "customer", "heartland", "revenue", "recurring", "future business", "partner", "loss of customer"),
+                "Commercial Value",
+                "Discovered from CEO Elena Rostova",
+                "Heartland Commercial Account: Heartland generates ~$190,000/year in recurring storage revenue for Lakeview's Bolingbrook warehouse.",
+            ),
+        ]
+
+        for fid, words, cat, src, txt in FACT_TRIGGERS:
+            if fid not in discovered_ids and any(w in t_lower for w in words):
+                discovered.append({
+                    "id": fid,
+                    "category": cat,
+                    "source": src,
+                    "text": txt,
+                })
+                discovered_ids.add(fid)
+
         # Automatically advance once all During-meeting items pass (legacy guided mode only)
         if not session.get("sim_stage"):
             all_passed = all(
@@ -1075,6 +1151,8 @@ class SessionManager:
             "total_questions": len(self.curriculum.questions),
             "sim_stage": session.get("sim_stage", 1),
             "ranked_priorities": session.get("ranked_priorities", []),
+            "discovered_facts": session.get("discovered_facts", []),
+            "prep_answers": session.get("prep_answers", {}),
             "tradeoff_inputs": session.get("tradeoff_inputs", {}),
             "tradeoff_results": session.get("tradeoff_results", {}),
             "opponent_anticipation": session.get("opponent_anticipation", {}),
@@ -1106,6 +1184,65 @@ class SessionManager:
     ) -> Dict[str, Any]:
         session = self.load_session(session_id, snapshot=snapshot)
         session["sim_stage"] = max(1, min(6, int(stage)))
+        self.save_session(session)
+        return self.serialize_session(session)
+
+    def submit_prep_answer(
+        self,
+        session_id: str,
+        question_key: str,
+        student_answer: str,
+        snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        session = self.load_session(session_id, snapshot=snapshot)
+        prep = session.setdefault("prep_answers", {})
+
+        feedback_dict = {
+            "q1_authority": {
+                "question": "Marcus has instructed you to file a motion to dismiss immediately. Before acting on that request, whose interests are you representing, and whose authorisation do you need?",
+                "rules": "Illinois Rules of Professional Conduct 1.13 & 1.2",
+                "model_answer": "Under Illinois Rule 1.13 (Organization as Client), you represent the corporate entity—Lakeview Cold Chain Logistics, LLC—not employee Marcus Vance. Under Rule 1.2 (Scope of Representation & Allocation of Authority), strategic litigation decisions and financial commitments rest with executive leadership. CEO Elena Rostova holds executive strategic authority, and Lakeview's governance requires CFO David Park's sign-off for expenditures exceeding $25,000.",
+                "key_concepts": ["entity", "organization", "1.13", "elena", "rostova", "cfo", "park", "25,000", "authority", "rule 1.2", "marcus"],
+            },
+            "q2_assumptions": {
+                "question": "What information do you currently know, and what assumptions are you making about the client's objectives?",
+                "rules": "Illinois Rule of Professional Conduct 1.4",
+                "model_answer": "Known facts from complaint: Heartland filed a federal breach-of-contract complaint alleging cheese spoilage in Bay C demanding $68,400 direct inventory loss + $340,000 lost profits; Marcus Vance wants an immediate motion to dismiss. Assumptions: Assuming Marcus speaks for the company, assuming the client wants an aggressive public court battle, and assuming no adverse internal records exist. Rule 1.4 requires direct consultation with Elena Rostova to identify information gaps and true business objectives.",
+                "key_concepts": ["known", "assum", "complaint", "marcus", "spoil", "goal", "objective", "gap", "rule 1.4", "aggressive", "408"],
+            },
+            "q3_priorities": {
+                "question": "What three questions would you prioritise in your client interview, and how could the answers affect your eventual recommendation?",
+                "rules": "Illinois Rules of Professional Conduct 1.4 & 2.1",
+                "model_answer": "Prioritize asking: (1) What are your business deadlines or commercial pressures (e.g. bank refinancing underwriting)? (2) What litigation budget is available ($15k–$25k vs. a $75k+ discovery war)? (3) Is preserving Heartland's commercial relationship important ($190k/year recurring revenue)? Under Rule 2.1 (Advisor), counsel must integrate economic, financial, and reputational factors alongside pure legal merits.",
+                "key_concepts": ["budget", "deadline", "timing", "authority", "refinanc", "relationship", "goal", "rule 2.1", "cost", "heartland", "75"],
+            },
+        }
+
+        q_info = feedback_dict.get(question_key, feedback_dict["q1_authority"])
+        ans_clean = (student_answer or "").strip()
+        ans_lower = ans_clean.lower()
+
+        matches = sum(1 for c in q_info["key_concepts"] if c in ans_lower)
+        if len(ans_clean) < 15:
+            assessment = "Brief answer recorded. Compare with the partner guidance below to ensure complete legal grounding."
+            rating = "Developing"
+        elif matches >= 3:
+            assessment = "Excellent analysis! Your answer accurately identifies governing professional conduct rules and client authority constraints."
+            rating = "Proficient"
+        else:
+            assessment = "Good preliminary analysis. Compare your reasoning with the supervisory partner explanation and supporting rules below."
+            rating = "Competent"
+
+        prep[question_key] = {
+            "student_answer": ans_clean,
+            "submitted_at": _now_iso(),
+            "rating": rating,
+            "assessment": assessment,
+            "model_answer": q_info["model_answer"],
+            "supporting_rules": q_info["rules"],
+            "revealed": True,
+        }
+
         self.save_session(session)
         return self.serialize_session(session)
 

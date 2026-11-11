@@ -29,7 +29,7 @@ _SESSION_ROUTE_RE = re.compile(
     r"^/api/session/([a-zA-Z0-9_-]+)(?:/(case|message|skip|hint|export\.csv))?$"
 )
 _SIM_ROUTE_RE = re.compile(
-    r"^/api/simulation/([a-zA-Z0-9_-]+)(?:/(stage|priorities|tradeoffs|opponent|strategy|event|evaluate|export\.(?:csv|json)))?$"
+    r"^/api/simulation/([a-zA-Z0-9_-]+)(?:/(stage|priorities|tradeoffs|opponent|strategy|event|evaluate|prep|export\.(?:csv|json)))?$"
 )
 
 
@@ -261,6 +261,15 @@ class MotionGuidanceHandler(BaseHTTPRequestHandler):
                     state = ctx.sessions.set_ranked_priorities(
                         session_id=session_id,
                         priorities=body.get("priorities", []),
+                        snapshot=snapshot,
+                    )
+                    self._send_json(200, state)
+                    return
+                if subaction == "prep":
+                    state = ctx.sessions.submit_prep_answer(
+                        session_id=session_id,
+                        question_key=body.get("question_key", "q1_authority"),
+                        student_answer=body.get("answer", ""),
                         snapshot=snapshot,
                     )
                     self._send_json(200, state)

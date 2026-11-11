@@ -10,7 +10,7 @@
 
 <header class="site-header">
   <a href="index.html" class="brand">
-    <span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation
+    <span class="mark">&sect;</span> Motion Analysis &middot; Strategic Judgment Simulation
   </a>
   <div class="header-right">
     <nav>
@@ -28,19 +28,71 @@
 <main class="shell">
   <div class="hero">
     <div class="eyebrow">Northwestern Pritzker School of Law &middot; Innovation Lab</div>
-    <h1>Strategic Judgment Simulation: Commercial Litigation &amp; Client Counseling</h1>
+    <h1>Motion Analysis &mdash; Interactive Legal Case Analysis &amp; Strategy Simulation</h1>
     <p class="lede">
-      A controlled, interactive Illinois breach-of-contract hypothetical that develops students' strategic judgment.
-      The project is <strong>not primarily a motion-outcome predictor, case-upload analyzer, or litigation-procedure tutorial</strong>.
-      Students learn that a legally defensible argument may still be a poor strategic choice for a particular client.
+      Motion Analysis is an interdisciplinary learning platform that helps law students practice legal analysis, client counseling, and strategic decision-making through interactive civil litigation scenarios. Focusing initially on Illinois breach-of-contract disputes in the U.S. District Court for the Northern District of Illinois, students investigate case facts, interview simulated clients, evaluate federal motion standards, assess costs and uncertainty, and explain recommendations in light of client goals. The platform supports Rule 12(b)(6) pleading analysis and, with an appropriate evidentiary record, Rule 56 summary judgment analysis. Feedback emphasizes the quality of students&rsquo; legal and strategic reasoning.
     </p>
   </div>
 
   <div class="research-note">
     <strong>Core Learning Objective:</strong>
-    Students learn to discover hidden client priorities, compare legally defensible strategies (Negotiate, Litigate 12(b)(6), Investigate),
+    Students learn to discover hidden client priorities, compare legally defensible strategies (Negotiate, Litigate 12(b)(6), Investigate, and post-discovery Rule 56),
     anticipate opposing-party reactions, quantify uncertainty through conditional probability trees, experience a simulated real-world event,
     and explain or revise their recommendation against an official <strong>100-Point Faculty Rubric</strong>.
+  </div>
+
+  <!-- Legal Standards & Procedural Architecture Card -->
+  <div class="card" style="margin-top:20px; background:#fbfcfd; border-left:4px solid var(--navy);">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <h2 style="margin:0; font-size:1.2rem; color:var(--navy);">Legal Standards &amp; Federal Rules Architecture</h2>
+      <span class="score-pill pass" style="font-size:0.8rem;">Default Jurisdiction: N.D. Ill. (Eastern Division)</span>
+    </div>
+    <p class="note" style="margin:8px 0 16px;">
+      <strong>Core Doctrinal Distinction:</strong> Keep Rule 12(b)(6) and Rule 56 separate &mdash; pleading sufficiency at the initial appearance is fundamentally different from an evidentiary determination about genuine disputes of material fact.
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="color:var(--navy); font-size:0.95rem;">Rule 12(b)(6) Pleading Standard</strong>
+          <span class="legal-source-badge">Initial Stage</span>
+        </div>
+        <p style="font-size:0.84rem; color:var(--ink-soft); line-height:1.45; margin:0 0 8px;">
+          Confined strictly to the Four Corners of the complaint (and contracts incorporated by reference). Under <em>Twombly</em> and <em>Iqbal</em>, factual allegations are accepted as true, but conclusory labels are disregarded. In the Seventh Circuit, district courts routinely grant leave to amend upon dismissal (<em>Runnion v. Girl Scouts</em>, 786 F.3d 510).
+        </p>
+        <div style="font-size:0.78rem; color:var(--muted);">
+          Key focus: Does the plaintiff state a plausible claim for breach of contract under Illinois law?
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="color:var(--navy); font-size:0.95rem;">Rule 56 Summary Judgment</strong>
+          <span class="legal-source-badge">Evidentiary Stage</span>
+        </div>
+        <p style="font-size:0.84rem; color:var(--ink-soft); line-height:1.45; margin:0 0 8px;">
+          Evaluated only after an appropriate evidentiary record exists (affidavits, depositions, sensor logs, carrier inspection records). Granted if there is no genuine dispute as to any material fact and the movant is entitled to judgment as a matter of law (<em>Celotex</em>, <em>Anderson</em>, <em>Swyear</em>). Reasonable inferences are drawn in favor of the nonmovant.
+        </p>
+        <div style="font-size:0.78rem; color:var(--muted);">
+          Key focus: Can either party prove or disprove breach, causation, or liability caps without factfinder resolution?
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="color:var(--navy); font-size:0.95rem;">N.D. Ill. Local Rule 56.1</strong>
+          <span class="legal-source-badge">Local Practice</span>
+        </div>
+        <p style="font-size:0.84rem; color:var(--ink-soft); line-height:1.45; margin:0 0 8px;">
+          Mandates numbered statements of material facts with specific record citations. The supplied April 20, 2006 text (80 moving facts / 40 opposing facts) is provided as historical reference; current rules and judge-specific standing orders must be verified for active practice.
+        </p>
+        <div style="font-size:0.78rem; color:var(--muted); margin-top:4px;">
+          Official Links:
+          <a href="https://www.law.cornell.edu/rules/frcp/rule_56" target="_blank" rel="noopener" style="color:var(--navy); font-weight:600;">FRCP 56</a> &middot;
+          <a href="https://www.ilnd.uscourts.gov/_assets/_documents/_forms/_legal/newrules/New00045.htm" target="_blank" rel="noopener" style="color:var(--navy); font-weight:600;">N.D. Ill. Court Rules</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- The 6-Stage Student Experience -->

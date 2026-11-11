@@ -72,7 +72,7 @@
 
 <header class="site-header">
   <a href="index.html" class="brand">
-    <span class="mark">&sect;</span> Innovation Lab &middot; Strategic Judgment Simulation
+    <span class="mark">&sect;</span> Motion Analysis &middot; Strategic Judgment Simulation
   </a>
   <div class="header-right">
     <button class="btn-header" id="btn-open-case">
@@ -151,26 +151,61 @@
               </summary>
               <div style="font-size:0.86rem; color:var(--ink-soft); margin-top:10px; line-height:1.55;">
                 <p style="margin:0 0 10px;">
-                  Before interviewing Elena Rostova and Marcus Vance, ground your strategy in these supervisory preparation questions:
+                  Before interviewing Elena Rostova and Marcus Vance, enter your preliminary reasoning for each supervisory prompt below.
+                  <em>Model explanations and governing Illinois Rules of Professional Conduct will be revealed after you submit:</em>
                 </p>
-                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px; margin-bottom:8px;">
-                  <strong style="color:var(--navy);">Q1 (Representation &amp; Authority):</strong> "Marcus has instructed you to file a motion to dismiss immediately. Before acting on that request, whose interests are you representing, and whose authorisation do you need?"
-                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
-                    <span class="legal-source-badge">Illinois Rules 1.13 &amp; 1.2</span> &middot; You represent the corporate entity (Lakeview Cold Chain Logistics, LLC), not employee Marcus Vance. CEO Elena Rostova holds executive authority, with CFO sign-off required above $25,000.
+
+                <!-- Q1 -->
+                <div class="prep-q-box">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:var(--navy);">Q1 (Representation &amp; Authority):</strong>
+                    <span class="score-pill" id="prep-pill-q1_authority" style="font-size:0.75rem;">Pending Answer</span>
                   </div>
-                </div>
-                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px; margin-bottom:8px;">
-                  <strong style="color:var(--navy);">Q2 (Known Facts vs. Assumptions):</strong> "What information do you currently know, and what assumptions are you making about the client's objectives?"
-                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
-                    <span class="legal-source-badge">Illinois Rule 1.4</span> &middot; Separate known facts (served federal complaint alleging cheese spoilage) from assumptions (assuming client wants an aggressive fight). Identify information gaps regarding client finances and deadlines.
+                  <div style="margin:4px 0 6px; font-size:0.86rem;">
+                    "Marcus has instructed you to file a motion to dismiss immediately. Before acting on that request, whose interests are you representing, and whose authorisation do you need?"
                   </div>
-                </div>
-                <div style="background:#fff; border:1px solid var(--border); border-radius:6px; padding:12px;">
-                  <strong style="color:var(--navy);">Q3 (Interview Question Prioritization):</strong> "What three questions would you prioritise in your client interview, and how could the answers affect your eventual recommendation?"
-                  <div style="font-size:0.79rem; color:var(--muted); margin-top:4px;">
-                    <span class="legal-source-badge">Illinois Rules 1.4 &amp; 2.1</span> &middot; Prioritize uncovering (1) decision authority thresholds, (2) financial/legal budget limits, (3) commercial deadlines (bank refinancing), and (4) customer relationship retention.
+                  <textarea id="prep-input-q1_authority" class="prep-input-area" placeholder="Enter your answer: Identify who your client is under professional conduct rules and who holds authority to authorize filings or expenditures..."></textarea>
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span class="note" style="font-size:0.78rem;">Illinois Rules 1.13 &amp; 1.2</span>
+                    <button class="btn btn-secondary btn-sm" onclick="submitPrepAnswer('q1_authority')">Submit Answer &amp; Reveal Partner Feedback</button>
                   </div>
+                  <div id="prep-box-q1_authority" class="prep-feedback-box" style="display:none;"></div>
                 </div>
+
+                <!-- Q2 -->
+                <div class="prep-q-box">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:var(--navy);">Q2 (Known Facts vs. Assumptions):</strong>
+                    <span class="score-pill" id="prep-pill-q2_assumptions" style="font-size:0.75rem;">Pending Answer</span>
+                  </div>
+                  <div style="margin:4px 0 6px; font-size:0.86rem;">
+                    "What information do you currently know, and what assumptions are you making about the client's objectives?"
+                  </div>
+                  <textarea id="prep-input-q2_assumptions" class="prep-input-area" placeholder="Enter your answer: Distinguish verified complaint facts from unverified assumptions about business goals..."></textarea>
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span class="note" style="font-size:0.78rem;">Illinois Rule 1.4</span>
+                    <button class="btn btn-secondary btn-sm" onclick="submitPrepAnswer('q2_assumptions')">Submit Answer &amp; Reveal Partner Feedback</button>
+                  </div>
+                  <div id="prep-box-q2_assumptions" class="prep-feedback-box" style="display:none;"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="prep-q-box">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:var(--navy);">Q3 (Interview Question Prioritization):</strong>
+                    <span class="score-pill" id="prep-pill-q3_priorities" style="font-size:0.75rem;">Pending Answer</span>
+                  </div>
+                  <div style="margin:4px 0 6px; font-size:0.86rem;">
+                    "What three questions would you prioritise in your client interview, and how could the answers affect your eventual recommendation?"
+                  </div>
+                  <textarea id="prep-input-q3_priorities" class="prep-input-area" placeholder="Enter your answer: Specify your three priority questions and how the answers guide your strategy..."></textarea>
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span class="note" style="font-size:0.78rem;">Illinois Rules 1.4 &amp; 2.1</span>
+                    <button class="btn btn-secondary btn-sm" onclick="submitPrepAnswer('q3_priorities')">Submit Answer &amp; Reveal Partner Feedback</button>
+                  </div>
+                  <div id="prep-box-q3_priorities" class="prep-feedback-box" style="display:none;"></div>
+                </div>
+
               </div>
             </details>
 
@@ -250,12 +285,13 @@
             </div>
 
             <div style="margin-top:20px;">
-              <div class="stage-eyebrow">Discovered Authority &amp; Facts</div>
-              <ul class="clean-list" id="discovered-facts-list" style="font-size:0.83rem; color:var(--ink-soft); margin-top:8px;">
-                <li>&bull; Marcus Vance wants an immediate motion to dismiss.</li>
-                <li>&bull; CEO Elena Rostova holds strategic authority; CFO sign-off required above $25,000.</li>
-                <li>&bull; Master Agreement Sec. 11.2 limitation of liability bars consequential damages.</li>
-              </ul>
+              <div class="stage-eyebrow">Authority &amp; Discovered Facts</div>
+              <p class="note" style="margin-top:2px; margin-bottom:8px; font-size:0.78rem;">
+                Known baseline rules from supervising partner intake note; hidden scenario facts appear as you uncover them.
+              </p>
+              <div id="discovered-facts-list">
+                <!-- Dynamically populated by renderDiscoveredFacts() -->
+              </div>
             </div>
 
             <div style="margin-top:24px;">
@@ -572,9 +608,12 @@
           <div class="stage-eyebrow">Stage 4 &middot; Strategy Formulation</div>
           <h2 class="stage-title">Choose and Explain Your Recommended Action</h2>
           <p class="stage-desc">
-            Select your initial course of action for Lakeview Cold Chain Logistics.
-            Your choice will be recorded with your supporting reasons; no strategy is marked automatically correct.
+            Select your initial course of action for Lakeview Cold Chain Logistics. No single strategy is forced as the only "correct" choice;
+            your advice is evaluated on how rigorously your rationale connects client priorities, cost constraints, and procedural rules.
           </p>
+          <div class="callout" style="background:#f8fafc; border-left:3px solid var(--navy); padding:10px 14px; border-radius:4px; font-size:0.83rem; margin-top:8px; color:var(--ink-soft);">
+            <strong>Procedural Hierarchy:</strong> At this initial responsive pleading stage, choose between Option A (Settlement), Option B (Rule 12(b)(6) Motion), or Option C (Investigation &amp; Standstill). If Lakeview investigates or answers, a <strong>Rule 56 Motion for Summary Judgment</strong> becomes viable later once an appropriate evidentiary record is assembled.
+          </div>
         </div>
 
         <div class="strategy-picker-grid">
@@ -947,9 +986,11 @@ Section 14.8 (Attorney's Fees):
     if (!sessionState) return;
     const curStage = sessionState.sim_stage || 1;
 
-    // Stage 1: Render Chat Messages & Priorities
+    // Stage 1: Render Prep Answers, Chat Messages, Priorities, and Discovered Facts
+    renderPrepAnswers();
     renderChatThread();
     renderPriorityDropdowns();
+    renderDiscoveredFacts();
 
     // Stage 2: Render Tradeoff calculations
     renderTradeoffInputsAndResults();
@@ -968,8 +1009,109 @@ Section 14.8 (Attorney's Fees):
   }
 
   // -------------------------------------------------------------------------
-  // STAGE 1 LOGIC
+  // STAGE 1 LOGIC & PREPARATION PROMPTS
   // -------------------------------------------------------------------------
+  async function submitPrepAnswer(questionKey) {
+    if (!sessionState) return;
+    const inputEl = document.getElementById(`prep-input-${questionKey}`);
+    if (!inputEl) return;
+    const ans = inputEl.value.trim();
+    if (!ans) {
+      alert("Please enter your preliminary answer before requesting supervisory feedback.");
+      inputEl.focus();
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/simulation/${sessionState.session_id}/prep`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question_key: questionKey,
+          answer: ans,
+          session_snapshot: sessionState.session_snapshot,
+        }),
+      });
+      if (res.ok) {
+        sessionState = await res.json();
+        saveSnapshot();
+        renderPrepAnswers();
+      }
+    } catch (e) {
+      console.error("Error submitting prep answer:", e);
+    }
+  }
+
+  function renderPrepAnswers() {
+    if (!sessionState) return;
+    const preps = sessionState.prep_answers || {};
+    const keys = ["q1_authority", "q2_assumptions", "q3_priorities"];
+
+    keys.forEach(k => {
+      const p = preps[k];
+      const pill = document.getElementById(`prep-pill-${k}`);
+      const box = document.getElementById(`prep-box-${k}`);
+      const input = document.getElementById(`prep-input-${k}`);
+
+      if (p && p.revealed) {
+        if (pill) {
+          pill.className = "score-pill pass";
+          pill.textContent = p.rating || "Submitted";
+        }
+        if (input && p.student_answer && document.activeElement !== input) {
+          input.value = p.student_answer;
+        }
+        if (box) {
+          box.style.display = "block";
+          box.innerHTML = `
+            <div style="font-weight:700; color:var(--navy); margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <span>Supervising Partner Feedback (${escapeHtml(p.rating || "Evaluated")})</span>
+              <span class="legal-source-badge" style="margin:0;">${escapeHtml(p.supporting_rules || "")}</span>
+            </div>
+            <p style="margin:0 0 6px; color:#1d5b63; font-weight:600;">${escapeHtml(p.assessment || "")}</p>
+            <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:10px; margin-top:6px;">
+              <strong style="color:var(--navy);">Model Explanation &amp; Rule Application:</strong>
+              <div style="margin-top:4px; font-size:0.83rem; color:var(--ink); line-height:1.45;">${escapeHtml(p.model_answer || "")}</div>
+            </div>
+          `;
+        }
+      } else {
+        if (pill) {
+          pill.className = "score-pill";
+          pill.textContent = "Pending Answer";
+        }
+        if (box) {
+          box.style.display = "none";
+        }
+      }
+    });
+  }
+
+  function renderDiscoveredFacts() {
+    const container = document.getElementById("discovered-facts-list");
+    if (!container || !sessionState) return;
+
+    const facts = sessionState.discovered_facts || [];
+    if (!facts.length) {
+      container.innerHTML = `<div class="note" style="font-size:0.8rem; font-style:italic;">No authority or scenario facts recorded yet.</div>`;
+      return;
+    }
+
+    container.innerHTML = facts.map(f => {
+      const isKnown = f.category === "Known Authority";
+      const badgeClass = isKnown ? "known" : "discovered";
+      const icon = isKnown ? "&#128203;" : "&#9733;";
+      return `
+        <div class="fact-item-card ${badgeClass}">
+          <div class="fact-source-tag ${badgeClass}">
+            ${icon} ${escapeHtml(f.category)} &middot; ${escapeHtml(f.source)}
+          </div>
+          <div>${escapeHtml(f.text)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
   function renderChatThread() {
     const thread = document.getElementById("chat-thread-stream");
     const msgs = sessionState.messages || [];
@@ -977,7 +1119,7 @@ Section 14.8 (Attorney's Fees):
       thread.innerHTML = `
         <div class="chat-bubble client" style="background:#eef7f8; border:1px solid #c2e2e6; border-radius:10px; padding:14px; margin-bottom:12px;">
           <div style="font-weight:700; color:#1d5b63; font-size:0.83rem; margin-bottom:4px;">Elena Rostova, CEO (with Marcus Vance)</div>
-          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">Hello counsel. Thank you for making time to meet with us on such short notice. Marcus and I received Heartland's federal complaint claiming over $408,000 for cheese spoilage in Bay C. Marcus wants to file an immediate motion to dismiss, but as CEO, I have to make sure we make the right business move and consider our cash reserves, our credit facility refinancing in 75 days, and our commercial relationships.\n\nWhat questions do you have for us about our priorities, budget, the contract, or what happened?</div>
+          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">Hello counsel. Thank you for making time to meet with us on such short notice. Marcus and I received Heartland's federal complaint claiming over $408,000 for cheese spoilage in Bay C. Marcus wants to file an immediate motion to dismiss right away, but as CEO, I want to make sure we evaluate all our options and make the right strategic move for Lakeview before making any commitments.\n\nWhat questions do you have for us about our business, the lawsuit, or what happened?</div>
         </div>
       `;
       return;
@@ -1052,6 +1194,7 @@ Section 14.8 (Attorney's Fees):
         sessionState = await res.json();
         saveSnapshot();
         renderChatThread();
+        renderDiscoveredFacts();
       } else {
         const err = await res.json().catch(() => ({}));
         alert("Error from client interview service: " + (err.error || "Server error"));
