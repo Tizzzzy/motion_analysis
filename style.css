@@ -2196,3 +2196,348 @@ button, input, textarea, select {
   background: #cbd5e1;
   border-radius: 4px;
 }
+
+/* =========================================================================
+   STAGE FRAMING & DECISION OBJECTIVE BANNERS (P1)
+   ========================================================================= */
+.stage-framing-banner {
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #eef2f8 0%, #e5edf8 100%);
+  border: 1px solid #c8d7ed;
+  border-left: 5px solid var(--navy);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stage-framing-banner .framing-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--navy);
+  margin-bottom: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stage-framing-banner .framing-q-label {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.stage-framing-banner .framing-q-text {
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.5;
+  font-style: italic;
+  font-family: "Georgia", serif;
+}
+
+.stage-framing-banner .framing-subtext {
+  font-size: 0.77rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* Stage Synthesis & Strategic Next-Step Cards */
+.stage-synthesis-card {
+  margin-top: 20px;
+  background: #fdf7e6;
+  border: 1px solid #e4cd8b;
+  border-left: 5px solid var(--gold-dark);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stage-synthesis-card .synthesis-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gold-dark);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.stage-synthesis-card .synthesis-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.stage-synthesis-card .synthesis-point strong {
+  color: var(--navy);
+  margin-right: 4px;
+}
+
+/* =========================================================================
+   STAGE 1 GUIDED CLIENT INTERVIEW & 10-POINT RUBRIC (P0 & P1)
+   ========================================================================= */
+.interview-objective-banner {
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, #fdf7e6 0%, #faecd0 100%);
+  border: 1px solid #e4cd8b;
+  border-left: 4px solid var(--gold-dark);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.interview-objective-banner .objective-banner-icon {
+  font-size: 1.4rem;
+  color: var(--gold-dark);
+  line-height: 1;
+}
+
+.interview-objective-banner .objective-banner-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.interview-objective-banner .objective-banner-desc {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.guided-questions-card {
+  margin-bottom: 12px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.guided-questions-card .guided-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.guided-questions-card .guided-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.guided-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.guided-q-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #faf9f6;
+  border: 1px solid #e8e3d5;
+  border-radius: 6px;
+  padding: 8px 12px;
+  gap: 10px;
+  transition: all 0.18s ease;
+}
+
+.guided-q-row:hover {
+  background: #f4efe4;
+  border-color: #d8cfba;
+}
+
+/* 10-Point Objective Rubric Card */
+.interview-rubric-card {
+  margin-top: 16px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.interview-rubric-card .rubric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.interview-rubric-card .rubric-eyebrow {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gold-dark);
+}
+
+.interview-rubric-card .rubric-headline {
+  margin: 2px 0 0;
+  color: var(--navy);
+  font-size: 1.05rem;
+}
+
+.interview-rubric-card .rubric-score-badge {
+  background: var(--navy);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.rubric-category-pills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rubric-cat-pill {
+  background: var(--navy-soft);
+  border: 1px solid #c8d7ed;
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.rubric-cat-pill .cat-pill-title {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.rubric-cat-pill .cat-pill-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.rubric-feedback-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.rubric-feedback-box .feedback-item {
+  margin-bottom: 6px;
+}
+
+.rubric-feedback-box .feedback-item:last-child {
+  margin-bottom: 0;
+}
+
+.rubric-feedback-box .strong-label {
+  color: var(--accept);
+}
+
+.rubric-feedback-box .missing-label {
+  color: var(--warn);
+}
+
+.rubric-feedback-box .next-label {
+  color: var(--navy);
+}
+
+/* Case Impact Card (75-Day Clock & Additional Costs) */
+.case-impact-card {
+  margin-top: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.case-impact-card .impact-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.case-impact-card .impact-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+}
+
+.case-impact-card .impact-headline {
+  margin: 2px 0 0;
+  color: var(--navy);
+  font-size: 0.98rem;
+}
+
+.impact-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.impact-metric-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.impact-metric-box .metric-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.impact-metric-box .metric-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.impact-progress-track {
+  height: 5px;
+  background: #e0dbcb;
+  border-radius: 3px;
+  margin: 6px 0 4px;
+  overflow: hidden;
+}
+
+.impact-progress-fill {
+  height: 100%;
+  background: var(--accept);
+  transition: width 0.3s ease;
+}
+
+.impact-metric-box .metric-sub {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.chat-bubble.partner {
+  background: #fdf7e6 !important;
+  border: 1px solid #e4cd8b !important;
+  border-left: 4px solid var(--gold-dark) !important;
+}

@@ -143,6 +143,16 @@
               </p>
             </div>
 
+            <!-- Pre-Stage Strategic Decision Objective (P1) -->
+            <div class="stage-framing-banner">
+              <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+              <div class="framing-q-label">What decision am I preparing to make?</div>
+              <div class="framing-q-text">
+                &ldquo;I am preparing to determine Lakeview's true commercial priorities and identify the decision-makers who must authorize our litigation or settlement strategy before the 75-day bank refinancing deadline.&rdquo;
+              </div>
+              <div class="framing-subtext">Focus: Illinois Rules of Professional Conduct 1.13 (Entity as Client), 1.2 (Scope &amp; Authority), and 1.4 (Client Communication).</div>
+            </div>
+
             <!-- Step 1A: Supervisory Preparation Questions (Word Doc Prompts Q1 - Q3) -->
             <details class="prep-accordion" open style="margin-bottom:16px;">
               <summary>
@@ -209,6 +219,15 @@
               </div>
             </details>
 
+            <!-- Guided Client Interview Objective Banner (P0) -->
+            <div class="interview-objective-banner">
+              <div class="objective-banner-icon">&#9878;</div>
+              <div class="objective-banner-content">
+                <div class="objective-banner-title">Client Interview Objective</div>
+                <div class="objective-banner-desc">Gather the information needed to recommend Lakeview&rsquo;s next litigation step before the 75-day bank refinancing deadline.</div>
+              </div>
+            </div>
+
             <!-- Persona Indicator -->
             <div class="persona-strip">
               <div class="persona-avatar elena">ER</div>
@@ -223,12 +242,63 @@
               <!-- Dynamic Messages injected here -->
             </div>
 
+            <!-- Step 1B Guided Inquiry Options (Hybrid Model: Selectable Prompts + Free-Text Box) (P0) -->
+            <div class="guided-questions-card">
+              <div class="guided-header">
+                <span class="guided-title">&#128172; Guided Inquiry Options (Click to Ask, or Type Below):</span>
+                <span class="note" style="font-size:0.75rem;">Hybrid model: select a strategic inquiry or compose a custom prompt</span>
+              </div>
+              <div class="guided-options-grid" id="guided-questions-container">
+                <!-- Dynamically populated by renderGuidedQuestions() -->
+              </div>
+            </div>
+
             <!-- Composer -->
             <div class="composer-box">
               <textarea id="interview-input" class="composer-textarea" placeholder="Ask your client an open-ended question (e.g. business goals, budget, deadlines, contract terms, or records)…"></textarea>
               <div class="composer-footer">
                 <span class="note" id="interview-hint-text">Press Enter &crarr; to send &middot; Shift+Enter for newline</span>
                 <button class="btn btn-primary" id="btn-send-interview" onclick="sendInterviewMessage()">Send Question &rarr;</button>
+              </div>
+            </div>
+
+            <!-- 10-Point Objective Rubric & Immediate Supervising Partner Feedback Card (P0) -->
+            <div class="interview-rubric-card" id="interview-rubric-card">
+              <div class="rubric-card-header">
+                <div>
+                  <div class="rubric-eyebrow">Objective 10-Point Rubric</div>
+                  <h4 class="rubric-headline">Supervising Partner Inquiry Evaluation</h4>
+                </div>
+                <div class="rubric-score-badge" id="rubric-total-badge">
+                  Score: 0 / 10
+                </div>
+              </div>
+
+              <!-- 4 Categorical Breakdown Pills -->
+              <div class="rubric-category-pills" id="rubric-category-pills">
+                <div class="rubric-cat-pill">
+                  <div class="cat-pill-title">Identifies Key Info</div>
+                  <div class="cat-pill-val" id="cat-score-info">0 / 3</div>
+                </div>
+                <div class="rubric-cat-pill">
+                  <div class="cat-pill-title">Connects to Goal</div>
+                  <div class="cat-pill-val" id="cat-score-goal">0 / 3</div>
+                </div>
+                <div class="rubric-cat-pill">
+                  <div class="cat-pill-title">Prioritizes &amp; Follows Up</div>
+                  <div class="cat-pill-val" id="cat-score-followup">0 / 2</div>
+                </div>
+                <div class="rubric-cat-pill">
+                  <div class="cat-pill-title">Recognizes Uncertainty</div>
+                  <div class="cat-pill-val" id="cat-score-uncertainty">0 / 2</div>
+                </div>
+              </div>
+
+              <!-- Formatted Immediate Feedback -->
+              <div class="rubric-feedback-box" id="rubric-feedback-box">
+                <div class="feedback-item"><strong class="strong-label">Strong:</strong> <span id="rubric-strong-text">Session initialized. Ready to begin client interview.</span></div>
+                <div class="feedback-item"><strong class="missing-label">Missing:</strong> <span id="rubric-missing-text">Authority thresholds, 75-day refinancing deadline, Master Agreement Sec. 11.2, and refrigeration records have not been elicited.</span></div>
+                <div class="feedback-item"><strong class="next-label">Next Step:</strong> <span id="rubric-next-text">Select or type a question targeting client authority or commercial deadlines.</span></div>
               </div>
             </div>
           </div>
@@ -294,7 +364,62 @@
               </div>
             </div>
 
-            <div style="margin-top:24px;">
+            <!-- Visible Time & Cost Consequences ("Case Impact" Summary) (P1) -->
+            <div class="case-impact-card" id="stage1-case-impact-card">
+              <div class="impact-card-header">
+                <div>
+                  <div class="impact-eyebrow">Case Impact &amp; Consequences</div>
+                  <h4 class="impact-headline">75-Day Clock &amp; Added Costs</h4>
+                </div>
+                <span class="score-pill" id="impact-status-indicator">On Track</span>
+              </div>
+              <p class="note" style="margin:0 0 10px; font-size:0.76rem;">
+                Illustrative pedagogical estimate: failing to identify decision authority, deadlines, or adverse logs consumes critical time and budget.
+              </p>
+
+              <!-- Metric Grid -->
+              <div class="impact-metrics-grid">
+                <div class="impact-metric-box">
+                  <div class="metric-label">Elapsed / Remaining</div>
+                  <div class="metric-val" id="impact-days-display">2 / 73 Days</div>
+                  <div class="impact-progress-track">
+                    <div id="impact-days-bar" class="impact-progress-fill" style="width:3%;"></div>
+                  </div>
+                  <span class="metric-sub" id="impact-days-sub">75-day bank refinancing</span>
+                </div>
+                <div class="impact-metric-box">
+                  <div class="metric-label">Added Legal Costs</div>
+                  <div class="metric-val" id="impact-fees-display" style="color:var(--deny);">$0</div>
+                  <span class="metric-sub">Investigation &amp; delays</span>
+                </div>
+              </div>
+
+              <!-- Unresolved Issues list -->
+              <div id="impact-unresolved-container" class="impact-unresolved-list">
+                <!-- Populated dynamically by renderCaseImpact() -->
+              </div>
+            </div>
+
+            <!-- Stage 1 Synthesis & Strategic Next-Step (P1) -->
+            <div class="stage-synthesis-card" id="stage1-synthesis-card">
+              <div class="synthesis-badge">📌 Stage 1 Synthesis &amp; Strategic Next-Step</div>
+              <div class="synthesis-content">
+                <div class="synthesis-point">
+                  <strong style="color:var(--navy);">What did I learn?</strong>
+                  <span id="synthesis-1-learn">Elicited executive authority (Elena Rostova / CFO David Park approval &gt;$25k), the critical 75-day loan renewal window with Midwest Business Bank, the $36,000 liability cap in Master Agreement Sec. 11.2, and internal sensor ticket #409.</span>
+                </div>
+                <div class="synthesis-point">
+                  <strong style="color:var(--navy);">What remains unknown?</strong>
+                  <span id="synthesis-1-unknown">The exact quantitative probability that a Rule 12(b)(6) motion would result in permanent dismissal versus leave to amend, and whether Heartland is open to a confidential structured settlement.</span>
+                </div>
+                <div class="synthesis-point">
+                  <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+                  <span id="synthesis-1-impact">The 75-day commercial deadline and $36,000 contract liability cap strongly favor an expedited settlement or pre-answer investigation over an expensive 12(b)(6) motion that triggers leave to amend.</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:20px;">
               <button class="btn btn-primary" style="width:100%;" onclick="goToStage(2)">
                 Ready &middot; Advance to Stage 2: Quantify Tradeoffs &rarr;
               </button>
@@ -317,6 +442,16 @@
             Model the expected financial value, time duration, and client utility across all three paths.
             Notice how conditional probabilities separate legal rules from empirical observations.
           </p>
+        </div>
+
+        <!-- Pre-Stage Strategic Decision Objective (P1) -->
+        <div class="stage-framing-banner">
+          <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+          <div class="framing-q-label">What decision am I preparing to make?</div>
+          <div class="framing-q-text">
+            &ldquo;I am preparing to model the expected financial cost, timeline, and client utility across all three strategic paths (Structured Settlement, Rule 12(b)(6) Motion, or Pre-Answer Investigation) grounded in Illinois contract law and federal pleading standards.&rdquo;
+          </div>
+          <div class="framing-subtext">Focus: Federal Rules 8(a)(2), 12(b)(6), 12(d), and 7th Circuit leave-to-amend doctrine under Runnion v. Girl Scouts.</div>
         </div>
 
         <!-- Stage 1 Ingestion Banner -->
@@ -505,6 +640,25 @@
           </div>
         </div>
 
+          <!-- Stage 2 Synthesis & Strategic Next-Step (P1) -->
+          <div class="stage-synthesis-card" id="stage2-synthesis-card">
+            <div class="synthesis-badge">📌 Stage 2 Synthesis &amp; Strategic Next-Step</div>
+            <div class="synthesis-content">
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">What did I learn?</strong>
+                <span id="synthesis-2-learn">Permanent 12(b)(6) dismissal is statistically improbable (9%) under 7th Circuit leave-to-amend rules; negotiated settlement yields the highest client utility ($49k expected value) and clears the 75-day bank deadline.</span>
+              </div>
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">What remains unknown?</strong>
+                <span id="synthesis-2-unknown">Whether Heartland's litigation counsel will demand public depositions or agree to a private business resolution.</span>
+              </div>
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+                <span id="synthesis-2-impact">Quantitative EV modeling demonstrates that filing an immediate 12(b)(6) motion produces a negative net expected value ($199k total exposure) while structured negotiation preserves capital and protects credit.</span>
+              </div>
+            </div>
+          </div>
+
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
           <button class="btn btn-ghost" onclick="goToStage(1)">&larr; Back to Client Interview</button>
           <button class="btn btn-primary" onclick="goToStage(3)">Advance to Stage 3: Opponent Anticipation &rarr;</button>
@@ -524,6 +678,16 @@
           <p class="stage-desc">
             Strategic judgment requires anticipating how the opponent will react. Heartland is represented by aggressive commercial litigators, but its business faces supplier cash flow pressures.
           </p>
+        </div>
+
+        <!-- Pre-Stage Strategic Decision Objective (P1) -->
+        <div class="stage-framing-banner">
+          <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+          <div class="framing-q-label">What decision am I preparing to make?</div>
+          <div class="framing-q-text">
+            &ldquo;I am preparing to anticipate how Heartland and its litigation counsel will respond under Rule 15(a) leave-to-amend, whether they will accept confidentiality, and how their litigation posture affects our 75-day refinancing timetable.&rdquo;
+          </div>
+          <div class="framing-subtext">Focus: Adversary incentives, insurance leverage, and commercial relationship value ($190k/yr).</div>
         </div>
 
         <div class="stage-main-grid">
@@ -568,6 +732,25 @@
           </div>
         </div>
 
+          <!-- Stage 3 Synthesis & Strategic Next-Step (P1) -->
+          <div class="stage-synthesis-card" id="stage3-synthesis-card">
+            <div class="synthesis-badge">📌 Stage 3 Synthesis &amp; Strategic Next-Step</div>
+            <div class="synthesis-content">
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">What did I learn?</strong>
+                <span id="synthesis-3-learn">Heartland's primary vulnerability is inventory debt and insurance recovery; they lack appetite for a multi-year federal lawsuit if Lakeview offers an immediate structured resolution.</span>
+              </div>
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">What remains unknown?</strong>
+                <span id="synthesis-3-unknown">Heartland's opening counter-offer and willingness to keep the settlement amount confidential.</span>
+              </div>
+              <div class="synthesis-point">
+                <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+                <span id="synthesis-3-impact">Confirming Heartland's commercial vulnerability reinforces that presenting an early settlement package with storage fee credits maximizes leverage and meets client needs.</span>
+              </div>
+            </div>
+          </div>
+
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
           <button class="btn btn-ghost" onclick="goToStage(2)">&larr; Back to Tradeoffs</button>
           <button class="btn btn-primary" onclick="goToStage(4)">Advance to Stage 4: Initial Strategy &rarr;</button>
@@ -591,6 +774,16 @@
           <div class="callout" style="background:#f8fafc; border-left:3px solid var(--navy); padding:10px 14px; border-radius:4px; font-size:0.83rem; margin-top:8px; color:var(--ink-soft);">
             <strong>Procedural Hierarchy:</strong> At this initial responsive pleading stage, choose between Option A (Settlement), Option B (Rule 12(b)(6) Motion), or Option C (Investigation &amp; Standstill). If Lakeview investigates or answers, a <strong>Rule 56 Motion for Summary Judgment</strong> becomes viable later once an appropriate evidentiary record is assembled.
           </div>
+        </div>
+
+        <!-- Pre-Stage Strategic Decision Objective (P1) -->
+        <div class="stage-framing-banner">
+          <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+          <div class="framing-q-label">What decision am I preparing to make?</div>
+          <div class="framing-q-text">
+            &ldquo;I am preparing to commit to and defend a recommended course of action to Lakeview's CEO Elena Rostova and CFO David Park, justifying the choice under professional conduct rules, cost constraints, and bank timing.&rdquo;
+          </div>
+          <div class="framing-subtext">Focus: Synthesis of client priorities, legal viability, and risk-adjusted expected value.</div>
         </div>
 
         <div class="strategy-picker-grid">
@@ -635,6 +828,25 @@
           </div>
         </div>
 
+        <!-- Stage 4 Synthesis & Strategic Next-Step (P1) -->
+        <div class="stage-synthesis-card" id="stage4-synthesis-card">
+          <div class="synthesis-badge">📌 Stage 4 Synthesis &amp; Strategic Next-Step</div>
+          <div class="synthesis-content">
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What did I learn?</strong>
+              <span id="synthesis-4-learn">Formulated a comprehensive strategic defense addressing client priorities, Rule 1.2 allocation of authority, and 7th Circuit procedural hurdles.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What remains unknown?</strong>
+              <span id="synthesis-4-unknown">How the court and opposing counsel will respond when our strategy meets simulated procedural reality.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+              <span id="synthesis-4-impact">Our recommendation is committed, with contingency plans ready for either settlement talks or judicial orders.</span>
+            </div>
+          </div>
+        </div>
+
         <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
           <button class="btn btn-ghost" onclick="goToStage(3)">&larr; Back to Opponent Anticipation</button>
           <button class="btn btn-primary" id="btn-commit-strategy" onclick="commitInitialStrategy()">
@@ -659,9 +871,38 @@
           </p>
         </div>
 
+        <!-- Pre-Stage Strategic Decision Objective (P1) -->
+        <div class="stage-framing-banner">
+          <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+          <div class="framing-q-label">What decision am I preparing to make?</div>
+          <div class="framing-q-text">
+            &ldquo;I am preparing to respond to real-world procedural friction (a judicial ruling or settlement counter-proposal) and decide whether to maintain our course or execute a strategic pivot.&rdquo;
+          </div>
+          <div class="framing-subtext">Focus: Evaluating procedural consequences: 37-day settlement clearance vs. Runnion leave-to-amend delay breaching the 75-day loan deadline.</div>
+        </div>
+
         <!-- Dynamic Event Container -->
         <div id="simulated-event-container">
           <!-- Populated dynamically (Court order / Opponent letter / Audit memo) -->
+        </div>
+
+        <!-- Stage 5 Synthesis & Strategic Next-Step (P1) -->
+        <div class="stage-synthesis-card" id="stage5-synthesis-card">
+          <div class="synthesis-badge">📌 Stage 5 Synthesis &amp; Strategic Next-Step</div>
+          <div class="synthesis-content">
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What did I learn?</strong>
+              <span id="synthesis-5-learn">Observed how procedural delay directly impacts client business: settlement resolved the matter in 37 days with zero bank penalty, whereas litigating triggered leave to amend and breached the 75-day loan deadline.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What remains unknown?</strong>
+              <span id="synthesis-5-unknown">The final comprehensive faculty evaluation of our holistic strategic judgment.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+              <span id="synthesis-5-impact">Direct empirical evidence confirms that procedural speed and business constraints must govern dispositive motion strategy.</span>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
@@ -686,6 +927,16 @@
             Compare your pre-event reasoning with the simulated reality. Explain whether your recommendation
             changes or persists and why. Then receive your 100-point rubric assessment.
           </p>
+        </div>
+
+        <!-- Pre-Stage Strategic Decision Objective (P1) -->
+        <div class="stage-framing-banner">
+          <div class="framing-badge">&#127919; Strategic Decision Objective</div>
+          <div class="framing-q-label">What decision am I preparing to make?</div>
+          <div class="framing-q-text">
+            &ldquo;I am preparing to critically reflect on my litigation choices, revise my strategic reasoning based on empirical feedback, and evaluate my performance across the 5 faculty rubric competencies.&rdquo;
+          </div>
+          <div class="framing-subtext">Focus: 100-Point Faculty Rubric evaluation and downloadable strategic judgment scorecard report.</div>
         </div>
 
         <!-- Pre / Post Comparison Split -->
@@ -731,6 +982,25 @@
         <!-- 100-Point Faculty Rubric Scorecard Result Container -->
         <div id="scorecard-display-container" style="display:none;">
           <!-- Dynamically populated after evaluation -->
+        </div>
+
+        <!-- Stage 6 Synthesis & Strategic Next-Step (P1) -->
+        <div class="stage-synthesis-card" id="stage6-synthesis-card">
+          <div class="synthesis-badge">📌 Stage 6 Synthesis &amp; Pedagogical Mastery</div>
+          <div class="synthesis-content">
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What did I learn?</strong>
+              <span id="synthesis-6-learn">Achieved comprehensive mastery across all 5 strategic judgment dimensions: Client Interviewing, Legal Reasoning, Risk &amp; Uncertainty, Strategic Judgment, and Reflection &amp; Revision.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">What remains unknown?</strong>
+              <span id="synthesis-6-unknown">All case facts and procedural outcomes have been fully resolved.</span>
+            </div>
+            <div class="synthesis-point">
+              <strong style="color:var(--navy);">How does this affect my recommendation?</strong>
+              <span id="synthesis-6-impact">The complete evaluation report and CSV scorecard document a fully justified, client-centered litigation decision.</span>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:24px; display:flex; justify-content:space-between;">
@@ -967,6 +1237,9 @@ Section 14.8 (Attorney's Fees):
     renderChatThread();
     renderPriorityDropdowns();
     renderDiscoveredFacts();
+    renderGuidedQuestions();
+    renderInterviewRubric();
+    renderCaseImpact();
 
     // Stage 2: Render Tradeoff calculations & Legal Analysis Colloquy
     renderTradeoffInputsAndResults();
@@ -1103,36 +1376,205 @@ Section 14.8 (Attorney's Fees):
     }
     thread.innerHTML = msgs.map(m => {
       const isUser = m.role === "user";
-      const bg = isUser ? "#eef2f8" : "#eef7f8";
-      const border = isUser ? "#c8d7ed" : "#c2e2e6";
-      const speakerColor = isUser ? "var(--navy)" : "#1d5b63";
+      const isPartner = m.speaker === "Supervising Partner" || m.role === "assistant";
+      let bg = isUser ? "#eef2f8" : "#eef7f8";
+      let border = isUser ? "#c8d7ed" : "#c2e2e6";
+      let speakerColor = isUser ? "var(--navy)" : "#1d5b63";
       let speaker = m.speaker;
       if (isUser) {
         speaker = "Lawyer (You)";
+      } else if (isPartner) {
+        bg = "#fdf7e6";
+        border = "#e4cd8b";
+        speakerColor = "var(--gold-dark)";
+        speaker = "⭐ Supervising Partner (Coaching & Rubric Feedback)";
       } else if (!speaker || speaker === "Client") {
         speaker = "Elena Rostova, CEO (with Marcus Vance)";
       }
       return `
-        <div class="chat-bubble ${isUser ? 'user' : 'client'}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;">
+        <div class="chat-bubble ${isUser ? 'user' : (isPartner ? 'partner' : 'client')}" style="background:${bg}; border:1px solid ${border}; border-radius:10px; padding:14px; margin-bottom:12px; animation:fadeInBubble 0.2s ease;">
           <div style="font-weight:700; color:${speakerColor}; font-size:0.83rem; margin-bottom:4px;">${escapeHtml(speaker)}</div>
-          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink);">${escapeHtml(m.content)}</div>
+          <div style="white-space:pre-wrap; font-size:0.92rem; color:var(--ink); line-height:1.55;">${escapeHtml(m.content)}</div>
         </div>
       `;
     }).join("");
     thread.scrollTop = thread.scrollHeight;
   }
 
-  async function sendInterviewMessage() {
+  function renderGuidedQuestions() {
+    const container = document.getElementById("guided-questions-container");
+    if (!container) return;
+    const questions = (sessionState && sessionState.guided_questions && sessionState.guided_questions.length)
+      ? sessionState.guided_questions
+      : [
+          {
+            id: "guided_authority",
+            title: "Decision Authority & Sign-Off",
+            question: "Who within Lakeview has authority to approve litigation filings or a settlement, and what internal approvals are required?",
+            category: "Organizational Authority",
+          },
+          {
+            id: "guided_refinancing",
+            title: "Commercial Financing Deadline",
+            question: "Are there business deadlines, financing renewals, or external pressures affecting the timing of this dispute?",
+            category: "Commercial Constraints",
+          },
+          {
+            id: "guided_records",
+            title: "Refrigeration Logs & Dock Records",
+            question: "What temperature logs and maintenance records exist for Bay C during the shipment period?",
+            category: "Evidentiary Investigation",
+          },
+          {
+            id: "guided_limitation",
+            title: "Contractual Limitation of Liability",
+            question: "Does the Master Agreement contain any terms limiting damages or liability for warehouse storage?",
+            category: "Contractual Defenses",
+          },
+          {
+            id: "guided_premature_12b6",
+            title: "Immediate Dispositive Motion",
+            question: "Should we immediately file a Rule 12(b)(6) motion to dismiss the entire complaint as Marcus requested?",
+            category: "Procedural Tactics",
+          },
+          {
+            id: "guided_settlement",
+            title: "Settlement Parameters & Commercial Value",
+            question: "What settlement terms or commercial solutions would Lakeview find acceptable to resolve this before the bank review?",
+            category: "Settlement Strategy",
+          },
+        ];
+
+    container.innerHTML = questions.map(q => {
+      const qTextEsc = escapeHtml(q.question);
+      const qTitleEsc = escapeHtml(q.title || "Inquiry");
+      const qCatEsc = escapeHtml(q.category || "General");
+      const jsParam = q.question.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `
+        <div class="guided-q-row" style="display:flex; justify-content:space-between; align-items:center; background:#faf9f6; border:1px solid #e8e3d5; border-radius:6px; padding:8px 12px; gap:10px;">
+          <div style="flex:1;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px;">
+              <span class="score-pill" style="font-size:0.7rem; padding:1px 6px; background:#eef2f8; color:var(--navy); border:1px solid #c8d7ed;">${qCatEsc}</span>
+              <strong style="font-size:0.83rem; color:var(--navy);">${qTitleEsc}</strong>
+            </div>
+            <div style="font-size:0.82rem; color:var(--ink-soft);">&ldquo;${qTextEsc}&rdquo;</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" style="white-space:nowrap; padding:4px 10px; font-size:0.78rem;" onclick="sendInterviewMessage('${jsParam}')">
+            Select &amp; Ask &rarr;
+          </button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderInterviewRubric() {
+    const rubric = (sessionState && sessionState.interview_rubric_10pt) ? sessionState.interview_rubric_10pt : null;
+    if (!rubric) return;
+
+    const totalEl = document.getElementById("rubric-total-badge");
+    if (totalEl) totalEl.textContent = `Score: ${rubric.total_score || 0} / 10`;
+
+    const catScores = rubric.category_scores || {};
+    const infoEl = document.getElementById("cat-score-info");
+    if (infoEl) infoEl.textContent = `${catScores.identifies_key_info || 0} / 3`;
+
+    const goalEl = document.getElementById("cat-score-goal");
+    if (goalEl) goalEl.textContent = `${catScores.connects_to_goal || 0} / 3`;
+
+    const followEl = document.getElementById("cat-score-followup");
+    if (followEl) followEl.textContent = `${catScores.prioritizes_followup || 0} / 2`;
+
+    const uncertEl = document.getElementById("cat-score-uncertainty");
+    if (uncertEl) uncertEl.textContent = `${catScores.recognizes_uncertainty || 0} / 2`;
+
+    const strongEl = document.getElementById("rubric-strong-text");
+    if (strongEl) strongEl.textContent = rubric.strong || "Session initialized.";
+
+    const missingEl = document.getElementById("rubric-missing-text");
+    if (missingEl) missingEl.textContent = rubric.missing || "None.";
+
+    const nextEl = document.getElementById("rubric-next-text");
+    if (nextEl) nextEl.textContent = rubric.next_step || "Continue client interview.";
+  }
+
+  function renderCaseImpact() {
+    const impact = (sessionState && sessionState.case_impact) ? sessionState.case_impact : null;
+    if (!impact) return;
+
+    const statusEl = document.getElementById("impact-status-indicator");
+    if (statusEl) {
+      statusEl.textContent = impact.refinancing_status.startsWith("ON TRACK") ? "On Track" : (impact.refinancing_status.startsWith("CAUTION") ? "Caution" : "Critical Risk");
+      if (impact.status_color === "danger") {
+        statusEl.style.cssText = "background:var(--deny-bg); color:var(--deny); border:1px solid var(--deny);";
+      } else if (impact.status_color === "warning") {
+        statusEl.style.cssText = "background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn);";
+      } else {
+        statusEl.style.cssText = "background:var(--accept-bg); color:var(--accept); border:1px solid var(--accept);";
+      }
+    }
+
+    const daysEl = document.getElementById("impact-days-display");
+    if (daysEl) {
+      daysEl.textContent = `${impact.elapsed_days || 2} / ${impact.days_remaining_refinancing || 73} Days`;
+    }
+
+    const daysBar = document.getElementById("impact-days-bar");
+    if (daysBar) {
+      const pct = Math.min(100, Math.round(((impact.elapsed_days || 2) / 75) * 100));
+      daysBar.style.width = `${pct}%`;
+      if (pct > 65) daysBar.style.background = "var(--deny)";
+      else if (pct > 40) daysBar.style.background = "var(--warn)";
+      else daysBar.style.background = "var(--accept)";
+    }
+
+    const feesEl = document.getElementById("impact-fees-display");
+    if (feesEl) {
+      feesEl.textContent = `$${(impact.estimated_additional_fees || 0).toLocaleString()}`;
+    }
+
+    const unresContainer = document.getElementById("impact-unresolved-container");
+    if (unresContainer) {
+      const unresList = impact.unresolved_issues || [];
+      if (unresList.length === 0) {
+        unresContainer.innerHTML = `
+          <div style="background:var(--accept-bg); color:var(--accept); padding:8px 10px; border-radius:6px; border:1px solid #b7dfca; margin-top:6px; font-size:0.78rem;">
+            <strong>&check; All Critical Inquiries Addressed:</strong> Decision maker, 75-day bank loan, Sec. 11.2 cap, and maintenance logs verified.
+          </div>
+        `;
+      } else {
+        unresContainer.innerHTML = `
+          <div style="font-size:0.75rem; font-weight:700; color:var(--navy); text-transform:uppercase; margin:8px 0 4px;">
+            Unresolved Issues (${unresList.length}):
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            ${unresList.map(item => `
+              <div style="background:#fff7f6; border-left:3px solid var(--deny); border:1px solid #fadbd8; border-left-width:3px; border-radius:4px; padding:6px 8px; font-size:0.76rem; line-height:1.4;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong style="color:var(--navy);">${escapeHtml(item.issue)}</strong>
+                  <span style="color:var(--deny); font-weight:700;">+${item.time_days}d &middot; +$${item.cost_dollars.toLocaleString()}</span>
+                </div>
+                <div style="color:var(--ink-soft); margin-top:2px;">${escapeHtml(item.reason)}</div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+    }
+  }
+
+  async function sendInterviewMessage(customText) {
     const input = document.getElementById("interview-input");
-    const text = input.value.trim();
+    const text = (customText !== undefined && customText !== null) ? customText.trim() : (input ? input.value.trim() : "");
     if (!text || !sessionState) return;
 
     // 1. Immediately clear and disable input to prevent double sending
-    input.value = "";
+    if (input) input.value = "";
     const btn = document.getElementById("btn-send-interview");
-    btn.disabled = true;
-    input.disabled = true;
-    btn.textContent = "Sending…";
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+    }
+    if (input) input.disabled = true;
 
     // 2. Optimistic UI: Immediately append the user message to the chat thread!
     const thread = document.getElementById("chat-thread-stream");
@@ -1172,6 +1614,9 @@ Section 14.8 (Attorney's Fees):
         saveSnapshot();
         renderChatThread();
         renderDiscoveredFacts();
+        renderGuidedQuestions();
+        renderInterviewRubric();
+        renderCaseImpact();
       } else {
         const err = await res.json().catch(() => ({}));
         alert("Error from client interview service: " + (err.error || "Server error"));
@@ -1184,10 +1629,14 @@ Section 14.8 (Attorney's Fees):
       const ind = document.getElementById("active-typing-indicator");
       if (ind) ind.remove();
     } finally {
-      btn.disabled = false;
-      input.disabled = false;
-      btn.textContent = "Send Question →";
-      input.focus();
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Send Question →";
+      }
+      if (input) {
+        input.disabled = false;
+        input.focus();
+      }
     }
   }
 

@@ -155,6 +155,454 @@ def _create_default_stage2_colloquy() -> Dict[str, Any]:
     }
 
 
+STAGE1_GUIDED_QUESTIONS = [
+    {
+        "id": "guided_authority",
+        "title": "Decision Authority & Sign-Off",
+        "question": "Who within Lakeview has authority to approve litigation filings or a settlement, and what internal approvals are required?",
+        "quality": "strong",
+        "category": "Organizational Authority",
+        "what_it_uncovers": "Organizational client authority under Rule 1.13; establishes that Marcus Vance cannot authorize filings or spend over $15,000, and CFO David Park plus board approval is mandatory for any settlement or budget above $25,000.",
+        "partner_explanation": "Essential and timely inquiry. Identifying who has authority under Model Rule 1.13 before filing dispositive motions prevents unauthorized legal commitments and aligns litigation spending with corporate governance.",
+        "fact_ids": ["fact_authority_thresholds"],
+        "recommended_followup": "guided_refinancing",
+    },
+    {
+        "id": "guided_refinancing",
+        "title": "Commercial Financing Deadline",
+        "question": "Are there business deadlines, financing renewals, or external pressures affecting the timing of this dispute?",
+        "quality": "strong",
+        "category": "Commercial Constraints",
+        "what_it_uncovers": "The critical ~75-day commercial loan refinancing review with Midwest Business Bank. An unresolved lawsuit demanding >$250k risks freezing Lakeview's $2.8M credit line.",
+        "partner_explanation": "High-value inquiry. Connecting litigation strategy to commercial financing constraints is the hallmark of sophisticated counsel. A prolonged motion battle that crosses the 75-day line threatens the company's financial solvency.",
+        "fact_ids": ["fact_refinancing_deadline"],
+        "recommended_followup": "guided_limitation",
+    },
+    {
+        "id": "guided_records",
+        "title": "Refrigeration Logs & Dock Records",
+        "question": "What temperature logs and maintenance records exist for Bay C during the shipment period?",
+        "quality": "partially_useful",
+        "category": "Evidentiary Investigation",
+        "what_it_uncovers": "Refrigeration records show unit was at 34-38°F, but ticket #409 noted a temporary sensor failure on Oct 12; dock logs show cheese was hot-loaded at 45°F.",
+        "partner_explanation": "Useful for fact investigation, but legally incomplete at the pleading stage: Rule 12(b)(6) is strictly confined to the Four Corners of the complaint. Lakeview cannot introduce internal maintenance logs or ticket #409 without converting the motion to Rule 56 summary judgment under Rule 12(d).",
+        "fact_ids": ["fact_dock_records"],
+        "recommended_followup": "guided_limitation",
+    },
+    {
+        "id": "guided_limitation",
+        "title": "Contractual Limitation of Liability",
+        "question": "Does the Master Agreement contain any terms limiting damages or liability for warehouse storage?",
+        "quality": "strong",
+        "category": "Contractual Defenses",
+        "what_it_uncovers": "Master Agreement Section 11.2 explicitly bars consequential and lost-profit damages ($340,000) and caps cumulative warehouse liability at $36,000 (2x monthly storage charges).",
+        "partner_explanation": "Critical legal defense. Because the contract is referenced in Heartland's complaint, Section 11.2 can be asserted to attack the $340k lost profits claim directly, capping financial exposure and providing immense settlement leverage.",
+        "fact_ids": ["fact_section_11_2"],
+        "recommended_followup": "guided_settlement",
+    },
+    {
+        "id": "guided_premature_12b6",
+        "title": "Immediate Dispositive Motion",
+        "question": "Should we immediately file a Rule 12(b)(6) motion to dismiss the entire complaint as Marcus requested?",
+        "quality": "premature",
+        "category": "Procedural Tactics",
+        "what_it_uncovers": "Premature recommendation without establishing objectives or facts. Marcus wants immediate action, but Elena is concerned about cost and procedural delays.",
+        "partner_explanation": "Premature and legally risky. Recommending a dispositive motion before establishing client objectives, authority, and governing contract terms violates Model Rules 1.2 and 1.4. In the Seventh Circuit (Runnion v. Girl Scouts), courts routinely grant leave to amend, consuming 45-60 days and $15k-$20k with zero liability reduction.",
+        "fact_ids": [],
+        "recommended_followup": "guided_authority",
+    },
+    {
+        "id": "guided_settlement",
+        "title": "Settlement Parameters & Commercial Value",
+        "question": "What settlement terms or commercial solutions would Lakeview find acceptable to resolve this before the bank review?",
+        "quality": "strong",
+        "category": "Settlement Strategy",
+        "what_it_uncovers": "Elena is open to offering $30k–$40k cash + $20k storage fee credits conditioned on mutual release and confidentiality. Heartland represents $190,000/yr in recurring revenue.",
+        "partner_explanation": "Superb commercial counseling. Structuring settlement using warehouse fee credits preserves cash, solves the problem within 30-40 days, protects the Heartland relationship ($190k/yr), and satisfies bank underwriters.",
+        "fact_ids": ["fact_settlement_appetite", "fact_heartland_relationship"],
+        "recommended_followup": None,
+    },
+]
+
+STAGE_FRAMING_OBJECTIVES = {
+    1: {
+        "stage": 1,
+        "title": "Preparation & Client Interview",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to determine Lakeview's true commercial priorities and identify the decision-makers who must authorize our litigation or settlement strategy before the 75-day bank refinancing deadline.",
+        "key_focus": "Model Rules 1.13 (Entity as Client), 1.2 (Scope & Authority), and 1.4 (Communication).",
+    },
+    2: {
+        "stage": 2,
+        "title": "Quantitative Tradeoffs & Legal Standards",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to model the expected financial cost, timeline, and client utility across all three strategic paths (Structured Settlement, Rule 12(b)(6) Motion, or Pre-Answer Investigation) grounded in Illinois contract law and federal pleading standards.",
+        "key_focus": "Federal Rules 8(a)(2), 12(b)(6), 12(d), and 7th Circuit leave-to-amend doctrine under Runnion v. Girl Scouts.",
+    },
+    3: {
+        "stage": 3,
+        "title": "Opponent Anticipation & Strategic Responses",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to anticipate how Heartland and its litigation counsel will respond under Rule 15(a) leave-to-amend, whether they will accept confidentiality, and how their litigation stance affects our 75-day refinancing timetable.",
+        "key_focus": "Adversary incentives, insurance leverage, and commercial relationship value ($190k/yr).",
+    },
+    4: {
+        "stage": 4,
+        "title": "Choose & Explain Your Recommended Action",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to commit to and defend a recommended course of action to Lakeview's CEO Elena Rostova and CFO David Park, justifying the choice under professional conduct rules, cost constraints, and bank timing.",
+        "key_focus": "Synthesis of client priorities, legal viability, and risk-adjusted expected value.",
+    },
+    5: {
+        "stage": 5,
+        "title": "Simulated Court & Opponent Event",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to respond to real-world procedural friction (a judicial ruling or settlement counter-proposal) and decide whether to maintain our course or execute a strategic pivot.",
+        "key_focus": "Evaluating procedural consequences: 37-day settlement clearance vs. Runnion leave-to-amend delay breaching the 75-day loan deadline.",
+    },
+    6: {
+        "stage": 6,
+        "title": "Reflect, Revise & Faculty Rubric Assessment",
+        "question": "What decision am I preparing to make?",
+        "decision_statement": "I am preparing to critically reflect on my litigation choices, revise my strategic reasoning based on empirical feedback, and evaluate my performance across the 5 faculty rubric competencies.",
+        "key_focus": "100-Point Faculty Rubric evaluation and downloadable strategic judgment scorecard report.",
+    },
+}
+
+STAGE_COMPLETION_SYNTHESIS = {
+    1: {
+        "stage": 1,
+        "title": "Stage 1 Synthesis & Strategic Next-Step",
+        "what_learned": "Elicited executive authority (Elena Rostova / CFO David Park approval >$25k), the critical 75-day loan renewal window with Midwest Business Bank, the $36,000 liability cap in Master Agreement Sec. 11.2, and internal sensor ticket #409.",
+        "what_unknown": "The exact quantitative probability that a Rule 12(b)(6) motion would result in permanent dismissal versus leave to amend, and whether Heartland is open to a confidential structured settlement.",
+        "how_affects_recommendation": "The 75-day commercial deadline and $36,000 contract liability cap strongly favor an expedited settlement or pre-answer investigation over an expensive 12(b)(6) motion that triggers leave to amend.",
+    },
+    2: {
+        "stage": 2,
+        "title": "Stage 2 Synthesis & Strategic Next-Step",
+        "what_learned": "Permanent 12(b)(6) dismissal is statistically improbable (9%) under 7th Circuit leave-to-amend rules; negotiated settlement yields the highest client utility ($49k expected value) and clears the 75-day bank deadline.",
+        "what_unknown": "Whether Heartland's litigation counsel will demand public depositions or agree to a private business resolution.",
+        "how_affects_recommendation": "Quantitative EV modeling demonstrates that filing an immediate 12(b)(6) motion produces a negative net expected value ($199k total exposure) while structured negotiation preserves capital and protects credit.",
+    },
+    3: {
+        "stage": 3,
+        "title": "Stage 3 Synthesis & Strategic Next-Step",
+        "what_learned": "Heartland's primary vulnerability is inventory debt and insurance recovery; they lack appetite for a multi-year federal lawsuit if Lakeview offers an immediate structured resolution.",
+        "what_unknown": "Heartland's opening counter-offer and willingness to keep the settlement amount confidential.",
+        "how_affects_recommendation": "Confirming Heartland's commercial vulnerability reinforces that presenting an early settlement package with storage fee credits maximizes leverage and meets client needs.",
+    },
+    4: {
+        "stage": 4,
+        "title": "Stage 4 Synthesis & Strategic Next-Step",
+        "what_learned": "Formulated a comprehensive strategic defense addressing client priorities, Rule 1.2 allocation of authority, and 7th Circuit procedural hurdles.",
+        "what_unknown": "How the court and opposing counsel will respond when our strategy meets simulated procedural reality.",
+        "how_affects_recommendation": "Our recommendation is committed, with contingency plans ready for either settlement talks or judicial orders.",
+    },
+    5: {
+        "stage": 5,
+        "title": "Stage 5 Synthesis & Strategic Next-Step",
+        "what_learned": "Observed how procedural delay directly impacts client business: settlement resolved the matter in 37 days with zero bank penalty, whereas litigating triggered leave to amend and breached the 75-day loan deadline.",
+        "what_unknown": "The final comprehensive faculty evaluation of our holistic strategic judgment.",
+        "how_affects_recommendation": "Direct empirical evidence confirms that procedural speed and business constraints must govern dispositive motion strategy.",
+    },
+    6: {
+        "stage": 6,
+        "title": "Stage 6 Synthesis & Strategic Next-Step",
+        "what_learned": "Achieved comprehensive mastery across all 5 strategic judgment dimensions: Client Interviewing, Legal Reasoning, Risk & Uncertainty, Strategic Judgment, and Reflection & Revision.",
+        "what_unknown": "All case facts and procedural outcomes have been fully resolved.",
+        "how_affects_recommendation": "The complete evaluation report and CSV scorecard document a fully justified, client-centered litigation decision.",
+    },
+}
+
+
+def evaluate_interview_10pt_rubric(
+    session: Dict[str, Any],
+    current_message: str,
+    student_history: Optional[List[str]] = None,
+) -> Dict[str, Any]:
+    history = student_history or []
+    cur_text = (current_message or "").strip().lower()
+    all_queries = [h.lower() for h in history] + ([cur_text] if cur_text else [])
+    combined_text = " ".join(all_queries)
+
+    # Check for key factual triggers in history + current
+    has_authority = any(w in combined_text for w in ["authority", "cfo", "david park", "sign off", "who can approve", "who is the client", "board", "marcus authority"])
+    has_deadline = any(w in combined_text for w in ["deadline", "bank", "refinanc", "75 day", "credit line", "loan", "timing", "urgent"])
+    has_records = any(w in combined_text for w in ["record", "log", "temperature", "ticket", "409", "sensor", "dock", "receiving", "spoil"])
+    has_contract = any(w in combined_text for w in ["contract", "section 11", "11.2", "limitation", "waiver", "consequential", "lost profit", "36,000", "agreement", "cap"])
+    has_settlement = any(w in combined_text for w in ["settle", "compromise", "offer", "negotiat", "credit", "relationship", "recurring", "revenue"])
+    has_premature_motion = any(w in cur_text for w in ["immediately file", "immediate motion", "file a motion to dismiss right now", "file 12(b)(6) now"])
+
+    # Baseline when no message has been sent
+    if not cur_text and not history:
+        strong_init = "Session initialized. Ready to interview Elena Rostova."
+        missing_init = "Authority thresholds (CFO David Park), 75-day bank refinancing, Master Agreement Sec. 11.2, and refrigeration records have not yet been elicited."
+        next_init = "Ask who holds authority to approve litigation decisions or inquire about commercial deadlines."
+        return {
+            "total_score": 0,
+            "max_score": 10,
+            "category_scores": {
+                "identifies_key_info": 0,
+                "connects_to_goal": 0,
+                "prioritizes_followup": 0,
+                "recognizes_uncertainty": 0,
+            },
+            "max_categories": {
+                "identifies_key_info": 3,
+                "connects_to_goal": 3,
+                "prioritizes_followup": 2,
+                "recognizes_uncertainty": 2,
+            },
+            "strong": strong_init,
+            "missing": missing_init,
+            "next_step": next_init,
+            "partner_critique": "Welcome to the client interview. Your objective is to gather the facts needed to recommend Lakeview's next litigation step before the 75-day bank refinancing deadline.",
+            "feedback_summary": f"Score: 0/10. Strong: {strong_init} Missing: {missing_init} Next: {next_init}",
+        }
+
+    # Category 1: Identifies Key Information (0-3 pts)
+    key_info_count = sum([has_authority, has_deadline, (has_records or has_contract)])
+    if key_info_count >= 3:
+        cat_key_info = 3
+    elif key_info_count == 2:
+        cat_key_info = 2
+    elif key_info_count == 1:
+        cat_key_info = 1
+    else:
+        cat_key_info = 0
+
+    # Category 2: Connects Question to Legal/Business Goal (0-3 pts)
+    if (has_deadline and (has_contract or has_authority)) or (has_contract and has_settlement):
+        cat_goal = 3
+    elif has_deadline or has_contract or has_authority:
+        cat_goal = 2
+    elif has_records or has_settlement:
+        cat_goal = 2
+    elif has_premature_motion:
+        cat_goal = 1
+    else:
+        cat_goal = 1
+
+    # Category 3: Prioritizes and Follows Up (0-2 pts)
+    if len(all_queries) >= 3 and key_info_count >= 2:
+        cat_followup = 2
+    elif len(all_queries) >= 1 and (has_authority or has_deadline or has_contract or has_records):
+        cat_followup = 1 if len(all_queries) == 1 else 2
+    else:
+        cat_followup = 1
+
+    # Category 4: Recognizes Uncertainty / Client Role (0-2 pts)
+    if has_premature_motion:
+        cat_uncertainty = 0
+    elif has_authority and (has_contract or has_deadline):
+        cat_uncertainty = 2
+    elif has_authority or not has_premature_motion:
+        cat_uncertainty = 1 if len(all_queries) <= 1 else 2
+    else:
+        cat_uncertainty = 1
+
+    total_score = min(10, cat_key_info + cat_goal + cat_followup + cat_uncertainty)
+
+    # Build qualitative feedback
+    strong_items = []
+    if has_authority:
+        strong_items.append("decision authority and CFO David Park's $25k approval threshold")
+    if has_deadline:
+        strong_items.append("the critical 75-day refinancing deadline with Midwest Business Bank")
+    if has_contract:
+        strong_items.append("Section 11.2 limitation of liability capping exposure at $36,000")
+    if has_records:
+        strong_items.append("internal temperature records and maintenance ticket #409")
+    if has_settlement:
+        strong_items.append("commercial settlement viability using warehouse storage fee credits")
+
+    if strong_items:
+        strong_str = f"You identified {', and '.join(strong_items)}."
+    else:
+        strong_str = "You initiated open-ended communication with corporate client representative Elena Rostova."
+
+    missing_items = []
+    if not has_authority:
+        missing_items.append("decision authority / CFO David Park sign-off")
+    if not has_deadline:
+        missing_items.append("the 75-day commercial loan refinancing review")
+    if not has_contract:
+        missing_items.append("Master Agreement Sec. 11.2 damages waiver")
+    if not has_records:
+        missing_items.append("internal refrigeration records and ticket #409")
+
+    if missing_items:
+        missing_str = f"You have not yet asked about {', or '.join(missing_items)}."
+    else:
+        missing_str = "All primary strategic constraints and factual defenses have been elicited."
+
+    # Next step recommendation
+    if not has_authority:
+        next_str = "Ask who has authority to approve litigation decisions or settlement expenditures."
+    elif not has_deadline:
+        next_str = "Ask whether any commercial loan renewals or business deadlines create timing pressure."
+    elif not has_contract:
+        next_str = "Inquire whether the Master Agreement contains limitations of liability or damages waivers."
+    elif not has_records:
+        next_str = "Ask what internal temperature logs and maintenance records exist before evaluating liability."
+    else:
+        next_str = "Synthesize client priorities and advance to Stage 2 to model quantitative tradeoffs."
+
+    # Partner critique of current question
+    if any(w in cur_text for w in ["authority", "cfo", "david park", "who can approve", "who is the client", "board"]):
+        critique = "Essential and timely inquiry. Identifying organizational decision-makers under Model Rule 1.13 ensures we take direction from CEO Elena Rostova and CFO David Park rather than unauthorized operational staff."
+    elif any(w in cur_text for w in ["deadline", "bank", "refinanc", "75 day", "credit line", "loan", "timing"]):
+        critique = "High-value commercial inquiry. Eliciting the 75-day refinancing window reveals that prolonged dispositive motion practice risks freezing Lakeview's credit line, establishing that speed is of the essence."
+    elif any(w in cur_text for w in ["section 11", "11.2", "limitation", "waiver", "consequential", "lost profit", "36,000"]):
+        critique = "Decisive legal defense. Section 11.2 caps liability at $36,000 and waives consequential damages, effectively eliminating Heartland's $340,000 lost-profits claim as a matter of law."
+    elif any(w in cur_text for w in ["record", "log", "temperature", "ticket", "409", "sensor", "dock"]):
+        critique = "Useful for factual investigation, but procedurally incomplete: Rule 12(b)(6) is confined to the Four Corners of the complaint. Lakeview cannot introduce internal maintenance logs without converting under Rule 12(d)."
+    elif has_premature_motion:
+        critique = "Premature and procedurally risky. Filing an immediate 12(b)(6) motion before establishing client objectives or authority risks 7th Circuit leave to amend under Runnion, burning 45-60 days with zero liability reduction."
+    elif any(w in cur_text for w in ["settle", "compromise", "offer", "negotiat", "credit"]):
+        critique = "Superb commercial counseling. Structuring settlement with storage credits and cash preserves liquidity, resolves the dispute before the 75-day bank review, and protects a $190k/yr customer relationship."
+    else:
+        critique = "Good open-ended probe. Continue exploring organizational authority, bank refinancing deadlines, or contractual limitations of liability."
+
+    feedback_summary = f"Score: {total_score}/10. Strong: {strong_str} Missing: {missing_str} Next: {next_str}"
+
+    return {
+        "total_score": total_score,
+        "max_score": 10,
+        "category_scores": {
+            "identifies_key_info": cat_key_info,
+            "connects_to_goal": cat_goal,
+            "prioritizes_followup": cat_followup,
+            "recognizes_uncertainty": cat_uncertainty,
+        },
+        "max_categories": {
+            "identifies_key_info": 3,
+            "connects_to_goal": 3,
+            "prioritizes_followup": 2,
+            "recognizes_uncertainty": 2,
+        },
+        "strong": strong_str,
+        "missing": missing_str,
+        "next_step": next_str,
+        "partner_critique": critique,
+        "feedback_summary": feedback_summary,
+    }
+
+
+def compute_interview_case_impact(session: Dict[str, Any], current_student_text: str = "") -> Dict[str, Any]:
+    discovered = session.get("discovered_facts", [])
+    discovered_ids = {f.get("id") for f in discovered}
+    messages = session.get("messages", [])
+    student_msgs = [m.get("content", "").lower() for m in messages if m.get("role") == "user"]
+    if current_student_text:
+        student_msgs.append(current_student_text.lower())
+    all_student_text = " ".join(student_msgs)
+
+    base_days = 2
+    base_fees = 0
+    delays = []
+
+    # 1. Authority & CFO David Park
+    has_authority = (
+        "fact_authority_thresholds" in discovered_ids
+        or "known_elena_authority" in discovered_ids
+        or any(w in all_student_text for w in ["authority", "cfo", "david park", "sign off", "who can approve", "who is the client"])
+    )
+    if not has_authority:
+        delays.append({
+            "issue": "Decision Authority Unconfirmed",
+            "reason": "Proceeding without verifying CFO David Park's $25,000 approval threshold and board governance requires emergency partner clarification calls.",
+            "time_days": 2,
+            "cost_dollars": 1200,
+            "severity": "medium",
+            "remedy": "Ask who holds authority to approve litigation filings and budget commitments above $25,000.",
+        })
+
+    # 2. 75-Day Bank Refinancing Window
+    has_refinancing = (
+        "fact_refinancing_deadline" in discovered_ids
+        or any(w in all_student_text for w in ["refinanc", "75 day", "bank", "credit line", "loan", "deadline"])
+    )
+    if not has_refinancing:
+        delays.append({
+            "issue": "75-Day Refinancing Deadline Overlooked",
+            "reason": "Missing Lakeview's 75-day commercial loan renewal with Midwest Business Bank risks scheduling dispositive briefing past the underwriting review, endangering Lakeview's $2.8M credit line.",
+            "time_days": 10,
+            "cost_dollars": 4500,
+            "severity": "critical",
+            "remedy": "Elicit business deadlines and financing constraints from CEO Elena Rostova.",
+        })
+
+    # 3. Refrigeration Records & Ticket #409
+    has_records = (
+        "fact_dock_records" in discovered_ids
+        or any(w in all_student_text for w in ["ticket", "409", "temperature", "dock log", "sensor", "refrigeration record"])
+    )
+    if not has_records:
+        delays.append({
+            "issue": "Internal Maintenance Records & Ticket #409 Unexamined",
+            "reason": "Failing to ask about Bay C maintenance logs and dock receiving records necessitates expedited third-party forensic IT investigation and warehouse inspection.",
+            "time_days": 5,
+            "cost_dollars": 3500,
+            "severity": "high",
+            "remedy": "Ask what temperature logs, dock receiving logs, and maintenance records exist.",
+        })
+
+    # 4. Master Agreement Sec. 11.2 (Limitation of Liability & Lost Profits Waiver)
+    has_contract = (
+        "fact_section_11_2" in discovered_ids
+        or any(w in all_student_text for w in ["section 11", "11.2", "limitation", "waiver", "consequential", "lost profit", "36,000", "master agreement"])
+    )
+    if not has_contract:
+        delays.append({
+            "issue": "Master Agreement Section 11.2 Liability Cap Unidentified",
+            "reason": "Overlooking the contract's $36,000 liability cap and waiver of lost profits leaves Lakeview negotiating against Heartland's inflated $340,000 lost-profits claim.",
+            "time_days": 3,
+            "cost_dollars": 2000,
+            "severity": "high",
+            "remedy": "Examine the Master Agreement terms for liability caps and damage waivers.",
+        })
+
+    # 5. Premature Motion to Dismiss Risk
+    asked_premature = any("immediately file" in t or "immediate motion" in t or "file a motion to dismiss right now" in t for t in student_msgs)
+    if asked_premature and (not has_contract or not has_records or not has_refinancing):
+        delays.append({
+            "issue": "Premature Dispositive Motion Practice",
+            "reason": "Recommending an immediate Rule 12(b)(6) motion before factual and contract investigation triggers Seventh Circuit Runnion leave-to-amend, consuming 45-60 days with zero liability reduction.",
+            "time_days": 15,
+            "cost_dollars": 15000,
+            "severity": "critical",
+            "remedy": "Ground dispositive motions in verified contract documents or prioritize pre-answer negotiation.",
+        })
+
+    total_days = base_days + sum(d["time_days"] for d in delays)
+    total_fees = base_fees + sum(d["cost_dollars"] for d in delays)
+    days_remaining = max(0, 75 - total_days)
+
+    if days_remaining <= 35:
+        refinancing_status = "CRITICAL RISK — 75-Day Bank Refinancing Review Endangered"
+        status_color = "danger"
+    elif days_remaining <= 55:
+        refinancing_status = "CAUTION — Compressed Timetable Before Bank Underwriting"
+        status_color = "warning"
+    else:
+        refinancing_status = "ON TRACK — Refinancing Timetable Protected (<75 Days)"
+        status_color = "success"
+
+    return {
+        "elapsed_days": total_days,
+        "days_remaining_refinancing": days_remaining,
+        "refinancing_deadline_days": 75,
+        "estimated_additional_fees": total_fees,
+        "unresolved_count": len(delays),
+        "unresolved_issues": delays,
+        "refinancing_status": refinancing_status,
+        "status_color": status_color,
+        "is_all_cleared": len(delays) == 0,
+        "cost_disclaimer": "Illustrative pedagogical estimate for simulation; demonstrates time and resource consequences of unelicited client facts.",
+    }
+
+
 class SessionManager:
     def __init__(self, curriculum: CurriculumStore, llm_client: QwenLLMClient) -> None:
         self.curriculum = curriculum
@@ -864,36 +1312,19 @@ class SessionManager:
                 }
             )
 
-        eval_payload = {
-            "mode": "client_roleplay",
-            "communication_score": comm_score,
-            "max_score": max_s,
-            "addressed_items": addressed_badges,
-            "coach_tip": coach_tip,
-        }
-
-        self._append_msg(
-            session,
-            role="user",
-            speaker="Lawyer (You)",
-            content=student_text,
-            phase_id=cur_phase.id,
-            evaluation=eval_payload,
-        )
-        self._append_msg(
-            session,
-            role="client",
-            speaker="Elena Rostova, CEO (with Marcus Vance)",
-            content=client_reply,
-            phase_id=cur_phase.id,
-        )
-
-        # Dynamically uncover scenario facts based on student inquiry (Page 5, 6, 10 of PDF recommendations)
+        # Dynamically uncover scenario facts based on student inquiry
         t_lower = student_text.lower()
         discovered = session.setdefault("discovered_facts", [])
         discovered_ids = {f["id"] for f in discovered}
 
         FACT_TRIGGERS = [
+            (
+                "fact_authority_thresholds",
+                ("authority", "decision", "who can", "sign off", "approve", "operating agreement", "cfo", "david park", "who is the client", "board", "marcus authority"),
+                "Governance & Authority",
+                "Discovered from CEO Elena Rostova",
+                "Decision Authority & CFO David Park: CEO Elena Rostova holds executive strategic authority; CFO David Park must sign off on any expenditure or settlement over $25,000, requiring managing board consultation. Marcus Vance has zero authority over litigation.",
+            ),
             (
                 "fact_refinancing_deadline",
                 ("refinanc", "bank", "credit", "deadline", "loan", "75 day", "timing", "when", "urgent", "pressure"),
@@ -947,6 +1378,81 @@ class SessionManager:
                     "text": txt,
                 })
                 discovered_ids.add(fid)
+
+        # Check if student inquiry matched any guided question to unlock associated facts
+        for gq in STAGE1_GUIDED_QUESTIONS:
+            if gq["question"].lower() in t_lower or any(fid in discovered_ids for fid in gq.get("fact_ids", [])):
+                for fid in gq.get("fact_ids", []):
+                    if fid not in discovered_ids:
+                        for tfid, _, tcat, tsrc, ttxt in FACT_TRIGGERS:
+                            if tfid == fid:
+                                discovered.append({
+                                    "id": tfid,
+                                    "category": tcat,
+                                    "source": tsrc,
+                                    "text": ttxt,
+                                })
+                                discovered_ids.add(tfid)
+                                break
+
+        # 10-Point Interview Rubric Evaluation
+        prior_student_msgs = [
+            m["content"] for m in session["messages"]
+            if m.get("role") == "user" and m.get("phase_id") == cur_phase.id
+        ]
+        rubric_10pt = evaluate_interview_10pt_rubric(session, student_text, prior_student_msgs)
+        session["interview_rubric_10pt"] = rubric_10pt
+
+        # Case Impact & Consequences Calculation
+        case_impact = compute_interview_case_impact(session, current_student_text=student_text)
+        session["case_impact"] = case_impact
+
+        eval_payload = {
+            "mode": "client_roleplay",
+            "communication_score": comm_score,
+            "max_score": max_s,
+            "addressed_items": addressed_badges,
+            "coach_tip": coach_tip,
+            "interview_rubric_10pt": rubric_10pt,
+            "case_impact": case_impact,
+        }
+
+        self._append_msg(
+            session,
+            role="user",
+            speaker="Lawyer (You)",
+            content=student_text,
+            phase_id=cur_phase.id,
+            evaluation=eval_payload,
+        )
+        self._append_msg(
+            session,
+            role="client",
+            speaker="Elena Rostova, CEO (with Marcus Vance)",
+            content=client_reply,
+            phase_id=cur_phase.id,
+        )
+
+        # Append Supervising Partner coaching feedback to the thread
+        cat_sc = rubric_10pt["category_scores"]
+        partner_critique_msg = (
+            f"**Supervising Partner Evaluation & Rubric Feedback:**\n"
+            f"• **Score:** {rubric_10pt['total_score']}/10 (Identifies Key Info: {cat_sc['identifies_key_info']}/3, "
+            f"Connects to Goal: {cat_sc['connects_to_goal']}/3, "
+            f"Prioritizes & Follows Up: {cat_sc['prioritizes_followup']}/2, "
+            f"Recognizes Uncertainty: {cat_sc['recognizes_uncertainty']}/2)\n\n"
+            f"• **Inquiry Analysis:** {rubric_10pt['partner_critique']}\n"
+            f"• **Strong:** {rubric_10pt['strong']}\n"
+            f"• **Missing / Unaddressed:** {rubric_10pt['missing']}\n"
+            f"• **Recommended Next Step:** {rubric_10pt['next_step']}"
+        )
+        self._append_msg(
+            session,
+            role="assistant",
+            speaker="Supervising Partner",
+            content=partner_critique_msg,
+            phase_id=cur_phase.id,
+        )
 
         # Automatically advance once all During-meeting items pass (legacy guided mode only)
         if not session.get("sim_stage"):
@@ -1007,6 +1513,14 @@ class SessionManager:
                 "delivered the cheese pallets at 45°F already hot-loaded, in direct violation of Section 4.1 pre-cooling specifications!"
             )
             qid = "factual_narrative"
+        elif any(w in t for w in ["immediately file", "immediate motion", "file a motion to dismiss right now", "file 12(b)(6) now", "should we immediately file"]):
+            reply = (
+                "Marcus is eager to do that, but as CEO, I am deeply concerned. Our litigation budget is capped at $15,000–$25,000, "
+                "and our bank refinancing review is in approximately 75 days. If we spend $20,000 filing an immediate motion to dismiss just to have the judge "
+                "grant Heartland leave to amend, we will blow past our 75-day loan deadline and exhaust our legal funds with nothing to show for it. "
+                "Shouldn't we understand our contract defenses and the evidence before filing?"
+            )
+            qid = "litigation_budget"
         elif any(w in t for w in ["priorit", "goal", "objective", "rank", "top 3", "most important"]):
             reply = (
                 "If I have to rank our top three priorities: First, protect our credit standing and resolve this before our 75-day bank "
@@ -1255,6 +1769,11 @@ class SessionManager:
             "discovered_facts": session.get("discovered_facts", []),
             "prep_answers": session.get("prep_answers", {}),
             "stage2_colloquy": session.get("stage2_colloquy", {}),
+            "guided_questions": STAGE1_GUIDED_QUESTIONS,
+            "interview_rubric_10pt": session.get("interview_rubric_10pt") or evaluate_interview_10pt_rubric(session, "", []),
+            "case_impact": session.get("case_impact") or compute_interview_case_impact(session),
+            "stage_framing": STAGE_FRAMING_OBJECTIVES,
+            "stage_synthesis": STAGE_COMPLETION_SYNTHESIS,
             "tradeoff_inputs": session.get("tradeoff_inputs", {}),
             "tradeoff_results": session.get("tradeoff_results", {}),
             "opponent_anticipation": session.get("opponent_anticipation", {}),
@@ -1872,5 +2391,27 @@ class SessionManager:
         writer.writerow([])
         writer.writerow(["Executive Summary", r_eval.get("overall_critique", "N/A")])
         writer.writerow(["Pre/Post Evolution", r_eval.get("pre_post_comparison_note", "N/A")])
+
+        # Stage 1 10-Point Interview Rubric & Case Impact Summary
+        rubric_10pt = session.get("interview_rubric_10pt") or evaluate_interview_10pt_rubric(session, "", [])
+        case_impact = session.get("case_impact") or compute_interview_case_impact(session)
+        writer.writerow([])
+        writer.writerow(["Stage 1 Client Interview Rubric (10-Point Categorical Model)"])
+        writer.writerow(["Interview Score", f"{rubric_10pt.get('total_score', 0)}/10"])
+        cat_scores = rubric_10pt.get("category_scores", {})
+        writer.writerow(["• Identifies Key Info (0-3)", f"{cat_scores.get('identifies_key_info', 0)}/3"])
+        writer.writerow(["• Connects to Goal (0-3)", f"{cat_scores.get('connects_to_goal', 0)}/3"])
+        writer.writerow(["• Prioritizes & Follows Up (0-2)", f"{cat_scores.get('prioritizes_followup', 0)}/2"])
+        writer.writerow(["• Recognizes Uncertainty (0-2)", f"{cat_scores.get('recognizes_uncertainty', 0)}/2"])
+        writer.writerow(["Interview Strengths", rubric_10pt.get("strong", "")])
+        writer.writerow(["Interview Missing Items", rubric_10pt.get("missing", "")])
+        writer.writerow(["Interview Recommended Next Step", rubric_10pt.get("next_step", "")])
+        writer.writerow([])
+        writer.writerow(["Case Impact & Resource Consequences (75-Day Loan Timeline)"])
+        writer.writerow(["Elapsed Days vs 75-Day Bank Deadline", f"{case_impact.get('elapsed_days', 0)} elapsed / {case_impact.get('days_remaining_refinancing', 0)} remaining"])
+        writer.writerow(["Estimated Additional Fees", f"${case_impact.get('estimated_additional_fees', 0):,} (Illustrative Pedagogical Estimate)"])
+        writer.writerow(["Refinancing Status", case_impact.get("refinancing_status", "N/A")])
+        for unres in case_impact.get("unresolved_issues", []):
+            writer.writerow(["Unresolved Consequence", f"{unres.get('issue')}: +{unres.get('time_days')} days, +${unres.get('cost_dollars')} -> {unres.get('reason')}"])
         return buf.getvalue()
 

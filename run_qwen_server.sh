@@ -16,6 +16,7 @@ if [ -f /home/kjj8053/anaconda3/etc/profile.d/conda.sh ]; then
     conda activate qwen || true
 fi
 
+module load cuda/11.8.0-gcc-12.3.0 2>/dev/null || true
 module load vllm/0.19.0
 
 echo "Starting Qwen 3.8-27B vLLM server on $(hostname)..."
